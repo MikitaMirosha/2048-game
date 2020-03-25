@@ -1,4 +1,4 @@
-package com.mirosha.game;
+package mirosha.game;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,43 +6,54 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
-public class Cube {
-	public static final int WIDTH = 150;
-	public static final int HEIGHT = 150;
-	public static final int ARC_WIDTH = 25;
-	public static final int ARC_HEIGHT = 25;
-	public static final int SLIDING_SPEED = 30;
+import javax.imageio.ImageIO;
+
+public class Cube { // класс для работы с кубиками 
 	
+	// координаты
 	private int x; 
 	private int y;
-	private int value;
-	private Color bg;
-	private Color text;
-	private Font font;
-	private Spot slide;
-	private BufferedImage cubeImage;
-	private boolean newSpawnAnimation = true; 
-	private double scaleNewSpawn = 0.1; 
-	private BufferedImage startImage;
-	private boolean combineAnimation = false; 
-	private double scaleCombine = 1.2; // 120% ������� ������������� ��� ��������������
-	private BufferedImage combineImage;
-	private boolean combineAbility = true; // ����������� �������������� �� ��� ������ ��� ���
+	private int value; // значение на кубике
+	private Font font; // сам фон
+	private Color bg; // цвет фона
+	private Color text; // цвет текста
+	private Spot slide; // куда двигать (row/col)
+	private BufferedImage cubeImage; // отрисовка кубика
+
+	public static final int ARCW = 15; // закругление углов квадрата по ширине
+	public static final int ARCH = 15; // закругление углов квадрата по высоте
+	public static final int SPEED = 35; // скорость передвижения кубиков
+	public static final int WIDTH = 120; // ширина игрового поля
+	public static final int HEIGHT = 120; // высота игрового поля
+
+	private boolean newSpawnAnimation = true; // анимация нового спауна
+	private double scaleNewSpawn = 0.1; // масштаб анимации нового спауна (10%)
+	private BufferedImage startImage; // отрисовка начального изображения
 	
-	public Cube(int value, int x, int y) { // ����������� ������
-		this.value = value;
+	private boolean uniteAnimation = false; // анимация объединения кубиков
+	private double scaleUnited = 1.2; // при объединении кубиков увеличивается масштаб на 120%
+	private BufferedImage unitedImage; // отрисовка объединения кубиков
+	private boolean uniteAbility = true; // флаг возможности объединения
+
+	public Cube(int value, int x, int y) { // конструктор кубика
+		// явные указатели на координаты и значение кубиков
 		this.x = x;
 		this.y = y;
-		slide = new Spot(x, y);
-		cubeImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB); 
-		startImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB); 
-		combineImage = new BufferedImage(WIDTH * 2, HEIGHT * 2, BufferedImage.TYPE_INT_ARGB);
-		drawImage();
+		this.value = value;
+		slide = new Spot(x, y); // активируем координаты перемещения по rows/cols
+		// создаем BufferedImage для отрисовки кубиков и их анимации
+		cubeImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		startImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		unitedImage = new BufferedImage(WIDTH * 2, HEIGHT * 2, BufferedImage.TYPE_INT_ARGB);
+		drawCubes(); // отрисовка финальных кубиков
 	}
 	
-	private void drawImage() {
-		Graphics2D graphics = (Graphics2D)cubeImage.getGraphics();
+	private void drawCubes() {
+		Graphics2D graphics = (Graphics2D) cubeImage.getGraphics(); // Graphics2D для отрисовки кубика
+		
+		// задаем цвет и фон, исходя из значения величины на кубике
 		if(value == 2) {
 			bg = new Color(0xe9e9e9);
 			text = new Color(0x000000);
@@ -112,66 +123,74 @@ public class Cube {
 			text = Color.white;
 		}
 		
-		graphics.setColor(new Color(0, 0, 0, 0)); // ���������� ���� (��� ����������� �����)
-		graphics.fillRect(0, 0, WIDTH, HEIGHT); 
-		graphics.setColor(bg); // ���������� ����� ��� ������ �������
-		graphics.fillRoundRect(0, 0, WIDTH, HEIGHT, ARC_WIDTH, ARC_HEIGHT);
-		graphics.setColor(text); // ����� �� ������ 
-		font = Game.main.deriveFont(36f); 
-		graphics.setFont(font);
-		
-		// ����������� ���� �� �������:
-		int drawX = WIDTH / 2 - DrawBar.getBarWidth("" + value, font, graphics) / 2; 
-		int drawY = HEIGHT / 2 + DrawBar.getBarHeight("" + value, font, graphics) / 2; 
-		graphics.drawString("" +  value, drawX, drawY); 
-		graphics.dispose(); // ���������� �������, ���������� ������������ ����
+		graphics.setColor(new Color(0, 0, 0, 0)); // прозрачный цвет (для закруглений углов)
+		graphics.fillRect(0, 0, WIDTH, HEIGHT); // заполняем прямоугольник
+
+		graphics.setColor(bg); // устанавливаем цвет фона
+		graphics.fillRoundRect(0, 0, WIDTH, HEIGHT, ARCW, ARCH); // учитываем закругленные углы
+
+		graphics.setColor(text);  // устанавливаем цвет текста
+
+		if (value <= 64) { // если значение на кубике <= 64
+			font = Game.main.deriveFont(30f); // то устанавливаем размер шрифта 30
+			graphics.setFont(font);
+		}
+		else { // если 128 и выше
+			font = Game.main; // то шрифт прежний
+			graphics.setFont(font);
+		}
+
+		// установка координат по центру для отрисовки значения на кубике
+		int drawX = WIDTH / 2 - DisplayObject.getObjectWidth("" + value, font, graphics) / 2;
+		int drawY = HEIGHT / 2 + DisplayObject.getObjectHeight("" + value, font, graphics) / 2;
+		graphics.drawString("" + value, drawX, drawY); // запись значения в строку на кубике
+		graphics.dispose(); // освобождаем ресурсы, занимаемые компонентами окна
 	}
 	
-	public void update() {
-		if(newSpawnAnimation) {
-			AffineTransform transform = new AffineTransform(); // ��� scaling
-			transform.translate(WIDTH / 2 - scaleNewSpawn * WIDTH / 2, HEIGHT / 2 - scaleNewSpawn * HEIGHT / 2); // ���� � �������� � �������������� 
-			transform.scale(scaleNewSpawn, scaleNewSpawn);
-			Graphics2D graphics = (Graphics2D)startImage.getGraphics();
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // ��� �� ��������������
-			graphics.setColor(new Color(0, 0, 0, 0)); // ������
-			graphics.fillRect(0, 0, WIDTH, HEIGHT);
-			graphics.drawImage(cubeImage, transform, null);
-			scaleNewSpawn += 0.1 ; // ���������� ������ �� 10%
-			graphics.dispose();
-			if(scaleNewSpawn >= 1)
-				newSpawnAnimation = false;
+	public void updateCubeAnimation() { 
+		if (newSpawnAnimation) { // если новый спаун
+			AffineTransform affineTransform = new AffineTransform(); // аффинная трансформация для анимации масштаба
+			affineTransform.translate(WIDTH / 2 - scaleNewSpawn * WIDTH / 2, HEIGHT / 2 - scaleNewSpawn * HEIGHT / 2);
+			affineTransform.scale(scaleNewSpawn, scaleNewSpawn); // масштабируем
+			Graphics2D graphics = (Graphics2D) startImage.getGraphics(); // Graphics2D для начального изображения
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // сглаживание
+			graphics.setColor(new Color(0, 0, 0, 0)); // очищаем поле
+			graphics.fillRect(0, 0, WIDTH, HEIGHT); // создаем поле кубика для отрисовки
+			graphics.drawImage(cubeImage, affineTransform, null); // отрисовываем изображение кубика
+			scaleNewSpawn += 0.1; // становится больше на 10%
+			graphics.dispose(); // освобождаем ресурсы, занимаемые компонентами окна
+			if(scaleNewSpawn >= 1) newSpawnAnimation = false; // запрещаем анимацию спаунов, если уже есть >= спауна
 		}
-		else if(combineAnimation) {
-			AffineTransform transform = new AffineTransform();
-			transform.translate(WIDTH / 2 - scaleCombine * WIDTH / 2, HEIGHT / 2 - scaleCombine * HEIGHT / 2);
-			transform.scale(scaleCombine, scaleCombine);
-			Graphics2D graphics = (Graphics2D)combineImage.getGraphics();
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			graphics.setColor(new Color(0, 0, 0, 0));
-			graphics.fillRect(0, 0, WIDTH, HEIGHT);
-			graphics.drawImage(cubeImage, transform, null);
-			scaleCombine -= 0.05;
-			graphics.dispose();
-			if(scaleCombine <= 1)
-				combineAnimation = false;
-		}
-	}
-	
-	public void render(Graphics2D renderGraphics) {
-		if(newSpawnAnimation) {
-			renderGraphics.drawImage(startImage, x, y, null);
-		}
-		else if(combineAnimation) { // ������ �� ������
-			renderGraphics.drawImage(combineImage, (int)(x + WIDTH / 2 - scaleCombine * WIDTH / 2), 
-					                  (int)(y + HEIGHT / 2 - scaleCombine * HEIGHT / 2), null);
-		}
-		else {
-			renderGraphics.drawImage(cubeImage, x, y, null);	
+		else if(uniteAnimation) { // если надо объединить кубики
+			AffineTransform transform = new AffineTransform(); // аффинная трансформация для анимации масштаба
+			transform.translate(WIDTH / 2 - scaleUnited * WIDTH / 2, HEIGHT / 2 - scaleUnited * HEIGHT / 2);
+			transform.scale(scaleUnited, scaleUnited); // масштабируем
+			Graphics2D graphics = (Graphics2D) unitedImage.getGraphics(); // Graphics2D для объединения кубиков
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // сглаживание
+			graphics.setColor(new Color(0, 0, 0, 0)); // очищаем поле
+			graphics.fillRect(0, 0, WIDTH, HEIGHT); // создаем поле кубика для отрисовки
+			graphics.drawImage(cubeImage, transform, null); // отрисовываем изображение кубика
+			scaleUnited -= 0.08; // уменьшение масштаба кубика при объединении
+			graphics.dispose(); // освобождаем ресурсы, занимаемые компонентами окна
+			if(scaleUnited <= 1) uniteAnimation = false; // запрещаем анимацию объединения, если уже объединились
 		}
 	}
 	
-	public int getX() {
+	public void renderCubes(Graphics2D graphics) { // рендерим графику кубиков
+		if(newSpawnAnimation) { // для начального изображения кубика
+			graphics.drawImage(startImage, x, y, null);
+		}
+		else if(uniteAnimation) { // для анимации объединения кубиков
+			graphics.drawImage(unitedImage, (int)(x + WIDTH / 2 - scaleUnited * WIDTH / 2), 
+													(int)(y + HEIGHT / 2 - scaleUnited * HEIGHT / 2), null);
+		}
+		else { // для изображения кубиков по дефолту
+			graphics.drawImage(cubeImage, x, y, null); 
+		}
+	}
+	
+	// геттеры и сеттеры для координат x, y
+	public int getX() { 
 		return x;
 	}
 
@@ -187,37 +206,37 @@ public class Cube {
 		this.y = y;
 	}
 	
-	public int getValue() {
+	public int getValue() { // геттер для значения величины на кубике
 		return value;
 	}
-	
-	public void setValue(int value) {
-		this.value = value; // ����� ���������� ����� �������� 
-		drawImage(); // �������������� ������
+
+	public void setValue(int value) { // сеттер для значения величины на кубике
+		this.value = value;
+		drawCubes();
 	}
 
-	public boolean combineAbility() {
-		return combineAbility;
-	}
-
-	public void setCombineAbility(boolean combineAbility) {
-		this.combineAbility = combineAbility;
-	}
-
-	public Spot getSlideTo() {
+	public Spot getSlide() { // геттер для перемещения по rows/cols
 		return slide;
 	}
 
-	public void setSlideTo(Spot slideTo) {
-		this.slide = slideTo;
+	public void setSlide(Spot slide) { // сеттер для перемещения по rows/cols
+		this.slide = slide;
+	}
+	
+	public void setUniteAbility(boolean uniteAbility) {  // сеттер для возможности объединения
+		this.uniteAbility = uniteAbility;
 	}
 
-	public boolean getCombineAnimation() {
-		return combineAnimation;
+	public boolean uniteAbility() { // геттер для возможности объединения
+		return uniteAbility;
 	}
-
-	public void setCombineAnimation(boolean combineAnimation) {
-		this.combineAnimation = combineAnimation;
-		if(combineAnimation) scaleCombine = 1.2;
+	
+	public void setUniteAnimation(boolean uniteAnimation) { // сеттер для анимации объединения
+		this.uniteAnimation = uniteAnimation;
+		if(uniteAnimation) scaleUnited = 1.2;
+	}
+	
+	public boolean uniteAnimation() { // геттер для анимации объединения
+		return uniteAnimation;
 	}
 }
