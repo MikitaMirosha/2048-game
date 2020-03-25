@@ -12,7 +12,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 
-public class SetAudio {
+public class SetAudio { // класс для работы со звуком
 
 	private static SetAudio setter;
 	private HashMap<String, Clip> sound; // хранит все звуки, Clip для обработки звука
