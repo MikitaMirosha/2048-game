@@ -1,33 +1,26 @@
-package com.mirosha.game;
+package mirosha.game;
+
 import java.awt.event.KeyEvent;
 
-public class Keyboard {
+public class Keyboard { // РєР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ РєР»Р°РІРёР°С‚СѓСЂС‹
+
+	public static boolean[] pressedKey = new boolean[50]; // РјР°СЃСЃРёРІ РґР»СЏ РЅР°Р¶Р°С‚С‹С… РєР»Р°РІРёС€
+	public static boolean[] previousKey= new boolean[50]; // РјР°СЃСЃРёРІ РґР»СЏ РїСЂРµРґС‹РґСѓС‰РёС… РєР»Р°РІРёС€
 	
-	public static boolean[] pressed = new boolean[256];
-	public static boolean[] previous = new boolean[256];
-	
-	private Keyboard() { } 
-	
-	public static void updateKey() { // обновляет нажатия
-		for(int i = 0; i < 4; i++) {
-			if(i == 0) previous[KeyEvent.VK_LEFT] = pressed[KeyEvent.VK_LEFT];
-			if(i == 1) previous[KeyEvent.VK_RIGHT] = pressed[KeyEvent.VK_RIGHT];
-			if(i == 2) previous[KeyEvent.VK_UP] = pressed[KeyEvent.VK_UP];
-			if(i == 3) previous[KeyEvent.VK_DOWN] = pressed[KeyEvent.VK_DOWN];
+	public static void updateKeys() { // РѕР±РЅРѕРІР»СЏРµС‚ РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€
+		for(int i = 0; i < 4; i++) { 
+			if(i == 0) previousKey[KeyEvent.VK_LEFT] = pressedKey[KeyEvent.VK_LEFT];
+			if(i == 1) previousKey[KeyEvent.VK_RIGHT] = pressedKey[KeyEvent.VK_RIGHT];
+			if(i == 2) previousKey[KeyEvent.VK_UP] = pressedKey[KeyEvent.VK_UP];
+			if(i == 3) previousKey[KeyEvent.VK_DOWN] = pressedKey[KeyEvent.VK_DOWN];
 		}
 	}
 	
-	// если нажали и это false, а прошлое нажатие было true, то прошлое обновляется 
-		// для команды по передвижению кубиков 
-		public static boolean typed(int keyEvent) {
-			return !pressed[keyEvent] && previous[keyEvent];
-		}
-	
-	public static void keyPressed(KeyEvent e) {
-		pressed[e.getKeyCode()] = true;
+	public static void isPressed(KeyEvent key) { // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі РїСЂРё РЅР°Р¶Р°С‚РёРё РєР»Р°РІРёС€Рё
+		pressedKey[key.getKeyCode()] = true;
 	}
 	
-	public static void keyReleased(KeyEvent e) {
-		pressed[e.getKeyCode()] = false;
+	public static void isReleased(KeyEvent key) { // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РєР»Р°РІРёС€Рё
+		pressedKey[key.getKeyCode()] = false;
 	}
 }
