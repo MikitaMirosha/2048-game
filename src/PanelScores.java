@@ -11,10 +11,10 @@ import mirosha.game.DisplayObject;
 import mirosha.game.Game;
 import mirosha.game.Leaders;
 
-public class PanelScores extends PanelButton { // класс содержит таблицу счета
+public class PanelScores extends PanelButton { // РєР»Р°СЃСЃ СЃРѕРґРµСЂР¶РёС‚ С‚Р°Р±Р»РёС†Сѓ СЃС‡РµС‚Р°
 	
 	private Leaders scores;
-	// расположения содержимого окна:
+	// СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РѕРєРЅР°:
 	private int buttonW = 100;
 	private int buttonH = 50;
 	private int buttonY = 120;
@@ -23,20 +23,20 @@ public class PanelScores extends PanelButton { // класс содержит таблицу счета
 	private int buttonDistance = 20;
 	private int backButtonW = 220; 
 	
-	// стиль счета:
-	private String header = "СЧЕТ";
+	// СЃС‚РёР»СЊ СЃС‡РµС‚Р°:
+	private String header = "РЎР§Р•Рў";
 	private Font headerFont = Game.main.deriveFont(45f);
 	private Font scoreFont = Game.main.deriveFont(32f);
 	private State currentState = State.SCORE;
 	
 	private enum State { SCORE, CUBE }
 	
-	public PanelScores() { // в конструкторе панели счета создаются и отрисовываются кнопки
+	public PanelScores() { // РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ РїР°РЅРµР»Рё СЃС‡РµС‚Р° СЃРѕР·РґР°СЋС‚СЃСЏ Рё РѕС‚СЂРёСЃРѕРІС‹РІР°СЋС‚СЃСЏ РєРЅРѕРїРєРё
 		super(); 
 		scores = Leaders.getInstance();
 		scores.loadScores();
 
-		// создание и отрисовка кнопки КУБЫ
+		// СЃРѕР·РґР°РЅРёРµ Рё РѕС‚СЂРёСЃРѕРІРєР° РєРЅРѕРїРєРё РљРЈР‘Р«
 		Button cube = new Button(Game.WIDTH / 2 - buttonW / 2, buttonY, buttonW, buttonH);
 		cube.addActionListener(new ActionListener() {
 			@Override
@@ -44,10 +44,10 @@ public class PanelScores extends PanelButton { // класс содержит таблицу счета
 				currentState = State.CUBE;
 			}
 		});
-		cube.setText("КУБЫ");
+		cube.setText("РљРЈР‘Р«");
 		addButton(cube);
 		
-		// создание и отрисовка кнопки ОЧКИ
+		// СЃРѕР·РґР°РЅРёРµ Рё РѕС‚СЂРёСЃРѕРІРєР° РєРЅРѕРїРєРё РћР§РљР
 		Button score = new Button(Game.WIDTH / 2 - buttonW / 2 - cube.getWidth() - buttonDistance, buttonY, buttonW, buttonH);
 		score.addActionListener(new ActionListener() {
 			@Override
@@ -55,22 +55,22 @@ public class PanelScores extends PanelButton { // класс содержит таблицу счета
 				currentState = State.SCORE;
 			}
 		});
-		score.setText("ОЧКИ");
+		score.setText("РћР§РљР");
 		addButton(score);
 		
-		// создание и отрисовка кнопки НАЗАД
+		// СЃРѕР·РґР°РЅРёРµ Рё РѕС‚СЂРёСЃРѕРІРєР° РєРЅРѕРїРєРё РќРђР—РђР”
 		Button back = new Button(Game.WIDTH / 2 - backButtonW / 2, 500, backButtonW, 60);
 		back.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				Screen.getInstance().setPanel("Menu"); // выход в главное меню
+				Screen.getInstance().setPanel("Menu"); // РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ
 			}
 		});
-		back.setText("НАЗАД");
+		back.setText("РќРђР—РђР”");
 		addButton(back);
 	}
 	
-	// конвертируем цифры в строку: 
+	// РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј С†РёС„СЂС‹ РІ СЃС‚СЂРѕРєСѓ: 
 	private ArrayList<String> convertToStrings(ArrayList<? extends Number> listNum) {
 		ArrayList<String> get = new ArrayList<String>();
 		for(Number num : listNum){
@@ -79,7 +79,7 @@ public class PanelScores extends PanelButton { // класс содержит таблицу счета
 		return get;
 	}
 	
-	private void printScores(Graphics2D graphics) { // отрисовка счета
+	private void printScores(Graphics2D graphics) { // РѕС‚СЂРёСЃРѕРІРєР° СЃС‡РµС‚Р°
 		ArrayList<String> strings = new ArrayList<String>();
 		if(currentState == State.SCORE) {
 			strings = convertToStrings(scores.getTopScores());
@@ -90,14 +90,14 @@ public class PanelScores extends PanelButton { // класс содержит таблицу счета
 		graphics.setColor(Color.white);
 		graphics.setFont(scoreFont);
 		
-		for(int i = 0; i < strings.size(); i++) { // нумеруем данные в таблице
+		for(int i = 0; i < strings.size(); i++) { // РЅСѓРјРµСЂСѓРµРј РґР°РЅРЅС‹Рµ РІ С‚Р°Р±Р»РёС†Рµ
 			String str = (i + 1) + ". " + strings.get(i);
 			graphics.drawString(str, scoresX, scoresY + i * 40);
 		}
 	}
 	
 	@Override
-	public void renderPanel(Graphics2D graphics) { // рендерим панель
+	public void renderPanel(Graphics2D graphics) { // СЂРµРЅРґРµСЂРёРј РїР°РЅРµР»СЊ
 		super.renderPanel(graphics);
 		graphics.setColor(Color.black);
 		graphics.drawString(header, Game.WIDTH / 2 - DisplayObject.getObjectWidth(header, headerFont, graphics) / 2, DisplayObject.getObjectHeight(header, headerFont, graphics) + 40);
