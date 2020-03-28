@@ -1,424 +1,443 @@
-package com.mirosha.game;
+package mirosha.game;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.util.Random;
+
 import javax.sound.sampled.Clip;
 
-public class GameField {
-	public static final int ROWS = 4;
+public class GameField { // класс для работы с игровым полем
+
+	public static final int ROWS = 4; // поле 4х4
 	public static final int COLS = 4;
-	
-	private int x; // x, y - ������� ��� ��������� �� ������
+	private static int DISTANCE = 10; // расстояние между кубиками
+	public static int FIELDW = (COLS + 1) * DISTANCE + COLS * Cube.WIDTH;
+	public static int FIELDH = (ROWS + 1) * DISTANCE + ROWS * Cube.HEIGHT;
+
+	private int x; // позиции x, y для рендера на экране
 	private int y;
-	private int score = 0;
-	private int highScore = 0;
-	private Font scoreFont;
-	private SetAudio audio;  
-	private final int initialCubesSpawn = 2; // ���-�� ��������� ������� ������
-	private Cube[][] field; // ����������� ��� ��� ������ �� ����� � ��������� � �������
-	private boolean isDead; // ! ��������
-	private boolean isWin; // ! ��������
-	private BufferedImage gameField; // ��� ���� �������� ����
-	private BufferedImage finalField; // ��� ���������� ����: ���, ������ � �.�.
+	private boolean won;
+	private boolean dead;
+	private Cube[][] field; // массив для размещения кубиков на доске
+	private BufferedImage gameField; // для  фона игрового поля
+	private final int initialCubesSpawn = 2; // количество начальных спаунов кубиков
 	
-	private static int DISTANCE = 10; // ���������� ����� ��������
-	public static int FIELD_WIDTH = (COLS + 1) * DISTANCE + COLS * Cube.WIDTH;
-	public static int FIELD_HEIGHT = (ROWS + 1) * DISTANCE + ROWS * Cube.HEIGHT;
-	
-	private String saveDataPath;  
-	private String fileName = "Data"; 
-	
-	public GameField(int x, int y) {
-		try {
-			saveDataPath = GameField.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		scoreFont = Game.main.deriveFont(24f);
-		this.x = x; // ���������� ���������
+	public static final int LEFT = 0; // ключи направлений
+	public static final int RIGHT = 1;
+	public static final int UP = 2;
+	public static final int DOWN = 3;
+
+	private Scores scores;
+	private Leaders leaders;
+	private SetAudio audio;
+	private int saveCount = 0;
+
+	public GameField(int x, int y) { // конструктор игрового поля
+		this.x = x;
 		this.y = y;
 		field = new Cube[ROWS][COLS];
-		gameField = new BufferedImage(FIELD_WIDTH, FIELD_HEIGHT, BufferedImage.TYPE_INT_RGB);
-		finalField = new BufferedImage(FIELD_WIDTH, FIELD_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		gameField = new BufferedImage(FIELDW, FIELDH, BufferedImage.TYPE_INT_RGB);
+		createFieldImage();
+
+		// установка аудио
+		audio = SetAudio.getInstance();
+		audio.loadAudio("move.wav", "move"); // музыка при передвижении кубиков
+		audio.loadAudio("main.mp3", "background"); // фоновая музыка
+		audio.adjustVolume("background", -10); // уровень громкости
+		audio.playAudio("background", Clip.LOOP_CONTINUOUSLY); // бесконечный цикл фоновой музыки
+
+		// установка списка лучших результатов игры
+		leaders = Leaders.getInstance();
+		leaders.loadScores();
+		scores = new Scores(this);
+		scores.loadGame();
+		scores.setCurrentTopScore(leaders.getHighScore());
 		
-		loadHighScore();  
-		makeFieldImage();
-		start(); // ����� ��������� ������
-		
-		audio = SetAudio.getSample();
-		audio.loadSound("main.mp3", "main"); 
-		audio.loadSound("move.wav", "move");
-		audio.controlVolume("main", -20);
-		audio.controlVolume("move", -45);
-		audio.play("main", Clip.LOOP_CONTINUOUSLY);
-	}
-	
-	private void saveData() {
-		try {
-			File file = new File(saveDataPath, fileName);
-			FileWriter output = new FileWriter(file);
-			BufferedWriter writer = new BufferedWriter(output);
-			writer.write("" + 0);
-			writer.newLine();
-			writer.write("" + Integer.MAX_VALUE);
-			writer.close();
+		if(scores.newGame()) {
+			start();
+			scores.saveGame();
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void loadHighScore() {
-		try {
-			File file = new File(saveDataPath, fileName);
-			if(!file.isFile()) {
-				saveData();
+		else {
+			for(int i = 0; i < scores.getField().length; i++) {
+				if(scores.getField()[i] == 0) continue;
+				spawn(i / ROWS, i % COLS, scores.getField()[i]);
 			}
-			
-			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			highScore = Integer.parseInt(bufferReader.readLine());
-			bufferReader.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+			// не вызываем setDead т.к. не хотим ничего сохранять 
+			dead = checkDead();
+			// не вызываем setWon т.к. не хотим сохранять время 
+			won = checkWon();
 		}
 	}
-	
-	private void setHighScore() {
-		FileWriter output = null;
-		try {
-			File file = new File(saveDataPath, fileName);
-			output = new FileWriter(file);
-			BufferedWriter writer = new BufferedWriter(output);
-			writer.write("" + highScore);
-		    writer.newLine();
-			writer.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+
+	public void resetData() { // сброс данных при новой игре
+		field = new Cube[ROWS][COLS];
+		start();
+		scores.saveGame();
+		dead = false;
+		won = false;
+		saveCount = 0;
+	}
+
+	private void start() { // при начале игры спауним 2 рандомных кубика
+		for (int i = 0; i < initialCubesSpawn; i++) {
+			spawnRandomCubes();
 		}
 	}
-	
-	private void makeFieldImage() {
-		Graphics2D fieldImage = (Graphics2D) gameField.getGraphics();
-		fieldImage.setColor(Color.darkGray);
-		fieldImage.fillRect(0, 0, FIELD_WIDTH, FIELD_HEIGHT);
-		fieldImage.setColor(Color.lightGray);
-		
-		for(int row = 0; row < ROWS; row++) { // ��������� ������� � �������
-			for(int col = 0; col < COLS; col++) {
-				int x = DISTANCE + DISTANCE * col + Cube.WIDTH * col; // ������� ���������
+
+	private void spawn(int row, int col, int value) { // спаун кубиков в массиве
+		field[row][col] = new Cube(value, getCubeX(col), getCubeY(row));
+	}
+
+	private void createFieldImage() { // создание изображений на игровом поле
+		Graphics2D graphics = (Graphics2D) gameField.getGraphics();
+		graphics.setColor(Color.darkGray); // фон подложки поля под кубики
+		graphics.fillRect(0, 0, FIELDW, FIELDH);
+		graphics.setColor(Color.lightGray); // фон подложки под пустые ячейки
+
+		// отрисовка кубиков в массиве:
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				int x = DISTANCE + DISTANCE * col + Cube.WIDTH * col; // позиции отрисовки
 				int y = DISTANCE + DISTANCE * row + Cube.HEIGHT * row;
-				fieldImage.fillRoundRect(x, y, Cube.WIDTH, Cube.HEIGHT, Cube.ARC_WIDTH, Cube.ARC_HEIGHT);
+				graphics.fillRoundRect(x, y, Cube.WIDTH, Cube.HEIGHT, Cube.ARCW, Cube.ARCH); // отрисовка кубиков
 			}
 		}
 	}
+
+	public void updateField() {
+		saveCount++;
+		if (saveCount >= 120) {
+			saveCount = 0;
+			scores.saveGame();
+		}
 	
-	private void start() {
-		for(int i = 0; i < initialCubesSpawn; i++) {
-			randomSpawn();
+		checkKeyboard();
+
+		if (scores.getCurrentScore() > scores.getCurrentTopScore()) {
+			scores.setCurrentTopScore(scores.getCurrentScore());
+		}
+
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				Cube currentCubes = field[row][col];
+				if (currentCubes == null) continue;
+				currentCubes.updateCubeAnimation();
+				resetPos(currentCubes, row, col);
+				if (currentCubes.getValue() == 2048) {
+					setWon(true);
+				}
+			}
+		}
+	}
+
+	public void renderFinal(Graphics2D graphics) { // рендерим графику конечного изображения на игровом поле
+		BufferedImage finalBoard = new BufferedImage(FIELDW, FIELDH, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graph = (Graphics2D) finalBoard.getGraphics();
+		graph.setColor(new Color(0, 0, 0, 0)); // прозрачный цвет
+		graph.fillRect(0, 0, FIELDW, FIELDH); // заполняем прямогульник
+		graph.drawImage(gameField, 0, 0, null); // отрисовываем поле
+
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				Cube currentCube = field[row][col];
+				if (currentCube == null) continue;
+				currentCube.renderCubes(graph);
+			}
+		}
+
+		graphics.drawImage(finalBoard, x, y, null); // отрисовка конечного изображения
+		graph.dispose(); // освобождаем ресурсы
+	}
+
+	private void resetPos(Cube cube, int row, int col) { // сброс позиции
+		if (cube == null) return; // не можем двигать
+
+		int x = getCubeX(col);
+		int y = getCubeY(row);
+
+		// пока кубики двигаются, они получают координаты x, y
+		int distX = cube.getX() - x;
+		int distY = cube.getY() - y;
+
+		// math.abs - получаем модуль числа
+		// кубик перемещается в любую точку в 28 пикселей за 1 обновление
+		// и если там только 10 пикселей для перемещения,
+		// то вместе перемещения 20 пикселей, оно перемещает на 10
+		if (Math.abs(distX) < Cube.SPEED) {
+			cube.setX(cube.getX() - distX);
+		}
+
+		if (Math.abs(distY) < Cube.SPEED) {
+			cube.setY(cube.getY() - distY);
+		}
+
+		if (distX < 0) {
+			cube.setX(cube.getX() + Cube.SPEED);
+		}
+		if (distY < 0) {
+			cube.setY(cube.getY() + Cube.SPEED);
+		}
+		if (distX > 0) {
+			cube.setX(cube.getX() - Cube.SPEED);
+		}
+		if (distY > 0) {
+			cube.setY(cube.getY() - Cube.SPEED);
+		}
+	}
+
+	// проверяем в каком направлении мы передвигаем кубики
+	private boolean boundCheck(int dir, int row, int col) {
+		if (dir == LEFT) {
+			return col < 0;
+		}
+		else if (dir == RIGHT) {
+			return col > COLS - 1;
+		}
+		else if (dir == UP) {
+			return row < 0;
+		}
+		else if (dir == DOWN) {
+			return row > ROWS - 1;
+		}
+		return false;
+	}
+
+	private boolean moveCubes(int row, int col, int horDir, int verDir, int dir) {
+		boolean moveAbility = false; // есть возможность передвинуть на свободное место или нет
+		Cube currentCube = field[row][col]; // установка текущего кубика в массиве
+		if (currentCube == null) return false;
+		boolean move = true; // флаг передвижения
+		int newCol = col;
+		int newRow = row;
+		while (move) {
+			newCol += horDir;
+			newRow += verDir;
+			if (boundCheck(dir, newRow, newCol)) break;
+			if (field[newRow][newCol] == null) { // если кубик передвигается на новое место без комбинирования с другим
+				field[newRow][newCol] = currentCube; // готовим установку текущего кубика на новое место
+				moveAbility = true; // есть возможность передвинуть на свободное место
+				field[newRow - verDir][newCol - horDir] = null; // освобождаем место откуда сдвинули
+				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // передвигаем на новое место
+			} // если кубик двигается на место другого кубика с одинаковым значением, то надо их комбинировать
+			else if (field[newRow][newCol].getValue() == currentCube.getValue() && field[newRow][newCol].uniteAbility()) {
+				field[newRow][newCol].setUniteAbility(false); // больше нельзя объединять
+				field[newRow][newCol].setValue(field[newRow][newCol].getValue() * 2); // увеличиваем результат в 2 раза
+				moveAbility = true; // есть возможность передвинуть на свободное место
+				field[newRow - verDir][newCol - horDir] = null; // освобождаем место откуда сдвинули
+				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // передвигаем на новое место
+				field[newRow][newCol].setUniteAnimation(true); // анимируем
+				scores.setCurrentScore(scores.getCurrentScore() + field[newRow][newCol].getValue()); // устанавливаем счет
+			}
+			else {
+				move = false;
+			}
+		}
+		return moveAbility;
+	}
+	
+	// moveCubesDir - предугадывает двигать кубики и/или комбинировать
+	public void moveCubeDir(int dir) {
+		boolean moveAbility = false;
+		int horDir = 0;
+		int verDir = 0;
+
+		if (dir == LEFT) {
+			horDir = -1;
+			for (int row = 0; row < ROWS; row++) {
+				for (int col = 0; col < COLS; col++) {
+					if (!moveAbility)
+						moveAbility = moveCubes(row, col, horDir, verDir, dir);
+					else moveCubes(row, col, horDir, verDir, dir);
+				}
+			}
+		}
+		else if (dir == RIGHT) {
+			horDir = 1;
+			for (int row = 0; row < ROWS; row++) {
+				for (int col = COLS - 1; col >= 0; col--) {
+					if (!moveAbility)
+						moveAbility = moveCubes(row, col, horDir, verDir, dir);
+					else moveCubes(row, col, horDir, verDir, dir);
+				}
+			}
+		}
+		else if (dir == UP) {
+			verDir = -1;
+			for (int row = 0; row < ROWS; row++) {
+				for (int col = 0; col < COLS; col++) {
+					if (!moveAbility)
+						moveAbility = moveCubes(row, col, horDir, verDir, dir);
+					else moveCubes(row, col, horDir, verDir, dir);
+				}
+			}
+		}
+		else if (dir == DOWN) {
+			verDir = 1;
+			for (int row = ROWS - 1; row >= 0; row--) {
+				for (int col = 0; col < COLS; col++) {
+					if (!moveAbility)
+						moveAbility = moveCubes(row, col, horDir, verDir, dir);
+					else moveCubes(row, col, horDir, verDir, dir);
+				}
+			}
+		}
+
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				Cube currentCube = field[row][col];
+				if (currentCube == null) continue;
+				currentCube.setUniteAbility(true); // объединяем
+			}
+		}
+
+		if (moveAbility) { // если можно двигать, то
+			audio.playAudio("move", 0); // работает звук передвижения
+			spawnRandomCubes(); // спауним новый кубик
+			setDead(checkDead()); // проверка на проигрыш
 		}
 	}
 	
-	private void randomSpawn() {
-		Random random = new Random();
+	// проверяем на выигрыш (если набрали 2048)
+	private boolean checkWon() {
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				if(field[row][col] == null) continue;
+				if(field[row][col].getValue() >= 2048) return true;
+			}
+		}
+		return false;
+	}
+
+	// проверяем на проигрыш
+	private boolean checkDead() {
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				if (field[row][col] == null) return false;
+				boolean uniteAbility = checkNearCubes(row, col, field[row][col]);
+				if (uniteAbility) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	// проверяем ближайшие кубики к текущему кубику по row/col
+	private boolean checkNearCubes(int row, int col, Cube cube) {
+		if (row > 0) {
+			Cube checkCube = field[row - 1][col];
+			if (checkCube == null) return true;
+			if (cube.getValue() == checkCube.getValue()) return true;
+		}
+		if (row < ROWS - 1) {
+			Cube checkCube = field[row + 1][col];
+			if (checkCube == null) return true;
+			if (cube.getValue() == checkCube.getValue()) return true;
+		}
+		if (col > 0) {
+			Cube checkCube = field[row][col - 1];
+			if (checkCube == null) return true;
+			if (cube.getValue() == checkCube.getValue()) return true;
+		}
+		if (col < COLS - 1) {
+			Cube checkCube = field[row][col + 1];
+			if (checkCube == null) return true;
+			if (cube.getValue() == checkCube.getValue()) return true;
+		}
+		return false;
+	}
+
+	private void spawnRandomCubes() { // спауним новые кубики
+		Random randomCubes = new Random();
 		boolean disabled = true;
-		
-		while(disabled) {
-			int pos = random.nextInt(ROWS * COLS);
-			int row = pos / ROWS;
-			int col = pos % COLS;
-			Cube current = field[row][col];
-			if(current == null) { // ������� ����� ������
-				int value = random.nextInt(10) < 9 ? 2 : 4; // ���� ��������� ����� �� 0 �� 9 (90% - ����� ��� 2, 10% - ��� 4)
+
+		while (disabled) {
+			int position = randomCubes.nextInt(16);
+			int row = position / ROWS;
+			int col = position % COLS;
+			Cube currentCube = field[row][col];
+			if (currentCube == null) { // спаун
+				int value = randomCubes.nextInt(10) < 9 ? 2 : 4; // ищем рандомное число от 0 до 9 (90% - спаун для 2, 10% - для 4)
 				Cube cube = new Cube(value, getCubeX(col), getCubeY(row));
 				field[row][col] = cube;
 				disabled = false;
 			}
 		}
 	}
+
+	private void checkKeyboard() { // проверка ключей клавиатуры и установка направлений кубиков
+		if (!Keyboard.pressedKey[KeyEvent.VK_LEFT] && Keyboard.previousKey[KeyEvent.VK_LEFT]) {
+			moveCubeDir(LEFT);
+		}
+		if (!Keyboard.pressedKey[KeyEvent.VK_RIGHT] && Keyboard.previousKey[KeyEvent.VK_RIGHT]) {
+			moveCubeDir(RIGHT);
+		}
+		if (!Keyboard.pressedKey[KeyEvent.VK_UP] && Keyboard.previousKey[KeyEvent.VK_UP]) {
+			moveCubeDir(UP);
+		}
+		if (!Keyboard.pressedKey[KeyEvent.VK_DOWN] && Keyboard.previousKey[KeyEvent.VK_DOWN]) {
+			moveCubeDir(DOWN);
+		}
+	}
+
+	public int getNewBiggestValue() { // установка нового начения кубика
+		int cubeValue = 2; // минимальное начальное значение кубика
+		for(int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				if(field[row][col] == null) continue;
+				if(field[row][col].getValue() > cubeValue) 
+					cubeValue = field[row][col].getValue(); // установка следующего значения
+			}
+		}
+		return cubeValue;
+	}
 	
+	// геттеры и сеттеры позиций x, y
+	public int getX() { return x; }
+
+	public void setX(int x) { this.x = x; }
+
+	public int getY() { return y; }
+
+	public void setY(int y) { this.y = y; }
+	
+	// геттер и сеттер расположения кубика на поле
+	public Cube[][] getField() { return field; }
+	
+	public void setField(Cube[][] field) { this.field = field; }
+	
+	public boolean getWon() { return won; } // флаг выигрыша (2048 и более)
+
+	public void setWon(boolean won) { // установка выигрыша
+		if(!this.won && won && !dead){ 
+			leaders.saveScores(); // сохранение счета
+		}
+		this.won = won;
+	}
+	
+	public boolean getDead() { return dead; }// флаг смерти
+
+	public void setDead(boolean dead) { // установка смерти
+		if(!this.dead && dead) { // если смерть, то устанавливаем 
+			leaders.addCube(getNewBiggestValue()); // маскимальное значение кубика
+			leaders.addScore(scores.getCurrentScore()); // счет игры
+			leaders.saveScores(); // сохранение счета
+		}
+		this.dead = dead;
+	}
+	
+	// геттер расположения кубика по Х
 	public int getCubeX(int col) {
 		return DISTANCE + col * Cube.WIDTH + col * DISTANCE;
 	}
-	
-	public int getCubeY(int row) { 
+
+	// геттер расположения кубика по Y
+	public int getCubeY(int row) {
 		return DISTANCE + row * Cube.HEIGHT + row * DISTANCE;
 	}
 	
-	public void render(Graphics2D finalFieldImage) { // ������� ��� final field 
-		Graphics2D image2D = (Graphics2D)finalField.getGraphics();
-		image2D.drawImage(gameField, 0, 0, null);
-		
-		for(int row = 0; row < ROWS; row++) {
-			for(int col = 0; col < COLS; col++) {
-				Cube current = field[row][col];
-				if(current == null) continue; // � ���� ������ �� ��������
-				current.render(image2D);
-			}
-		}
-		
-		finalFieldImage.drawImage(finalField, x, y, null);
-		image2D.dispose();
-		finalFieldImage.setColor(Color.lightGray);
-		finalFieldImage.setFont(scoreFont);
-		finalFieldImage.drawString("Score: " + score, 30, 40);
-		finalFieldImage.setColor(Color.red);
-		finalFieldImage.drawString("Best: " + highScore, Game.WIDTH - DrawBar.getBarWidth("Best: " + highScore, scoreFont, finalFieldImage) - 20, 40);
-	}
-	
-	public void update() {
-		checkKey(); 
-		
-		if(score >= highScore)
-			highScore = score;
-		
-		for(int row = 0; row < ROWS; row++) {
-			for(int col = 0; col < COLS; col++) {
-				Cube current = field[row][col];
-				if(current == null) continue;
-				current.update();
-				resetPos(current, row, col); // ����� �������
-				if(current.getValue() == 2048) { 
-					isWin = true;  
-				}
-			}
-		}
-	}
-	
-	private void resetPos(Cube current, int row, int col) {
-		if(current == null) return; // �� ����� �������
-		
-		int x = getCubeX(col);
-		int y = getCubeY(row);
-		// ���� ������ ���������, ��� �������� ���������� x, y
-		int distX = current.getX() - x;
-		int distY = current.getY() - y;
-		
-		// math.abs - �������� ������ �����
-		// ������ ������������ � ����� ����� � 28 �������� �� 1 update
-		// � ���� ��� ������ 10 �������� ��� �����������,
-		// �� ������ ����������� 20 ��������, ��� ���������� �� 10
-		if(Math.abs(distX) < Cube.SLIDING_SPEED) {
-			current.setX(current.getX() - distX);
-		}
-		
-		if(Math.abs(distY) < Cube.SLIDING_SPEED) {
-			current.setY(current.getY() - distY);
-		}
-		
-		if(distX < 0) {
-			current.setX(current.getX() + Cube.SLIDING_SPEED);
-		}
-		
-		if(distY < 0) {
-			current.setY(current.getY() + Cube.SLIDING_SPEED);
-		}
-		
-		if (distX > 0) {
-			current.setX(current.getX() - Cube.SLIDING_SPEED);
-		}
-		
-		if(distY > 0) {
-			current.setY(current.getY() - Cube.SLIDING_SPEED);
-		}
-	}
-	
-	private boolean moveCubes(int row, int col, int horDirection, int verDirection, CubesDirection direct) {
-		boolean moveAbility = false;
-		
-		Cube current = field[row][col];
-		if(current == null) return false; // ��� ����������� �������
-		boolean move = true; 
-		int newCol = col;
-		int newRow = row;
-		 
-		while(move) {
-			newCol += horDirection;
-			newRow += verDirection;
-			if(checkBounds(direct, newRow, newCol)) break; // �� ����� �����������, ������� �� �����
-			if(field[newRow][newCol] == null) { // ����� �����������
-				field[newRow][newCol] = current; // ����� ����� ������ � ������� �� ������ �����
-				field[newRow - verDirection][newCol - horDirection] = null;
-				field[newRow][newCol].setSlideTo(new Spot(newRow, newCol));
-				moveAbility = true;
-			}
-			// ����� ����������� � �������������
-			else if(field[newRow][newCol].getValue() == current.getValue() && field[newRow][newCol].combineAbility()) { 
-				field[newRow][newCol].setCombineAbility(false); // ������ ������ ������������� 
-				field[newRow][newCol].setValue(field[newRow][newCol].getValue() * 2); // ����������� ������� �� 2
-				moveAbility = true;
-				field[newRow - verDirection][newCol - horDirection] = null;
-				field[newRow][newCol].setSlideTo(new Spot(newRow, newCol));
-            	field[newRow][newCol].setCombineAnimation(true);
-				score += field[newRow][newCol].getValue(); // ����� ���� 
-			}
-			else {
-				move = false; // �� ������ ������ (fix)
-			}
-		}
-		return moveAbility;
-	}
-	
-	// ��������� � ����� �� ����������� ����������� ������
-	private boolean checkBounds(CubesDirection direct, int row, int col) {
-		if(direct == CubesDirection.LEFT) {
-			return col < 0;
-		}
-		else if(direct == CubesDirection.RIGHT) {
-			return col > COLS - 1;
-		}
-		else if(direct == CubesDirection.UP) { 
-			return row < 0;
-		}
-		else if(direct == CubesDirection.DOWN) {
-			return row > ROWS - 1;
-		}
-		return false;
-	}
-
-	// move - ������������� ������� ������ �/��� �������������
-	private void moveCubes(CubesDirection direct) {
-		boolean moveAbility = false; // ���� ����������� ����������� �� ��������� ����� ��� ���
-		int horDirection = 0;
-		int verDirection = 0;
-		
-		if(direct == CubesDirection.LEFT) {
-			horDirection = -1;
-			for(int row = 0; row < ROWS; row++) {
-				for(int col = 0; col < COLS; col++) {
-					if(!moveAbility) { // false, ���� ��������� ����� ����� �������; true, ���� ��������� ����� ������ �������
-						moveAbility = moveCubes(row, col, horDirection, verDirection, direct); 
-					}
-					else moveCubes(row, col, horDirection, verDirection, direct); 
-				}
-			}
-		}
-		
-		else if(direct == CubesDirection.RIGHT) {
-			horDirection = 1;
-			for(int row = 0; row < ROWS; row++) {
-				for(int col = COLS - 1; col >= 0; col--) {
-					if(!moveAbility) {
-						moveAbility = moveCubes(row, col, horDirection, verDirection, direct);
-					}
-					else moveCubes(row, col, horDirection, verDirection, direct);
-				}
-			}
-		}
-		
-		else if(direct == CubesDirection.UP) {
-			verDirection = -1;
-			for(int row = 0; row < ROWS; row++) {
-				for(int col = 0; col < COLS; col++) {
-					if(!moveAbility) {
-						moveAbility = moveCubes(row, col, horDirection, verDirection, direct);
-					}
-					else moveCubes(row, col, horDirection, verDirection, direct);
-				}
-			}
-		}
-		
-		else if(direct == CubesDirection.DOWN) {
-			verDirection = 1;
-			for(int row = ROWS - 1; row >= 0; row--) {
-				for(int col = 0; col < COLS; col++) {
-					if(!moveAbility) {
-						moveAbility = moveCubes(row, col, horDirection, verDirection, direct);
-					}
-					else moveCubes(row, col, horDirection, verDirection, direct);
-				}
-			}
-		}
-		
-		else {
-			System.out.println(direct + "invalid direction"); // ��������
-		}
-		
-		for(int row = 0; row < ROWS; row++) {
-			for(int col = 0; col < COLS; col++) {
-				Cube current = field[row][col];
-				if(current == null) continue;
-				current.setCombineAbility(true);
-			}
-		}
-		
-		if(moveAbility) {
-			audio.play("move", 0); // 0 - ������ 1 ���
-			randomSpawn();
-			checkIsDead();
-		}
-	}
-	
-	private void checkIsDead() {
-		for(int row = 0; row < ROWS; row++) {
-			for(int col = 0; col < COLS; col++) {
-				if(field[row][col] == null) return; // ����� open space 
-				if(checkNearCubes(row, col, field[row][col])) { // ������ ������ ����� �� ����������� �� ��������������
-					return;
-				}
-			}
-		}
-		
-		isDead = true;
-		if(score >= highScore) highScore = score;
-		setHighScore();
-		//------------------
-		if(isDead)
-		{
-			System.out.println("DEAD!!!");
-		}
-		//------------------
-	}
-	
-	private boolean checkNearCubes(int row, int col, Cube current) {
-		if(row > 0) {
-			Cube check = field[row - 1][col];
-			if(check == null) return true;
-			if(current.getValue() == check.getValue()) return true;
-		}
-		if(row < ROWS - 1) {
-			Cube check = field[row + 1][col];
-			if(check == null) return true;
-			if(current.getValue() == check.getValue()) return true;
-		}
-		if(col > 0) {
-			Cube check = field[row][col - 1];
-			if(check == null) return true;
-			if(current.getValue() == check.getValue()) return true;
-		}
-		if(col < COLS - 1) {
-			Cube check = field[row][col + 1];
-			if(check == null) return true;
-			if(current.getValue() == check.getValue()) return true;
-		}
-		return false;
-	}
-	
-	private void checkKey() {
-		if(Keyboard.typed(KeyEvent.VK_LEFT)) {
-			moveCubes(CubesDirection.LEFT);
-		}
-		if(Keyboard.typed(KeyEvent.VK_RIGHT)) {
-			moveCubes(CubesDirection.RIGHT);
-		}
-		if(Keyboard.typed(KeyEvent.VK_UP)) {
-			moveCubes(CubesDirection.UP);
-		} 
-		if(Keyboard.typed(KeyEvent.VK_DOWN)) {
-			moveCubes(CubesDirection.DOWN);
-		}
-	}
+	 // геттер счета
+	public Scores getScores(){ return scores; }
 }
