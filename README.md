@@ -25,3 +25,13 @@ screenshots: содержатся скриншоты окон игры
 3. Возможность сделать скриншот игры
 4. Таблица лучших результатов: лучший счет, максимальное число на кубике
 5. Дополнительные музыкальные эффекты для гуи
+
+***********************************************************************************************************************
+Источники:
+1. https://habr.com/ru/post/27108/
+2. https://habr.com/ru/post/326032/
+3. https://vertex-academy.com/tutorials/ru/patterny-proektirovanija-java/
+4. https://vertex-academy.com/tutorials/ru/patterny-proektirovanija-singleton-java/
+5. https://javarush.ru/groups/posts/593-bufferedreader-i-bufferedwritter
+6. https://habr.com/ru/company/alee/blog/127518/
+***********************************************************************************************************************
