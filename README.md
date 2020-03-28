@@ -35,4 +35,5 @@ screenshots: содержатся скриншоты окон игры
 5. https://javarush.ru/groups/posts/593-bufferedreader-i-bufferedwritter
 6. https://habr.com/ru/company/alee/blog/127518/
 7. https://www.geeksforgeeks.org/synchronized-in-java/
+8. https://vertex-academy.com/tutorials/ru/pattern-singleton-realizacii/
 ***********************************************************************************************************************
