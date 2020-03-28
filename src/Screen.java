@@ -4,64 +4,64 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
-// класс отвечает за работу кликов на экране 
-// и за активацию определенных панелей для обновления и рендера
+// РєР»Р°СЃСЃ РѕС‚РІРµС‡Р°РµС‚ Р·Р° СЂР°Р±РѕС‚Сѓ РєР»РёРєРѕРІ РЅР° СЌРєСЂР°РЅРµ 
+// Рё Р·Р° Р°РєС‚РёРІР°С†РёСЋ РѕРїСЂРµРґРµР»РµРЅРЅС‹С… РїР°РЅРµР»РµР№ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ Рё СЂРµРЅРґРµСЂР°
 public class Screen { 
 
 	private static Screen screen;
-	private HashMap<String, PanelButton> panels; // в hash map храним кнопки
-	private String currentPanel = ""; // для идентификации какую из панелей использовать
+	private HashMap<String, PanelButton> panels; // РІ hash map С…СЂР°РЅРёРј РєРЅРѕРїРєРё
+	private String currentPanel = ""; // РґР»СЏ РёРґРµРЅС‚РёС„РёРєР°С†РёРё РєР°РєСѓСЋ РёР· РїР°РЅРµР»РµР№ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ
 
-	private Screen() { // в конструкторе класса содержится панель с кнопками в виде hash map
+	private Screen() { // РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ РєР»Р°СЃСЃР° СЃРѕРґРµСЂР¶РёС‚СЃСЏ РїР°РЅРµР»СЊ СЃ РєРЅРѕРїРєР°РјРё РІ РІРёРґРµ hash map
 		panels = new HashMap<String, PanelButton>();
 	}
 
-	public static Screen getInstance() { // добавляем экземпляр, если его нет
+	public static Screen getInstance() { // РґРѕР±Р°РІР»СЏРµРј СЌРєР·РµРјРїР»СЏСЂ, РµСЃР»Рё РµРіРѕ РЅРµС‚
 		if (screen == null) {
 			screen = new Screen();
 		}
 		return screen;
 	}
 
-	public void addPanel(String name, PanelButton panelButton) { // добавляем в панель кнопки
+	public void addPanel(String name, PanelButton panelButton) { // РґРѕР±Р°РІР»СЏРµРј РІ РїР°РЅРµР»СЊ РєРЅРѕРїРєРё
 		panels.put(name, panelButton);
 	}
 
-	public void setPanel(String name) { // сеттер для установки панели
+	public void setPanel(String name) { // СЃРµС‚С‚РµСЂ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РїР°РЅРµР»Рё
 		currentPanel = name;
 	}
 	
-	public void updateScreen() { // обновляем панели экрана
+	public void updateScreen() { // РѕР±РЅРѕРІР»СЏРµРј РїР°РЅРµР»Рё СЌРєСЂР°РЅР°
 		if (panels.get(currentPanel) != null) {
 			panels.get(currentPanel).updatePanel();
 		}
 	}
 
-	public void render(Graphics2D graphics) { // рендерим панели экрана
+	public void render(Graphics2D graphics) { // СЂРµРЅРґРµСЂРёРј РїР°РЅРµР»Рё СЌРєСЂР°РЅР°
 		if (panels.get(currentPanel) != null) {
 			panels.get(currentPanel).renderPanel(graphics);
 		}
 	}
 
-	public void mouseMoved(MouseEvent event) { // поведение активной панели при движении мыши (наведении)
+	public void mouseMoved(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ Р°РєС‚РёРІРЅРѕР№ РїР°РЅРµР»Рё РїСЂРё РґРІРёР¶РµРЅРёРё РјС‹С€Рё (РЅР°РІРµРґРµРЅРёРё)
 		if (panels.get(currentPanel) != null) {
 			panels.get(currentPanel).mouseMoved(event);
 		}
 	}
 	
-	public void mouseDragged(MouseEvent event) { // поведение активной панели при захвате мыши
+	public void mouseDragged(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ Р°РєС‚РёРІРЅРѕР№ РїР°РЅРµР»Рё РїСЂРё Р·Р°С…РІР°С‚Рµ РјС‹С€Рё
 		if (panels.get(currentPanel) != null) {
 			panels.get(currentPanel).mouseDragged(event);
 		}
 	}
 	
-	public void mousePressed(MouseEvent event) { // поведение активной панели при нажатии мыши 
+	public void mousePressed(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ Р°РєС‚РёРІРЅРѕР№ РїР°РЅРµР»Рё РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё 
 		if (panels.get(currentPanel) != null) {
 			panels.get(currentPanel).mousePressed(event);
 		}
 	}
 
-	public void mouseReleased(MouseEvent event) { // поведение активной панели при отпускании мыши 
+	public void mouseReleased(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ Р°РєС‚РёРІРЅРѕР№ РїР°РЅРµР»Рё РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РјС‹С€Рё 
 		if (panels.get(currentPanel) != null) {
 			panels.get(currentPanel).mouseReleased(event);
 		}
