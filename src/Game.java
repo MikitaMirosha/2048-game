@@ -1,4 +1,4 @@
-package com.mirosha.game;
+package mirosha.game;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,123 +6,160 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
-// KeyListener - обработка событий клавиатуры
-// Runnable - для потока
-public class Game extends JPanel implements KeyListener, Runnable { 
+import mirosha.gui.PanelScores;
+import mirosha.gui.PanelMenu;
+import mirosha.gui.PanelGame;
+import mirosha.gui.Screen;
 
-	private static final long serialVersionUID = 1L; // сериализовать Game
-	public static final int WIDTH = 700;
-	public static final int HEIGHT = 800;
-	public static final Font main = new Font("Arial", Font.PLAIN, 16);
+public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
+	// Runnable - РґР»СЏ РїРѕС‚РѕРєР°
+	// KeyListener - РѕР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёР№ РєР»Р°РІРёР°С‚СѓСЂС‹
+	// MouseListener - РѕР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёР№ РјС‹С€Рё
+	// MouseMotionListener - РѕР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёР№ РґРІРёР¶РµРЅРёСЏ РјС‹С€Рё
 	
-	private GameField gameField;
-	private Thread gameThread;
-	private boolean trackRunningThread; // отслеживает состояние потока (run or stop)
-	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB); // для отрисовки 
+	private Thread gameThread; // РїРѕС‚РѕРє РёРіСЂС‹
+	private boolean trackRunningThread; // РѕС‚СЃР»РµР¶РёРІР°РµС‚ СЃРѕСЃС‚РѕСЏРЅРёРµ РїРѕС‚РѕРєР° (run/stop)
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private static final long serialVersionUID = 1L;  // СЃРµСЂРёР°Р»РёР·РѕРІР°С‚СЊ РєР»Р°СЃСЃ Game
 	
-	public Game() { // конструктор игры
-		setFocusable(true); // позволяет вводить с клавы
-		setPreferredSize(new Dimension(WIDTH, HEIGHT)); // установка фрейма по нужному размеру
-		addKeyListener(this); // уведомляет, когда мы каждый раз изменяем состояние ключа
-		// размещения поля с кубиками относительно основного экрана
-		gameField = new GameField(WIDTH / 2 - GameField.FIELD_WIDTH / 2, HEIGHT - GameField.FIELD_HEIGHT - 25); 
+	public static final int WIDTH = GameField.FIELDW + 40; // СѓСЃС‚Р°РЅРѕРІРєР° СЂР°Р·РјРµСЂР° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°
+	public static final int HEIGHT = 610;
+	public static final Font main = new Font("Arial", Font.PLAIN, 30); // РѕСЃРЅРѕРІРЅРѕР№ СЃС‚РёР»СЊ С€СЂРёС„С‚Р°
+	private Screen screen;
+	
+	public Game() { // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёРіСЂС‹
+		
+		setFocusable(true); // РґР»СЏ РІРІРѕРґР° СЃ РєР»Р°РІРёР°С‚СѓСЂС‹
+		setPreferredSize(new Dimension(WIDTH, HEIGHT)); // СѓСЃС‚Р°РЅРѕРІРєР° С„СЂРµР№РјР° РїРѕ РЅСѓР¶РЅРѕРјСѓ СЂР°Р·РјРµСЂСѓ
+		addKeyListener(this); // РґР»СЏ СѓРІРµРґРѕРјР»РµРЅРёСЏ РїСЂРё РёР·РјРµРЅРµРЅРёРё СЃРѕСЃС‚РѕСЏРЅРёСЏ РєР»СЋС‡Р° РґР»СЏ РєР»Р°РІРёР°С‚СѓСЂС‹ Рё РјС‹С€Рё
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		
+		screen = Screen.getInstance(); // Р·Р°РґР°РµРј РїР°СЂР°РјРµС‚СЂС‹ РєР°Р¶РґРѕР№ РїР°РЅРµР»Рё РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РіСЂР°С„РёРєРё
+		screen.addPanel("Menu", new PanelMenu());
+		screen.addPanel("Play", new PanelGame());
+		screen.addPanel("Leaderboards", new PanelScores());
+		screen.setPanel("Menu"); // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РіР»Р°РІРЅРѕРµ РѕРєРЅРѕ РІ РЅР°С‡Р°Р»СЊРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РјРµРЅСЋ 
 	}
 	
-	// update() и render() вызываются 60 раз в секунду (60 fps)
-	private void update() {
-		gameField.update(); 
-		Keyboard.updateKey(); 
-	} 
-	
-	private void render() {
-		// как мы рисуем картинку
-		// image - виртуальная картинка, кот размещается в памяти, кот отслеживает все, что мы рисуем на экране
-		Graphics2D virtualImage = (Graphics2D) image.getGraphics(); // отрисовка реального изображения
-		virtualImage.setColor(Color.black); 
-		virtualImage.fillRect(0, 0, WIDTH, HEIGHT); // черный фон
-		gameField.render(virtualImage); // отрисовка игрового поля
-	    virtualImage.dispose(); // освободить ресурсы, занимаемые компонентами окна
-		Graphics2D frameImage = (Graphics2D) getGraphics(); // отрисовка финального изображения в JPanel
-		frameImage.drawImage(image, 0, 0, null);
-		frameImage.dispose();
+	private void mainRender() { // СЂРµРЅРґРµСЂРёРј С„РѕРЅ РѕРєРѕРЅ
+		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		graphics.setColor(Color.black);  // С†РІРµС‚ РіР»Р°РІРЅРѕРіРѕ С„РѕРЅР°
+		graphics.fillRect(0, 0, WIDTH, HEIGHT); // Р·Р°РїРѕР»РЅСЏРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє РїРёРєСЃРµР»СЏРјРё РІРЅСѓС‚СЂРё С„РёРіСѓСЂС‹
+		screen.render(graphics); // СЂРµРЅРґРµСЂ С„РѕРЅР°
+		graphics.dispose(); // РѕСЃРІРѕР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹ 
+
+		Graphics2D graph = (Graphics2D) getGraphics();
+		graph.drawImage(image, 0, 0, null); // РѕС‚СЂРёСЃРѕРІС‹РІР°РµРј РіСЂР°С„РёРєСѓ
+		graph.dispose(); // РѕСЃРІРѕР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹ 
 	}
-	
-	@Override // run() вызывается, когда начинается работа потока
-	public void run() {
-		int fps = 0, updates = 0;
+
+	private void updateKeyboard() { // РѕР±РЅРѕРІР»СЏРµРј СЃРѕР±С‹С‚РёСЏ РєР»Р°РІРёР°С‚СѓСЂС‹
+		screen.updateScreen();
+		Keyboard.updateKeys();
+	}
+
+	@Override
+	public void run() { // РІС‹Р·РѕРІ run РїСЂРё СЂР°Р±РѕС‚Рµ РїРѕС‚РѕРєР°
+		int FPS = 0, updates = 0;
 		long timerFPS = System.currentTimeMillis();
-		double nanoSecPerUpdate = 1000000000.0 / 60; // отслеживает сколько наносекунд в промежутках между обновлениями
-		
-		// последнее обновление в наносекундах
-		double then = System.nanoTime();
-		double unprocessed = 0; // отслеживает сколько обновлений мы должны сделать на случай, если рендеринг отстает
-		
-		while(trackRunningThread) { // пока игра продолжается
-			boolean shouldRender = false;
+		double nanoSecPerUpdate = 1000000000.0 / 60; // РѕС‚СЃР»РµР¶РёРІР°РµРј СЃРєРѕР»СЊРєРѕ РЅР°РЅРѕСЃРµРєСѓРЅРґ РІ РїСЂРѕРјРµР¶СѓС‚РєР°С… РјРµР¶РґСѓ РѕР±РЅРѕРІР»РµРЅРёСЏРјРё
+
+		// РїРѕСЃР»РµРґРЅРµРµ РѕР±РЅРѕРІР»РµРЅРёРµ РІСЂРµРјРµРЅРё РІ РЅР°РЅРѕСЃРµРєСѓРЅРґР°С…
+		double lastTime = System.nanoTime();
+		double unprocessed = 0;
+
+		while (trackRunningThread) {
+
+			boolean mustRender = false;
 			double newTime = System.nanoTime();
-			unprocessed += (newTime - then) / nanoSecPerUpdate; // считает сколько нужно сделать обновлений
-			then = newTime;
-			
-		// очередь обновления
-		while(unprocessed >= 1) {
-			updates++;
-			update();
-			unprocessed--;
-			shouldRender = true;
-		}
-		
-		// рендер 
-		if(shouldRender) { // рендерим
-			fps++;
-			render();
-			shouldRender = false;
-		}
-		else {
-			try {
-				Thread.sleep(1); // усыпляем поток, если не рендерим
-			} catch (Exception e) {
-				e.printStackTrace();
+			unprocessed += (newTime - lastTime) / nanoSecPerUpdate;  // СЃС‡РёС‚Р°РµС‚ СЃРєРѕР»СЊРєРѕ РЅСѓР¶РЅРѕ СЃРґРµР»Р°С‚СЊ РѕР±РЅРѕРІР»РµРЅРёР№
+			lastTime = newTime;
+
+			while (unprocessed >= 1) { // РѕС‡РµСЂРµРґСЊ РѕР±РЅРѕРІР»РµРЅРёСЏ
+
+				// РѕР±РЅРѕРІР»РµРЅРёРµ
+				updates++;
+				updateKeyboard();
+				unprocessed--;
+				mustRender = true;
+			}
+
+			if (mustRender) { // СЂРµРЅРґРµСЂРёРј
+				FPS++;
+				mainRender();
+				mustRender = false;
+			}
+			else {
+				try {
+					Thread.sleep(1); // СѓСЃС‹РїР»СЏРµРј РїРѕС‚РѕРє, РµСЃР»Рё РЅРµ СЂРµРЅРґРµСЂРёРј
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+
+			// С‚Р°Р№РјРµСЂ FPS
+			if (System.currentTimeMillis() - timerFPS > 1000) {
+				// РІС‹РІРѕРґ FPS Р·Р° РѕР±РЅРѕРІР»РµРЅРёРµ
+				System.out.printf("%d fps %d updates", FPS, updates);
+				System.out.println("");
+				FPS = 0; // РѕР±РЅСѓР»СЏРµРј 
+				updates = 0;
+				timerFPS += 1000;
 			}
 		}
-		}
-		
-		// таймер FPS 
-		if(System.currentTimeMillis() - timerFPS > 1000) {
-			fps = 0;
-			updates = 0;
-			timerFPS += 1000;
-		}
 	}
-	
-	// синхронизация для того, чтобы убедиться, что весь метод был вызван
+
+	// СѓР±РµР¶РґР°РµРјСЃСЏ, С‡С‚Рѕ РІРµСЃСЊ РјРµС‚РѕРґ Р±С‹Р» РІС‹Р·РІР°РЅ;
+	// СЃРёРЅС…СЂРѕРЅРёР·РёСЂСѓРµРј РЅР°С‡Р°Р»Рѕ Рё Р·Р°РІРµСЂС€РµРЅРёРµ РїРѕС‚РѕРєР°
 	public synchronized void start() {
-		if(trackRunningThread) return;
+		if (trackRunningThread) return;
 		trackRunningThread = true;
 		gameThread = new Thread(this, "game");
 		gameThread.start();
 	}
-	
+
 	public synchronized void stop() {
-		if(!trackRunningThread) return;
+		if (!trackRunningThread) return;
 		trackRunningThread = false;
-		System.exit(0);
+		System.exit(0); // РІС‹С…РѕРґРёРј РёР· РїСЂРѕРіСЂР°РјРјРјС‹, РµСЃР»Рё РїРѕС‚РѕРє РѕСЃС‚Р°РЅРѕРІР»РµРЅ
 	}
 
+	// РѕС‚С‡РµС‚С‹ Рѕ РґРµР№СЃС‚РІРёСЏС…/СЃРѕСЃС‚РѕСЏРЅРёС… РјС‹С€Рё Рё РєР»Р°РІРёР°С‚СѓСЂС‹: 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		Keyboard.keyPressed(e);
-	}
+	public void keyTyped(KeyEvent event) {}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		Keyboard.keyReleased(e);
-	}
-	
-	@Override // возвращает код ключа invalid
-	public void keyTyped(KeyEvent e) {
-		
-	}
+	public void keyPressed(KeyEvent event) { Keyboard.isPressed(event); }
+
+	@Override
+	public void keyReleased(KeyEvent event) { Keyboard.isReleased(event); }
+
+	@Override
+	public void mouseClicked(MouseEvent event) {}
+
+	@Override
+	public void mousePressed(MouseEvent event) { screen.mousePressed(event); }
+
+	@Override
+	public void mouseReleased(MouseEvent event) { screen.mouseReleased(event); }
+
+	@Override
+	public void mouseEntered(MouseEvent event) {}
+
+	@Override
+	public void mouseExited(MouseEvent event) {}
+
+	@Override
+	public void mouseDragged(MouseEvent event) { screen.mouseDragged(event); }
+
+	@Override
+	public void mouseMoved(MouseEvent event) { screen.mouseMoved(event); }
 }
