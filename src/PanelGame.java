@@ -15,108 +15,108 @@ import mirosha.game.Game;
 import mirosha.game.GameField;
 import mirosha.game.Scores;
 
-public class PanelGame extends PanelButton { // класс содержит игровую панель при проигрыше и кнопки
+public class PanelGame extends PanelButton { // РєР»Р°СЃСЃ СЃРѕРґРµСЂР¶РёС‚ РёРіСЂРѕРІСѓСЋ РїР°РЅРµР»СЊ РїСЂРё РїСЂРѕРёРіСЂС‹С€Рµ Рё РєРЅРѕРїРєРё
 
 	private GameField field;
 	private Scores scores;
 	private Font scoreFont;
-	private BufferedImage gameResults; // для результатов игры (счет)
+	private BufferedImage gameResults; // РґР»СЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёРіСЂС‹ (СЃС‡РµС‚)
 
-	// при проигрыше всплывают кнопки:
+	// РїСЂРё РїСЂРѕРёРіСЂС‹С€Рµ РІСЃРїР»С‹РІР°СЋС‚ РєРЅРѕРїРєРё:
 	private Font fontGameOver;
-	private Button backToMenu; // кнопка в меню
-	private Button playAgain; // кнопка попробовать снова
-	private Button screenShot; // кнопка сделать скриншот
-	private boolean screenshot; // флаг скриншота
-	private boolean represent; // для отображения кнопки
-	private int fadeEffect = 0; // для эффекта затухания
-	private int buttonDistance = 30; // расстояние между кнопками
-	private int buttonH = 50; // высота кнопки
-	private int littleButtonW = 170; // ширина мелкой кнопки
-	private int bigButtonW = littleButtonW * 2 + buttonDistance; // ширина кнопки возврата в меню
+	private Button backToMenu; // РєРЅРѕРїРєР° РІ РјРµРЅСЋ
+	private Button playAgain; // РєРЅРѕРїРєР° РїРѕРїСЂРѕР±РѕРІР°С‚СЊ СЃРЅРѕРІР°
+	private Button screenShot; // РєРЅРѕРїРєР° СЃРґРµР»Р°С‚СЊ СЃРєСЂРёРЅС€РѕС‚
+	private boolean screenshot; // С„Р»Р°Рі СЃРєСЂРёРЅС€РѕС‚Р°
+	private boolean represent; // РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРЅРѕРїРєРё
+	private int fadeEffect = 0; // РґР»СЏ СЌС„С„РµРєС‚Р° Р·Р°С‚СѓС…Р°РЅРёСЏ
+	private int buttonDistance = 30; // СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РєРЅРѕРїРєР°РјРё
+	private int buttonH = 50; // РІС‹СЃРѕС‚Р° РєРЅРѕРїРєРё
+	private int littleButtonW = 170; // С€РёСЂРёРЅР° РјРµР»РєРѕР№ РєРЅРѕРїРєРё
+	private int bigButtonW = littleButtonW * 2 + buttonDistance; // С€РёСЂРёРЅР° РєРЅРѕРїРєРё РІРѕР·РІСЂР°С‚Р° РІ РјРµРЅСЋ
 	
 	public PanelGame() {
-		scoreFont = Game.main.deriveFont(24f); // устанавливаем шрифт
+		scoreFont = Game.main.deriveFont(24f); // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј С€СЂРёС„С‚
 		fontGameOver = Game.main.deriveFont(70f);
 		field = new GameField(Game.WIDTH / 2 - GameField.FIELDW / 2, Game.HEIGHT - GameField.FIELDH - 20);
-		scores = field.getScores(); // устанавливаем счет
+		scores = field.getScores(); // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃС‡РµС‚
 		gameResults = new BufferedImage(Game.WIDTH, 200, BufferedImage.TYPE_INT_RGB);
 
-		// создаем кнопки и задаем их размещение
+		// СЃРѕР·РґР°РµРј РєРЅРѕРїРєРё Рё Р·Р°РґР°РµРј РёС… СЂР°Р·РјРµС‰РµРЅРёРµ
 		backToMenu = new Button(Game.WIDTH / 2 - bigButtonW / 2, 450, bigButtonW, buttonH);
 		playAgain = new Button(backToMenu.getX(), backToMenu.getY() - buttonDistance - buttonH, littleButtonW, buttonH);
 		screenShot = new Button(playAgain.getX() + playAgain.getWidth() + buttonDistance, playAgain.getY(), littleButtonW, buttonH);
 
-		// текст на кнопках
-		playAgain.setText("ИГРА"); 
-		screenShot.setText("СКРИНШОТ");
-		backToMenu.setText("МЕНЮ");
+		// С‚РµРєСЃС‚ РЅР° РєРЅРѕРїРєР°С…
+		playAgain.setText("РР“Р Рђ"); 
+		screenShot.setText("РЎРљР РРќРЁРћРў");
+		backToMenu.setText("РњР•РќР®");
 
-		backToMenu.addActionListener(new ActionListener() { // поведение при нажатии возврата в меню
+		backToMenu.addActionListener(new ActionListener() { // РїРѕРІРµРґРµРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РІРѕР·РІСЂР°С‚Р° РІ РјРµРЅСЋ
 			public void actionPerformed(ActionEvent event) {
-				Screen.getInstance().setPanel("Menu"); // попадаем на экран панели меню
+				Screen.getInstance().setPanel("Menu"); // РїРѕРїР°РґР°РµРј РЅР° СЌРєСЂР°РЅ РїР°РЅРµР»Рё РјРµРЅСЋ
 			}
 		});
 		
-		playAgain.addActionListener(new ActionListener() { // поведение при нажатии новой игры
+		playAgain.addActionListener(new ActionListener() { // РїРѕРІРµРґРµРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РЅРѕРІРѕР№ РёРіСЂС‹
 			public void actionPerformed(ActionEvent event) {
-				field.getScores().reset(); // сбрасываем счет при запуске новой игры
+				field.getScores().reset(); // СЃР±СЂР°СЃС‹РІР°РµРј СЃС‡РµС‚ РїСЂРё Р·Р°РїСѓСЃРєРµ РЅРѕРІРѕР№ РёРіСЂС‹
 				field.resetData();
 				fadeEffect = 0;
-				// удаляем кнопки с экрана
+				// СѓРґР°Р»СЏРµРј РєРЅРѕРїРєРё СЃ СЌРєСЂР°РЅР°
 				removeButton(playAgain);
 				removeButton(screenShot);
 				removeButton(backToMenu);
-				represent = false; // запрет отображения кнопок
+				represent = false; // Р·Р°РїСЂРµС‚ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРЅРѕРїРѕРє
 			}
 		});
 		
-		screenShot.addActionListener(new ActionListener() {  // поведение при нажатии скриншота
+		screenShot.addActionListener(new ActionListener() {  // РїРѕРІРµРґРµРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё СЃРєСЂРёРЅС€РѕС‚Р°
 			public void actionPerformed(ActionEvent event) {
-				screenshot = true; // делаем скриншот
+				screenshot = true; // РґРµР»Р°РµРј СЃРєСЂРёРЅС€РѕС‚
 			}
 		});
 	}
 	
-	public void printGameOver(Graphics2D graphics) { // отрисовка КОНЕЦ ИГРЫ
+	public void printGameOver(Graphics2D graphics) { // РѕС‚СЂРёСЃРѕРІРєР° РљРћРќР•Р¦ РР“Р Р«
 		graphics.setColor(new Color(222, 222, 222, fadeEffect));
 		graphics.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 		graphics.setColor(new Color(191, 11, 11));
-		graphics.drawString("КОНЕЦ ИГРЫ", Game.WIDTH / 2 - DisplayObject.getObjectWidth("КОНЕЦ ИГРЫ", fontGameOver, graphics) / 2, 250);
+		graphics.drawString("РљРћРќР•Р¦ РР“Р Р«", Game.WIDTH / 2 - DisplayObject.getObjectWidth("РљРћРќР•Р¦ РР“Р Р«", fontGameOver, graphics) / 2, 250);
 	}
 
-	private void printScores(Graphics2D graphics) { // отрисовка на экране счета игры
+	private void printScores(Graphics2D graphics) { // РѕС‚СЂРёСЃРѕРІРєР° РЅР° СЌРєСЂР°РЅРµ СЃС‡РµС‚Р° РёРіСЂС‹
 		Graphics2D graph = (Graphics2D) gameResults.getGraphics();
-		graph.setColor(Color.black); // цвет верхней панели
+		graph.setColor(Color.black); // С†РІРµС‚ РІРµСЂС…РЅРµР№ РїР°РЅРµР»Рё
 		graph.fillRect(0, 0, gameResults.getWidth(), gameResults.getHeight());
-		graph.setColor(Color.white); // цвет текущего счета
+		graph.setColor(Color.white); // С†РІРµС‚ С‚РµРєСѓС‰РµРіРѕ СЃС‡РµС‚Р°
 		graph.setFont(scoreFont);
 		graph.drawString("" + scores.getCurrentScore(), 30, 40);
-		graph.setColor(new Color(191, 11, 11)); // цвет лучшего счета
+		graph.setColor(new Color(191, 11, 11)); // С†РІРµС‚ Р»СѓС‡С€РµРіРѕ СЃС‡РµС‚Р°
 		graph.drawString("       " + scores.getCurrentTopScore(), Game.WIDTH - DisplayObject.getObjectWidth("Best: " + scores.getCurrentTopScore(), scoreFont, graph) - 20, 40);
 		graph.dispose(); 
 		graphics.drawImage(gameResults, 0, 0, null); 
 	}
 
 	@Override
-	public void renderPanel(Graphics2D graphics) { // рендерим содержимое
+	public void renderPanel(Graphics2D graphics) { // СЂРµРЅРґРµСЂРёРј СЃРѕРґРµСЂР¶РёРјРѕРµ
 		printScores(graphics);
 		field.renderFinal(graphics);
-		if (screenshot) { // в случае скриншота
+		if (screenshot) { // РІ СЃР»СѓС‡Р°Рµ СЃРєСЂРёРЅС€РѕС‚Р°
 			BufferedImage buffImage = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
 			Graphics2D graph = (Graphics2D) buffImage.getGraphics();
 			graph.setColor(Color.white);
 			graph.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 			printScores(graph);
 			field.renderFinal(graph);
-			try { // сохраняем на рабочий стол png скриншот
+			try { // СЃРѕС…СЂР°РЅСЏРµРј РЅР° СЂР°Р±РѕС‡РёР№ СЃС‚РѕР» png СЃРєСЂРёРЅС€РѕС‚
 				ImageIO.write(buffImage, "png", new File(System.getProperty("user.home") + "\\Desktop", "screenshot" + System.nanoTime() + ".png"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			screenshot = false;
 		}
-		if (field.getDead()) { // в случае проигрыша выводим кнопки и конец игры
+		if (field.getDead()) { // РІ СЃР»СѓС‡Р°Рµ РїСЂРѕРёРіСЂС‹С€Р° РІС‹РІРѕРґРёРј РєРЅРѕРїРєРё Рё РєРѕРЅРµС† РёРіСЂС‹
 			if (!represent) { 
 				represent = true;
 				addButton(backToMenu);
@@ -129,7 +129,7 @@ public class PanelGame extends PanelButton { // класс содержит игровую панель пр
 	}
 	
 	@Override
-	public void updatePanel() { // обновляется экран, работает эффект затухания поля игры
+	public void updatePanel() { // РѕР±РЅРѕРІР»СЏРµС‚СЃСЏ СЌРєСЂР°РЅ, СЂР°Р±РѕС‚Р°РµС‚ СЌС„С„РµРєС‚ Р·Р°С‚СѓС…Р°РЅРёСЏ РїРѕР»СЏ РёРіСЂС‹
 		field.updateField();
 		if (field.getDead()) {
 			fadeEffect++;
