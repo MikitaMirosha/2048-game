@@ -12,63 +12,63 @@ import mirosha.game.SetAudio;
 import mirosha.game.DisplayObject;
 import mirosha.game.Game;
 
-public class Button { // класс для создания кнопок
+public class Button { // РєР»Р°СЃСЃ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РєРЅРѕРїРѕРє
 	
 	private Color standart;
 	private Color hover;
 	private Color pressed;
 	private String text = "";
 	private SetAudio audio;
-	private State current = State.RELEASED; // стандартное состояние: отпущено
-	private Rectangle rectangleButton; // оболочка кнопки
-	private ArrayList<ActionListener> actionListeners; // хранение действий с кнопками в массиве
-	private Font font = Game.main.deriveFont(25f); // шрифт текста на кнопке
+	private State current = State.RELEASED; // СЃС‚Р°РЅРґР°СЂС‚РЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ: РѕС‚РїСѓС‰РµРЅРѕ
+	private Rectangle rectangleButton; // РѕР±РѕР»РѕС‡РєР° РєРЅРѕРїРєРё
+	private ArrayList<ActionListener> actionListeners; // С…СЂР°РЅРµРЅРёРµ РґРµР№СЃС‚РІРёР№ СЃ РєРЅРѕРїРєР°РјРё РІ РјР°СЃСЃРёРІРµ
+	private Font font = Game.main.deriveFont(25f); // С€СЂРёС„С‚ С‚РµРєСЃС‚Р° РЅР° РєРЅРѕРїРєРµ
 	
-	public Button(int x, int y, int width, int height) { // конструктор кнопки
+	public Button(int x, int y, int width, int height) { // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРЅРѕРїРєРё
 		
-		rectangleButton = new Rectangle(x, y, width, height); // создание оболочки кнопки
-		actionListeners = new ArrayList<ActionListener>(); // создание действий с кнопками
+		rectangleButton = new Rectangle(x, y, width, height); // СЃРѕР·РґР°РЅРёРµ РѕР±РѕР»РѕС‡РєРё РєРЅРѕРїРєРё
+		actionListeners = new ArrayList<ActionListener>(); // СЃРѕР·РґР°РЅРёРµ РґРµР№СЃС‚РІРёР№ СЃ РєРЅРѕРїРєР°РјРё
 		
-		standart = new Color(191, 11, 11); // стандартный темно-серый цвет
-		hover = new Color(220, 39, 39); // более серый цвет при наведении
-		pressed = new Color(229, 65, 65); // еще более серый цвет при нажатии
+		standart = new Color(191, 11, 11); // СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ С‚РµРјРЅРѕ-СЃРµСЂС‹Р№ С†РІРµС‚
+		hover = new Color(220, 39, 39); // Р±РѕР»РµРµ СЃРµСЂС‹Р№ С†РІРµС‚ РїСЂРё РЅР°РІРµРґРµРЅРёРё
+		pressed = new Color(229, 65, 65); // РµС‰Рµ Р±РѕР»РµРµ СЃРµСЂС‹Р№ С†РІРµС‚ РїСЂРё РЅР°Р¶Р°С‚РёРё
 		
-		// работа аудио при нажатии на кнопку
+		// СЂР°Р±РѕС‚Р° Р°СѓРґРёРѕ РїСЂРё РЅР°Р¶Р°С‚РёРё РЅР° РєРЅРѕРїРєСѓ
 		audio = SetAudio.getInstance();
 		audio.loadAudio("select.wav", "select");
 	}
 	
-	public void renderButton(Graphics2D graphics) { // рендер кнопки
-		if(current == State.RELEASED) { // рендер при отпускании
+	public void renderButton(Graphics2D graphics) { // СЂРµРЅРґРµСЂ РєРЅРѕРїРєРё
+		if(current == State.RELEASED) { // СЂРµРЅРґРµСЂ РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё
 			graphics.setColor(standart);
 			graphics.fill(rectangleButton);
 		}
-		else if(current == State.PRESSED) { // рендер при нажатии
+		else if(current == State.PRESSED) { // СЂРµРЅРґРµСЂ РїСЂРё РЅР°Р¶Р°С‚РёРё
 			graphics.setColor(pressed);
 			graphics.fill(rectangleButton);
 		}
-		else { // рендер при наведении
+		else { // СЂРµРЅРґРµСЂ РїСЂРё РЅР°РІРµРґРµРЅРёРё
 			graphics.setColor(hover);
 			graphics.fill(rectangleButton);
 		}
 		graphics.setColor(Color.white);
-		graphics.setFont(font); // координата отрисовки текста на кнопке по центру:
+		graphics.setFont(font); // РєРѕРѕСЂРґРёРЅР°С‚Р° РѕС‚СЂРёСЃРѕРІРєРё С‚РµРєСЃС‚Р° РЅР° РєРЅРѕРїРєРµ РїРѕ С†РµРЅС‚СЂСѓ:
 		graphics.drawString(text, rectangleButton.x + rectangleButton.width / 2  - DisplayObject.getObjectWidth(text, font, graphics) / 2, rectangleButton.y + rectangleButton.height / 2  + DisplayObject.getObjectHeight(text, font, graphics) / 2);
 	}
 	
 	public void update() {}
 	
-	public void addActionListener(ActionListener listener) { // добавляем действие с кнопкой
+	public void addActionListener(ActionListener listener) { // РґРѕР±Р°РІР»СЏРµРј РґРµР№СЃС‚РІРёРµ СЃ РєРЅРѕРїРєРѕР№
 		actionListeners.add(listener);
 	}
 	
-	public void mousePressed(MouseEvent event) { // состояние при нажатии мыши
+	public void mousePressed(MouseEvent event) { // СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё
 		if(rectangleButton.contains(event.getPoint())) {
 			current = State.PRESSED;
 		}
 	}
 
-	public void mouseReleased(MouseEvent event) { // состояние при отпускании мыши
+	public void mouseReleased(MouseEvent event) { // СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РјС‹С€Рё
 		if(rectangleButton.contains(event.getPoint())) {
 			for(ActionListener i : actionListeners) {
 				i.actionPerformed(null);
@@ -78,7 +78,7 @@ public class Button { // класс для создания кнопок
 		current = State.RELEASED;
 	}
 
-	public void mouseDragged(MouseEvent event) { // состояние при захвате мыши (нажато/отпущено)
+	public void mouseDragged(MouseEvent event) { // СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё Р·Р°С…РІР°С‚Рµ РјС‹С€Рё (РЅР°Р¶Р°С‚Рѕ/РѕС‚РїСѓС‰РµРЅРѕ)
 		if(rectangleButton.contains(event.getPoint())) {
 			current = State.PRESSED;
 		}
@@ -87,7 +87,7 @@ public class Button { // класс для создания кнопок
 		}
 	}
 
-	public void mouseMoved(MouseEvent event) {  // состояние при движении/наведении мыши
+	public void mouseMoved(MouseEvent event) {  // СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РґРІРёР¶РµРЅРёРё/РЅР°РІРµРґРµРЅРёРё РјС‹С€Рё
 		if(rectangleButton.contains(event.getPoint())) {
 			current = State.HOVER;
 		}
@@ -96,10 +96,10 @@ public class Button { // класс для создания кнопок
 		}
 	}
 	
-	// состояние: наведено, отпущено, нажато
+	// СЃРѕСЃС‚РѕСЏРЅРёРµ: РЅР°РІРµРґРµРЅРѕ, РѕС‚РїСѓС‰РµРЅРѕ, РЅР°Р¶Р°С‚Рѕ
 	private enum State { HOVER, RELEASED, PRESSED }
 	
-	// геттеры координат и размеров
+	// РіРµС‚С‚РµСЂС‹ РєРѕРѕСЂРґРёРЅР°С‚ Рё СЂР°Р·РјРµСЂРѕРІ
 	public int getX() { return rectangleButton.x; }
 	
 	public int getY() { return rectangleButton.y; }
@@ -108,6 +108,6 @@ public class Button { // класс для создания кнопок
 	
 	public int getHeight() { return rectangleButton.height; }
 	
-	// сеттер текста
+	// СЃРµС‚С‚РµСЂ С‚РµРєСЃС‚Р°
 	public void setText(String text) { this.text = text; }
 }
