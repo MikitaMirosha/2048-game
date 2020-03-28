@@ -7,32 +7,32 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 
-public class Scores { // класс для работы со счетом
+public class Scores { // РєР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃРѕ СЃС‡РµС‚РѕРј
 
-	// текущий счет: 
+	// С‚РµРєСѓС‰РёР№ СЃС‡РµС‚: 
 	private int currentScore;
 	private int currentTopScore;
 	private int[] field = new int[16];
 
-	// файлы:
-	private String path; // путь к файлу
-	private String temp; // временный файл
+	// С„Р°Р№Р»С‹:
+	private String path; // РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ
+	private String temp; // РІСЂРµРјРµРЅРЅС‹Р№ С„Р°Р№Р»
 	private GameField gameField;
 
 	private boolean newGame;
 
 	public Scores(GameField gameField) {
 		try {
-			path = new File("").getAbsolutePath(); // абсолютное значение файла
+			path = new File("").getAbsolutePath(); // Р°Р±СЃРѕР»СЋС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ С„Р°Р№Р»Р°
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		temp = "TEMP.tmp"; // создание временного файла
+		temp = "TEMP.tmp"; // СЃРѕР·РґР°РЅРёРµ РІСЂРµРјРµРЅРЅРѕРіРѕ С„Р°Р№Р»Р°
 
 		this.gameField = gameField;
 	}
 
-	public void reset() { // сброс данных при новой игре
+	public void reset() { // СЃР±СЂРѕСЃ РґР°РЅРЅС‹С… РїСЂРё РЅРѕРІРѕР№ РёРіСЂРµ
 		File file = new File(path, temp);
 		if (file.isFile()) {
 			file.delete();
@@ -41,7 +41,7 @@ public class Scores { // класс для работы со счетом
 		currentScore = 0;
 	}
 
-	private void createFile() { // создаем файл при новой игре
+	private void createFile() { // СЃРѕР·РґР°РµРј С„Р°Р№Р» РїСЂРё РЅРѕРІРѕР№ РёРіСЂРµ
 		FileWriter output = null;
 		newGame = true;
 		try {
@@ -72,7 +72,7 @@ public class Scores { // класс для работы со счетом
 		}
 	}
 
-	public void loadGame() { // загружаем игру
+	public void loadGame() { // Р·Р°РіСЂСѓР¶Р°РµРј РёРіСЂСѓ
 		try {
 			File file = new File(path, temp);
 
@@ -94,7 +94,7 @@ public class Scores { // класс для работы со счетом
 		}
 	}
 	
-	public void saveGame() { // сохраняем игру
+	public void saveGame() { // СЃРѕС…СЂР°РЅСЏРµРј РёРіСЂСѓ
 		FileWriter output = null;
 		if (newGame) newGame = false;
 		try {
@@ -119,7 +119,7 @@ public class Scores { // класс для работы со счетом
 		}
 	}
 
-	// геттеры и сеттеры результатов игры
+	// РіРµС‚С‚РµСЂС‹ Рё СЃРµС‚С‚РµСЂС‹ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёРіСЂС‹
 	public int getCurrentTopScore() {
 		return currentTopScore;
 	}
