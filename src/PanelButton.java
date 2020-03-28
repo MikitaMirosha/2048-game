@@ -4,56 +4,56 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class PanelButton { // класс для работы с кнопками
+public class PanelButton { // РєР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РєРЅРѕРїРєР°РјРё
 
-	// храним здесь кнопки из класса Button
+	// С…СЂР°РЅРёРј Р·РґРµСЃСЊ РєРЅРѕРїРєРё РёР· РєР»Р°СЃСЃР° Button
 	private ArrayList<Button> buttons;
 	
-	// в конструкторе будем хранить все кнопки в массиве
-	// далее будем их обновлять и рендерить
+	// РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ Р±СѓРґРµРј С…СЂР°РЅРёС‚СЊ РІСЃРµ РєРЅРѕРїРєРё РІ РјР°СЃСЃРёРІРµ
+	// РґР°Р»РµРµ Р±СѓРґРµРј РёС… РѕР±РЅРѕРІР»СЏС‚СЊ Рё СЂРµРЅРґРµСЂРёС‚СЊ
 	public PanelButton() {
 		buttons = new ArrayList<Button>();
 	}
 	
-	public void addButton(Button button) { // добавляем кнопки
+	public void addButton(Button button) { // РґРѕР±Р°РІР»СЏРµРј РєРЅРѕРїРєРё
 		buttons.add(button);
 	}
 	
-	public void removeButton(Button button) { // удаляем кнопки
+	public void removeButton(Button button) { // СѓРґР°Р»СЏРµРј РєРЅРѕРїРєРё
 		buttons.remove(button);
 	}
 	
-	public void updatePanel() { // обновляем панель
+	public void updatePanel() { // РѕР±РЅРѕРІР»СЏРµРј РїР°РЅРµР»СЊ
 		for(Button button : buttons) {
 			button.update();
 		}
 	}
 	
-	public void renderPanel(Graphics2D graphics) { // рендерим панель
+	public void renderPanel(Graphics2D graphics) { // СЂРµРЅРґРµСЂРёРј РїР°РЅРµР»СЊ
 		for(Button button : buttons) {
 			button.renderButton(graphics);
 		}
 	}
 	
-	public void mouseMoved(MouseEvent event) { // поведение кнопки при движении мыши (наведении)
+	public void mouseMoved(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РґРІРёР¶РµРЅРёРё РјС‹С€Рё (РЅР°РІРµРґРµРЅРёРё)
 		for(Button button : buttons) {
 			button.mouseMoved(event);
 		}
 	}
 	
-	public void mouseDragged(MouseEvent event) { // поведение кнопки при захвате
+	public void mouseDragged(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ РєРЅРѕРїРєРё РїСЂРё Р·Р°С…РІР°С‚Рµ
 		for(Button button : buttons) {
 			button.mouseDragged(event);
 		}
 	}
 	
-	public void mousePressed(MouseEvent event) { // поведение кнопки при нажатии
+	public void mousePressed(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РЅР°Р¶Р°С‚РёРё
 		for(Button button : buttons) {
 			button.mousePressed(event);
 		}
 	}
 	
-	public void mouseReleased(MouseEvent event) { // поведение кнопки при отпускании
+	public void mouseReleased(MouseEvent event) { // РїРѕРІРµРґРµРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё
 		for(Button button : buttons) {
 			button.mouseReleased(event);
 		}
