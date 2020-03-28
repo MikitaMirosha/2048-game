@@ -9,47 +9,47 @@ import java.awt.event.ActionListener;
 import mirosha.game.DisplayObject;
 import mirosha.game.Game;
 
-public class PanelMenu extends PanelButton { // класс содержит главное меню
+public class PanelMenu extends PanelButton { // РєР»Р°СЃСЃ СЃРѕРґРµСЂР¶РёС‚ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ
 
 	private String header = "2048"; 
 	private int buttonW = 220;
-	private Font headerFont = Game.main.deriveFont(100f); // размер шрифта 2048
+	private Font headerFont = Game.main.deriveFont(100f); // СЂР°Р·РјРµСЂ С€СЂРёС„С‚Р° 2048
 	
-	public PanelMenu() { // конструктор панели меню
+	public PanelMenu() { // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїР°РЅРµР»Рё РјРµРЅСЋ
 		super(); 
-		Button play = new Button(Game.WIDTH / 2 - buttonW / 2, 220, buttonW, 60); // создаем кнопку ИГРА
+		Button play = new Button(Game.WIDTH / 2 - buttonW / 2, 220, buttonW, 60); // СЃРѕР·РґР°РµРј РєРЅРѕРїРєСѓ РР“Р Рђ
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				Screen.getInstance().setPanel("Play");
 			}
 		});
-		play.setText("ИГРА"); 
-		addButton(play); // добавляем кнопку
+		play.setText("РР“Р Рђ"); 
+		addButton(play); // РґРѕР±Р°РІР»СЏРµРј РєРЅРѕРїРєСѓ
 		
-		Button scores = new Button(Game.WIDTH / 2 - buttonW / 2, 310, buttonW, 60); // создаем кнопку СЧЕТ
+		Button scores = new Button(Game.WIDTH / 2 - buttonW / 2, 310, buttonW, 60); // СЃРѕР·РґР°РµРј РєРЅРѕРїРєСѓ РЎР§Р•Рў
 		scores.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				Screen.getInstance().setPanel("Leaderboards");
 			}
 		});
-		scores.setText("СЧЕТ");
-		addButton(scores); // добавляем кнопку
+		scores.setText("РЎР§Р•Рў");
+		addButton(scores); // РґРѕР±Р°РІР»СЏРµРј РєРЅРѕРїРєСѓ
 		
-		Button quitButton = new Button(Game.WIDTH / 2 - buttonW / 2, 400, buttonW, 60);  // создаем кнопку ВЫХОД
+		Button quitButton = new Button(Game.WIDTH / 2 - buttonW / 2, 400, buttonW, 60);  // СЃРѕР·РґР°РµРј РєРЅРѕРїРєСѓ Р’Р«РҐРћР”
 		quitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				System.exit(0);
 			}
 		});
-		quitButton.setText("ВЫХОД");
-		addButton(quitButton); // добавляем кнопку
+		quitButton.setText("Р’Р«РҐРћР”");
+		addButton(quitButton); // РґРѕР±Р°РІР»СЏРµРј РєРЅРѕРїРєСѓ
 	}
 
 	@Override
-	public void renderPanel(Graphics2D graphics) { // рендерим содержимое (кнопки, заглавие)
+	public void renderPanel(Graphics2D graphics) { // СЂРµРЅРґРµСЂРёРј СЃРѕРґРµСЂР¶РёРјРѕРµ (РєРЅРѕРїРєРё, Р·Р°РіР»Р°РІРёРµ)
 		super.renderPanel(graphics);
 		graphics.setFont(headerFont);
 		graphics.setColor(Color.white);
