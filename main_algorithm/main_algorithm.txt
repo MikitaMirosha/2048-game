@@ -1,0 +1,32 @@
+private boolean moveCubes(int row, int col, int horDir, int verDir, int dir) {
+		boolean moveAbility = false; // есть возможность передвинуть на свободное место или нет
+		Cube currentCube = field[row][col]; // установка текущего кубика в массиве
+		if (currentCube == null) return false;
+		boolean move = true; // флаг передвижения
+		int newCol = col;
+		int newRow = row;
+		while (move) {
+			newCol += horDir;
+			newRow += verDir;
+			if (boundCheck(dir, newRow, newCol)) break;
+			if (field[newRow][newCol] == null) { // если кубик передвигается на новое место без комбинирования с другим
+				field[newRow][newCol] = currentCube; // готовим установку текущего кубика на новое место
+				moveAbility = true; // есть возможность передвинуть на свободное место
+				field[newRow - verDir][newCol - horDir] = null; // освобождаем место откуда сдвинули
+				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // передвигаем на новое место
+			} // если кубик двигается на место другого кубика с одинаковым значением, то надо их комбинировать
+			else if (field[newRow][newCol].getValue() == currentCube.getValue() && field[newRow][newCol].uniteAbility()) {
+				field[newRow][newCol].setUniteAbility(false); // больше нельзя объединять
+				field[newRow][newCol].setValue(field[newRow][newCol].getValue() * 2); // увеличиваем результат в 2 раза
+				moveAbility = true; // есть возможность передвинуть на свободное место
+				field[newRow - verDir][newCol - horDir] = null; // освобождаем место откуда сдвинули
+				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // передвигаем на новое место
+				field[newRow][newCol].setUniteAnimation(true); // анимируем
+				scores.setCurrentScore(scores.getCurrentScore() + field[newRow][newCol].getValue()); // устанавливаем счет
+			}
+			else {
+				move = false;
+			}
+		}
+		return moveAbility;
+	}
