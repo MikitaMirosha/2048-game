@@ -12,60 +12,60 @@ import mirosha.game.Game;
 import mirosha.game.Leaders;
 
 /**
- * Класс для работы с панелью таблицы результатов игры
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РїР°РЅРµР»СЊСЋ С‚Р°Р±Р»РёС†С‹ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёРіСЂС‹
  * @author Mirosha
  * @version 1.0
  */
 public class PanelScores extends PanelButton { 
 	
-	/** Поле очки*/
+	/** РџРѕР»Рµ РѕС‡РєРё*/
 	private Leaders scores;
 	
-	/** Поле ширина кнопки*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РєРЅРѕРїРєРё*/
 	private int buttonW = 100;
 	
-	/** Поле высота кнопки*/
+	/** РџРѕР»Рµ РІС‹СЃРѕС‚Р° РєРЅРѕРїРєРё*/
 	private int buttonH = 50;
 	
-	/** Поле координата Y кнопки*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° Y РєРЅРѕРїРєРё*/
 	private int buttonY = 120;
 	
-	/** Поле координата X очков*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° X РѕС‡РєРѕРІ*/
 	private int scoresX = 130;
 	
-	/** Поле координата Y очков*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° Y РѕС‡РєРѕРІ*/
 	private int scoresY = buttonY + buttonH + 90;
 	
-	/** Поле расстояние между кнопками*/
+	/** РџРѕР»Рµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РєРЅРѕРїРєР°РјРё*/
 	private int buttonDistance = 20;
 	
-	/** Поле ширина кнопки возврата в меню*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РєРЅРѕРїРєРё РІРѕР·РІСЂР°С‚Р° РІ РјРµРЅСЋ*/
 	private int backButtonW = 220; 
 	
-	/** Поле строка СЧЕТ*/
-	private String header = "СЧЕТ";
+	/** РџРѕР»Рµ СЃС‚СЂРѕРєР° РЎР§Р•Рў*/
+	private String header = "РЎР§Р•Рў";
 	
-	/** Поле шрифт СЧЕТ*/
+	/** РџРѕР»Рµ С€СЂРёС„С‚ РЎР§Р•Рў*/
 	private Font headerFont = Game.main.deriveFont(45f);
 	
-	/** Поле шрифт очков в таблице*/
+	/** РџРѕР»Рµ С€СЂРёС„С‚ РѕС‡РєРѕРІ РІ С‚Р°Р±Р»РёС†Рµ*/
 	private Font scoreFont = Game.main.deriveFont(32f);
 	
-	/** Поле текущее состояние очки/кубы (очки)*/
+	/** РџРѕР»Рµ С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РѕС‡РєРё/РєСѓР±С‹ (РѕС‡РєРё)*/
 	private State currentState = State.SCORE;
 	
-	/** Поле перечесление очки/кубы*/
+	/** РџРѕР»Рµ РїРµСЂРµС‡РµСЃР»РµРЅРёРµ РѕС‡РєРё/РєСѓР±С‹*/
 	private enum State { SCORE, CUBE }
 	
 	/** 
-     * Конструктор - создание нового объекта панель таблицы результатов игры
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РїР°РЅРµР»СЊ С‚Р°Р±Р»РёС†С‹ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёРіСЂС‹
      */
 	public PanelScores() { 
 		super();  
 		scores = Leaders.getInstance();
 		scores.loadScores();
 
-		// создание и отрисовка кнопки КУБЫ
+		// СЃРѕР·РґР°РЅРёРµ Рё РѕС‚СЂРёСЃРѕРІРєР° РєРЅРѕРїРєРё РљРЈР‘Р«
 		Button cube = new Button(Game.WIDTH / 2 - buttonW / 2, buttonY, buttonW, buttonH);
 		cube.addActionListener(new ActionListener() {
 			@Override
@@ -73,10 +73,10 @@ public class PanelScores extends PanelButton {
 				currentState = State.CUBE;
 			}
 		});
-		cube.setText("КУБЫ");
+		cube.setText("РљРЈР‘Р«");
 		addButton(cube);
 		
-		// создание и отрисовка кнопки ОЧКИ
+		// СЃРѕР·РґР°РЅРёРµ Рё РѕС‚СЂРёСЃРѕРІРєР° РєРЅРѕРїРєРё РћР§РљР
 		Button score = new Button(Game.WIDTH / 2 - buttonW / 2 - cube.getWidth() - buttonDistance, buttonY, buttonW, buttonH);
 		score.addActionListener(new ActionListener() {
 			@Override
@@ -84,25 +84,25 @@ public class PanelScores extends PanelButton {
 				currentState = State.SCORE;
 			}
 		});
-		score.setText("ОЧКИ");
+		score.setText("РћР§РљР");
 		addButton(score);
 		
-		// создание и отрисовка кнопки НАЗАД
+		// СЃРѕР·РґР°РЅРёРµ Рё РѕС‚СЂРёСЃРѕРІРєР° РєРЅРѕРїРєРё РќРђР—РђР”
 		Button back = new Button(Game.WIDTH / 2 - backButtonW / 2, 500, backButtonW, 60);
 		back.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				Screen.getInstance().setPanel("Menu"); 				// выход в главное меню
+				Screen.getInstance().setPanel("Menu"); 				// РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ
 			}
 		});
-		back.setText("НАЗАД");
+		back.setText("РќРђР—РђР”");
 		addButton(back);
 	}
 	
 	/**
-     * Функция конвертация числа в строку 
-     * @param listNum - число
-     * @return возвращает строку после конвертации
+     * Р¤СѓРЅРєС†РёСЏ РєРѕРЅРІРµСЂС‚Р°С†РёСЏ С‡РёСЃР»Р° РІ СЃС‚СЂРѕРєСѓ 
+     * @param listNum - С‡РёСЃР»Рѕ
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ СЃС‚СЂРѕРєСѓ РїРѕСЃР»Рµ РєРѕРЅРІРµСЂС‚Р°С†РёРё
      */
 	private ArrayList<String> convertToStrings(ArrayList<? extends Number> listNum) {
 		ArrayList<String> finalString = new ArrayList<String>();
@@ -113,8 +113,8 @@ public class PanelScores extends PanelButton {
 	}
 	
 	/**
-     * Процедура отрисовка счета игры
-     * @param graphics - печать таблицы со счетом
+     * РџСЂРѕС†РµРґСѓСЂР° РѕС‚СЂРёСЃРѕРІРєР° СЃС‡РµС‚Р° РёРіСЂС‹
+     * @param graphics - РїРµС‡Р°С‚СЊ С‚Р°Р±Р»РёС†С‹ СЃРѕ СЃС‡РµС‚РѕРј
      */
 	private void printScores(Graphics2D graphics) { 
 		ArrayList<String> strings = new ArrayList<String>();
@@ -127,15 +127,15 @@ public class PanelScores extends PanelButton {
 		graphics.setColor(Color.white);
 		graphics.setFont(scoreFont);
 		
-		for(int i = 0; i < strings.size(); i++) { 		// нумерация данных в таблице
+		for(int i = 0; i < strings.size(); i++) { 		// РЅСѓРјРµСЂР°С†РёСЏ РґР°РЅРЅС‹С… РІ С‚Р°Р±Р»РёС†Рµ
 			String str = (i + 1) + ". " + strings.get(i);
 			graphics.drawString(str, scoresX, scoresY + i * 40);
 		}
 	}
 	
 	/**
-     * Процедура рендер панели счета игры
-     * @param graphics - графика панели счета игры
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ РїР°РЅРµР»Рё СЃС‡РµС‚Р° РёРіСЂС‹
+     * @param graphics - РіСЂР°С„РёРєР° РїР°РЅРµР»Рё СЃС‡РµС‚Р° РёРіСЂС‹
      */
 	@Override
 	public void renderPanel(Graphics2D graphics) { 
