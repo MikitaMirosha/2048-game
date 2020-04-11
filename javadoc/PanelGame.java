@@ -16,59 +16,59 @@ import mirosha.game.GameField;
 import mirosha.game.Scores;
 
 /**
- * Класс для работы с игровой панелью (Game Over)
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РёРіСЂРѕРІРѕР№ РїР°РЅРµР»СЊСЋ (Game Over)
  * @author Mirosha
  * @version 1.0
  */
 public class PanelGame extends PanelButton { 
 
-	/** Поле игровое поле*/
+	/** РџРѕР»Рµ РёРіСЂРѕРІРѕРµ РїРѕР»Рµ*/
 	private GameField field;
 	
-	/** Поле очки*/
+	/** РџРѕР»Рµ РѕС‡РєРё*/
 	private Scores scores;
 	
-	/** Поле шрифт очков*/
+	/** РџРѕР»Рµ С€СЂРёС„С‚ РѕС‡РєРѕРІ*/
 	private Font scoreFont;
 	
-	/** Поле результат (счет) игры*/
+	/** РџРѕР»Рµ СЂРµР·СѓР»СЊС‚Р°С‚ (СЃС‡РµС‚) РёРіСЂС‹*/
 	private BufferedImage gameResults; 
 
-	/** Поле шрифт на кнопке окончания игры*/
+	/** РџРѕР»Рµ С€СЂРёС„С‚ РЅР° РєРЅРѕРїРєРµ РѕРєРѕРЅС‡Р°РЅРёСЏ РёРіСЂС‹*/
 	private Font fontGameOver;
 	
-	/** Поле кнопка возврата в меню*/
+	/** РџРѕР»Рµ РєРЅРѕРїРєР° РІРѕР·РІСЂР°С‚Р° РІ РјРµРЅСЋ*/
 	private Button backToMenu; 
 	
-	/** Поле кнопка попробовать снова*/
+	/** РџРѕР»Рµ РєРЅРѕРїРєР° РїРѕРїСЂРѕР±РѕРІР°С‚СЊ СЃРЅРѕРІР°*/
 	private Button playAgain; 
 	
-	/** Поле кнопка сделать скриншот*/
+	/** РџРѕР»Рµ РєРЅРѕРїРєР° СЃРґРµР»Р°С‚СЊ СЃРєСЂРёРЅС€РѕС‚*/
 	private Button screenShot;
 	
-	/** Поле флаг скриншота*/
+	/** РџРѕР»Рµ С„Р»Р°Рі СЃРєСЂРёРЅС€РѕС‚Р°*/
 	private boolean screenshot; 
 	
-	/** Поле отображение кнопки*/
+	/** РџРѕР»Рµ РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ РєРЅРѕРїРєРё*/
 	private boolean represent; 
 	
-	/** Поле эффект затухания фона*/
+	/** РџРѕР»Рµ СЌС„С„РµРєС‚ Р·Р°С‚СѓС…Р°РЅРёСЏ С„РѕРЅР°*/
 	private int fadeEffect = 0; 
 	
-	/** Поле расстояние между кнопками*/
+	/** РџРѕР»Рµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РєРЅРѕРїРєР°РјРё*/
 	private int buttonDistance = 30; 
 	
-	/** Поле высота кнопки*/
+	/** РџРѕР»Рµ РІС‹СЃРѕС‚Р° РєРЅРѕРїРєРё*/
 	private int buttonH = 50;
 	
-	/** Поле ширина мелкой кнопки*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РјРµР»РєРѕР№ РєРЅРѕРїРєРё*/
 	private int littleButtonW = 170; 
 	
-	/** Поле ширина кнопки возврата в меню*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РєРЅРѕРїРєРё РІРѕР·РІСЂР°С‚Р° РІ РјРµРЅСЋ*/
 	private int bigButtonW = littleButtonW * 2 + buttonDistance; 
 	
 	/** 
-     * Конструктор - создание нового объекта игровая панель (Game Over)
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РёРіСЂРѕРІР°СЏ РїР°РЅРµР»СЊ (Game Over)
      */
 	public PanelGame() {
 		scoreFont = Game.main.deriveFont(24f); 
@@ -81,9 +81,9 @@ public class PanelGame extends PanelButton {
 		playAgain = new Button(backToMenu.getX(), backToMenu.getY() - buttonDistance - buttonH, littleButtonW, buttonH);
 		screenShot = new Button(playAgain.getX() + playAgain.getWidth() + buttonDistance, playAgain.getY(), littleButtonW, buttonH);
 
-		playAgain.setText("ИГРА"); 
-		screenShot.setText("СКРИНШОТ");
-		backToMenu.setText("МЕНЮ");
+		playAgain.setText("РР“Р Рђ"); 
+		screenShot.setText("РЎРљР РРќРЁРћРў");
+		backToMenu.setText("РњР•РќР®");
 
 		backToMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -93,55 +93,55 @@ public class PanelGame extends PanelButton {
 		
 		playAgain.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent event) {
-				field.getScores().reset(); 						// сбрасывание счета при запуске новой игры
+				field.getScores().reset(); 						// СЃР±СЂР°СЃС‹РІР°РЅРёРµ СЃС‡РµС‚Р° РїСЂРё Р·Р°РїСѓСЃРєРµ РЅРѕРІРѕР№ РёРіСЂС‹
 				field.resetData();
 				fadeEffect = 0;
 				
 				removeButton(playAgain);
 				removeButton(screenShot);
 				removeButton(backToMenu);
-				represent = false; 								// запрет отображения кнопок
+				represent = false; 								// Р·Р°РїСЂРµС‚ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРЅРѕРїРѕРє
 			}
 		});
 		
 		screenShot.addActionListener(new ActionListener() {  
 			public void actionPerformed(ActionEvent event) {
-				screenshot = true; 								// создание скриншота
+				screenshot = true; 								// СЃРѕР·РґР°РЅРёРµ СЃРєСЂРёРЅС€РѕС‚Р°
 			}
 		});
 	}
 	
 	/**
-     * Процедура отрисовка на поле текста КОНЕЦ ИГРЫ
-     * @param graphics - графика при окончании игры
+     * РџСЂРѕС†РµРґСѓСЂР° РѕС‚СЂРёСЃРѕРІРєР° РЅР° РїРѕР»Рµ С‚РµРєСЃС‚Р° РљРћРќР•Р¦ РР“Р Р«
+     * @param graphics - РіСЂР°С„РёРєР° РїСЂРё РѕРєРѕРЅС‡Р°РЅРёРё РёРіСЂС‹
      */
 	public void printGameOver(Graphics2D graphics) { 
 		graphics.setColor(new Color(222, 222, 222, fadeEffect));
 		graphics.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 		graphics.setColor(new Color(191, 11, 11));
-		graphics.drawString("КОНЕЦ ИГРЫ", Game.WIDTH / 2 - DisplayObject.getObjectWidth("КОНЕЦ ИГРЫ", fontGameOver, graphics) / 2, 250);
+		graphics.drawString("РљРћРќР•Р¦ РР“Р Р«", Game.WIDTH / 2 - DisplayObject.getObjectWidth("РљРћРќР•Р¦ РР“Р Р«", fontGameOver, graphics) / 2, 250);
 	}
 
 	/**
-     * Процедура отрисовка на экране счета игры
-     * @param graphics - графика счета игры
+     * РџСЂРѕС†РµРґСѓСЂР° РѕС‚СЂРёСЃРѕРІРєР° РЅР° СЌРєСЂР°РЅРµ СЃС‡РµС‚Р° РёРіСЂС‹
+     * @param graphics - РіСЂР°С„РёРєР° СЃС‡РµС‚Р° РёРіСЂС‹
      */
 	private void printScores(Graphics2D graphics) { 
 		Graphics2D graph = (Graphics2D) gameResults.getGraphics();
-		graph.setColor(Color.black); 												// цвет верхней панели
+		graph.setColor(Color.black); 												// С†РІРµС‚ РІРµСЂС…РЅРµР№ РїР°РЅРµР»Рё
 		graph.fillRect(0, 0, gameResults.getWidth(), gameResults.getHeight());
-		graph.setColor(Color.white); 												// цвет текущего счета
+		graph.setColor(Color.white); 												// С†РІРµС‚ С‚РµРєСѓС‰РµРіРѕ СЃС‡РµС‚Р°
 		graph.setFont(scoreFont);
 		graph.drawString("" + scores.getCurrentScore(), 30, 40);
-		graph.setColor(new Color(191, 11, 11)); 									// цвет лучшего счета
+		graph.setColor(new Color(191, 11, 11)); 									// С†РІРµС‚ Р»СѓС‡С€РµРіРѕ СЃС‡РµС‚Р°
 		graph.drawString("       " + scores.getCurrentTopScore(), Game.WIDTH - DisplayObject.getObjectWidth("Best: " + scores.getCurrentTopScore(), scoreFont, graph) - 20, 40);
 		graph.dispose(); 
 		graphics.drawImage(gameResults, 0, 0, null); 
 	}
 
 	/**
-     * Процедура рендера игровой панели
-     * @param graphics - графика содержимого панели
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂР° РёРіСЂРѕРІРѕР№ РїР°РЅРµР»Рё
+     * @param graphics - РіСЂР°С„РёРєР° СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РїР°РЅРµР»Рё
      */
 	@Override
 	public void renderPanel(Graphics2D graphics) { 
@@ -154,14 +154,14 @@ public class PanelGame extends PanelButton {
 			graph.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 			printScores(graph);
 			field.renderFinal(graph);
-			try { 							// сохранение на рабочий стол png-изображения скриншота
+			try { 							// СЃРѕС…СЂР°РЅРµРЅРёРµ РЅР° СЂР°Р±РѕС‡РёР№ СЃС‚РѕР» png-РёР·РѕР±СЂР°Р¶РµРЅРёСЏ СЃРєСЂРёРЅС€РѕС‚Р°
 				ImageIO.write(buffImage, "png", new File(System.getProperty("user.home") + "\\Desktop", "screenshot" + System.nanoTime() + ".png"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			screenshot = false;
 		}
-		if (field.getDead()) { 				// в случае проигрыша вывод кнопок и панели конца игры
+		if (field.getDead()) { 				// РІ СЃР»СѓС‡Р°Рµ РїСЂРѕРёРіСЂС‹С€Р° РІС‹РІРѕРґ РєРЅРѕРїРѕРє Рё РїР°РЅРµР»Рё РєРѕРЅС†Р° РёРіСЂС‹
 			if (!represent) { 
 				represent = true;
 				addButton(backToMenu);
@@ -174,7 +174,7 @@ public class PanelGame extends PanelButton {
 	}
 	
 	/**
-     * Процедура обновление экрана при эффекте затухания 
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ СЌРєСЂР°РЅР° РїСЂРё СЌС„С„РµРєС‚Рµ Р·Р°С‚СѓС…Р°РЅРёСЏ 
      */
 	@Override
 	public void updatePanel() { 
