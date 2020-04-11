@@ -6,36 +6,36 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Класс для отображения нужных графических объектов
+ * РљР»Р°СЃСЃ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РЅСѓР¶РЅС‹С… РіСЂР°С„РёС‡РµСЃРєРёС… РѕР±СЉРµРєС‚РѕРІ
  * @author Mirosha
  * @version 1.0
  */
 public class DisplayObject { 
 
 	/**
-     * Функция получение значения ширины объекта
-     * @param text - текст объекта
-     * @param font - шрифт объекта
-     * @param graphics - графика объекта
-     * @return возвращает ширину объекта
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ С€РёСЂРёРЅС‹ РѕР±СЉРµРєС‚Р°
+     * @param text - С‚РµРєСЃС‚ РѕР±СЉРµРєС‚Р°
+     * @param font - С€СЂРёС„С‚ РѕР±СЉРµРєС‚Р°
+     * @param graphics - РіСЂР°С„РёРєР° РѕР±СЉРµРєС‚Р°
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С€РёСЂРёРЅСѓ РѕР±СЉРµРєС‚Р°
      */
 	public static int getObjectWidth(String text, Font font, Graphics2D graphics) {  
-		graphics.setFont(font);  // создание прямоугольника Graphics2D: 
+		graphics.setFont(font);  // СЃРѕР·РґР°РЅРёРµ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° Graphics2D: 
 		Rectangle2D bounds = graphics.getFontMetrics().getStringBounds(text, graphics);  
 		return (int) bounds.getWidth(); 
 	}
 
 	/**
-     * Функция получение значения высоты объекта
-     * @param text - текст объекта
-     * @param font - шрифт объекта
-     * @param graphics - графика объекта
-     * @return возвращает текстовые данные согласно высоте
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РІС‹СЃРѕС‚С‹ РѕР±СЉРµРєС‚Р°
+     * @param text - С‚РµРєСЃС‚ РѕР±СЉРµРєС‚Р°
+     * @param font - С€СЂРёС„С‚ РѕР±СЉРµРєС‚Р°
+     * @param graphics - РіСЂР°С„РёРєР° РѕР±СЉРµРєС‚Р°
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСЃС‚РѕРІС‹Рµ РґР°РЅРЅС‹Рµ СЃРѕРіР»Р°СЃРЅРѕ РІС‹СЃРѕС‚Рµ
      */
 	public static int getObjectHeight(String text, Font font, Graphics2D graphics) {  
 		graphics.setFont(font);  
-		if(text.length() == 0) return 0; // возврат 0, если нулевая длина текста
-		TextLayout textLayout = new TextLayout(text, font, graphics.getFontRenderContext()); // отрисовка текста
+		if(text.length() == 0) return 0; // РІРѕР·РІСЂР°С‚ 0, РµСЃР»Рё РЅСѓР»РµРІР°СЏ РґР»РёРЅР° С‚РµРєСЃС‚Р°
+		TextLayout textLayout = new TextLayout(text, font, graphics.getFontRenderContext()); // РѕС‚СЂРёСЃРѕРІРєР° С‚РµРєСЃС‚Р°
 		return (int) textLayout.getBounds().getHeight(); 
 	}
 }
