@@ -8,51 +8,51 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 /**
- * Класс для работы со счетом
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃРѕ СЃС‡РµС‚РѕРј
  * @author Mirosha
  * @version 1.0
  */
 public class Scores { 
 
-	/** Поле текущий счет*/
+	/** РџРѕР»Рµ С‚РµРєСѓС‰РёР№ СЃС‡РµС‚*/
 	private int currentScore;
 	
-	/** Поле лучший текущий счет*/
+	/** РџРѕР»Рµ Р»СѓС‡С€РёР№ С‚РµРєСѓС‰РёР№ СЃС‡РµС‚*/
 	private int currentTopScore;
 	
-	/** Поле игровое поле 4х4*/
+	/** РџРѕР»Рµ РёРіСЂРѕРІРѕРµ РїРѕР»Рµ 4С…4*/
 	private int[] field = new int[16];
 
-	/** Поле путь к файлу*/
+	/** РџРѕР»Рµ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ*/
 	private String path; 
 	
-	/** Поле временный файл*/
+	/** РџРѕР»Рµ РІСЂРµРјРµРЅРЅС‹Р№ С„Р°Р№Р»*/
 	private String temp; 
 	
-	/** Поле игровое поле*/
+	/** РџРѕР»Рµ РёРіСЂРѕРІРѕРµ РїРѕР»Рµ*/
 	private GameField gameField;
 
-	/** Поле новая игра*/
+	/** РџРѕР»Рµ РЅРѕРІР°СЏ РёРіСЂР°*/
 	private boolean newGame;
 
 	/** 
-     * Конструктор - создание нового объекта счет игры
-     * @param gameField - игровое поле
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° СЃС‡РµС‚ РёРіСЂС‹
+     * @param gameField - РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
      */
 	public Scores(GameField gameField) {
 		try {
-			path = new File("").getAbsolutePath();	// абсолютное значение файла
+			path = new File("").getAbsolutePath();	// Р°Р±СЃРѕР»СЋС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ С„Р°Р№Р»Р°
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
-		temp = "TEMP.tmp";	// создание временного файла
+		temp = "TEMP.tmp";	// СЃРѕР·РґР°РЅРёРµ РІСЂРµРјРµРЅРЅРѕРіРѕ С„Р°Р№Р»Р°
 
 		this.gameField = gameField;
 	}
 
 	/**
-     * Процедура сброс данных при новой игре
+     * РџСЂРѕС†РµРґСѓСЂР° СЃР±СЂРѕСЃ РґР°РЅРЅС‹С… РїСЂРё РЅРѕРІРѕР№ РёРіСЂРµ
      */
 	public void reset() { 
 		File file = new File(path, temp);
@@ -64,7 +64,7 @@ public class Scores {
 	}
 
 	/**
-     * Процедура создание файла при новой игре
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕР·РґР°РЅРёРµ С„Р°Р№Р»Р° РїСЂРё РЅРѕРІРѕР№ РёРіСЂРµ
      */
 	private void createFile() { 
 		FileWriter output = null;
@@ -93,13 +93,13 @@ public class Scores {
 			}
 			writer.close();
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
 	}
 
 	/**
-     * Процедура загрузка счета игры
+     * РџСЂРѕС†РµРґСѓСЂР° Р·Р°РіСЂСѓР·РєР° СЃС‡РµС‚Р° РёРіСЂС‹
      */
 	public void loadGame() { 
 		try {
@@ -119,13 +119,13 @@ public class Scores {
 			}
 			reader.close();
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
 	}
 	
 	/**
-     * Процедура сохранение счета игры
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕС…СЂР°РЅРµРЅРёРµ СЃС‡РµС‚Р° РёРіСЂС‹
      */
 	public void saveGame() { 
 		FileWriter output = null;
@@ -148,54 +148,54 @@ public class Scores {
 			}
 			writer.close();
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
 	}
 
 	/**
-     * Функция получение значения поля {@link #currentTopScore}
-     * @return возвращает лучший текущий счет
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #currentTopScore}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р»СѓС‡С€РёР№ С‚РµРєСѓС‰РёР№ СЃС‡РµС‚
      */
 	public int getCurrentTopScore() {
 		return currentTopScore;
 	}
 
 	/**
-     * Процедура установки лучшего текущего счета
-     * @param currentTopScore - лучший текущий счет
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё Р»СѓС‡С€РµРіРѕ С‚РµРєСѓС‰РµРіРѕ СЃС‡РµС‚Р°
+     * @param currentTopScore - Р»СѓС‡С€РёР№ С‚РµРєСѓС‰РёР№ СЃС‡РµС‚
      */
 	public void setCurrentTopScore(int currentTopScore) {
 		this.currentTopScore = currentTopScore;
 	}
 	
 	/**
-     * Функция получение значения поля {@link #currentScore}
-     * @return возвращает текущий счет
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #currentScore}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰РёР№ СЃС‡РµС‚
      */
 	public int getCurrentScore() {
 		return currentScore;
 	}
 
 	/**
-     * Процедура установки текущего счета
-     * @param currentScore - текущий счет
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё С‚РµРєСѓС‰РµРіРѕ СЃС‡РµС‚Р°
+     * @param currentScore - С‚РµРєСѓС‰РёР№ СЃС‡РµС‚
      */
 	public void setCurrentScore(int currentScore) {
 		this.currentScore = currentScore;
 	}
 	
 	/**
-     * Функция установки значения флага поля {@link #newGame}
-     * @return возвращает флаг новой игры
+     * Р¤СѓРЅРєС†РёСЏ СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ С„Р»Р°РіР° РїРѕР»СЏ {@link #newGame}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РЅРѕРІРѕР№ РёРіСЂС‹
      */
 	public boolean newGame() {
 		return newGame;
 	}
 
 	/**
-     * Функция получение значения поля {@link #field}
-     * @return возвращает значение field
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #field}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ field
      */
 	public int[] getField() {
 		return field;
