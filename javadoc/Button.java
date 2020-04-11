@@ -13,50 +13,50 @@ import mirosha.game.DisplayObject;
 import mirosha.game.Game;
 
 /**
- * Класс для создания GUI кнопок 
+ * РљР»Р°СЃСЃ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ GUI РєРЅРѕРїРѕРє 
  * @author Mirosha
  * @version 1.0
  */
 public class Button { 
 	
-	/** Поле цвет кнопки при бездействии*/
+	/** РџРѕР»Рµ С†РІРµС‚ РєРЅРѕРїРєРё РїСЂРё Р±РµР·РґРµР№СЃС‚РІРёРё*/
 	private Color standart;
 	
-	/** Поле цвет кнопки при наведении*/
+	/** РџРѕР»Рµ С†РІРµС‚ РєРЅРѕРїРєРё РїСЂРё РЅР°РІРµРґРµРЅРёРё*/
 	private Color hover;
 	
-	/** Поле цвет кнопки при нажатии*/
+	/** РџРѕР»Рµ С†РІРµС‚ РєРЅРѕРїРєРё РїСЂРё РЅР°Р¶Р°С‚РёРё*/
 	private Color pressed;
 	
-	/** Поле текст на кнопке*/
+	/** РџРѕР»Рµ С‚РµРєСЃС‚ РЅР° РєРЅРѕРїРєРµ*/
 	private String text = "";
 	
-	/** Поле звук при нажатии на кнопку*/
+	/** РџРѕР»Рµ Р·РІСѓРє РїСЂРё РЅР°Р¶Р°С‚РёРё РЅР° РєРЅРѕРїРєСѓ*/
 	private SetAudio audio;
 	
-	/** Поле стандартное состояние кнопки при бездействии*/
+	/** РџРѕР»Рµ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё Р±РµР·РґРµР№СЃС‚РІРёРё*/
 	private State current = State.RELEASED; 
 	
-	/** Поле оболочка кнопки*/
+	/** РџРѕР»Рµ РѕР±РѕР»РѕС‡РєР° РєРЅРѕРїРєРё*/
 	private Rectangle rectangleButton;
 	
-	/** Поле хранение действий с кнопками*/
+	/** РџРѕР»Рµ С…СЂР°РЅРµРЅРёРµ РґРµР№СЃС‚РІРёР№ СЃ РєРЅРѕРїРєР°РјРё*/
 	private ArrayList<ActionListener> actionListeners; 
 	
-	/** Поле шрифт текста на кнопке*/
+	/** РџРѕР»Рµ С€СЂРёС„С‚ С‚РµРєСЃС‚Р° РЅР° РєРЅРѕРїРєРµ*/
 	private Font font = Game.main.deriveFont(25f); 
 	
 	/** 
-     * Конструктор - создание нового объекта (кнопка) с определенными значениями
-     * @param x - координата x
-     * @param y - координата y
-     * @param width - ширина кнопки
-     * @param height - высота кнопки
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° (РєРЅРѕРїРєР°) СЃ РѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё Р·РЅР°С‡РµРЅРёСЏРјРё
+     * @param x - РєРѕРѕСЂРґРёРЅР°С‚Р° x
+     * @param y - РєРѕРѕСЂРґРёРЅР°С‚Р° y
+     * @param width - С€РёСЂРёРЅР° РєРЅРѕРїРєРё
+     * @param height - РІС‹СЃРѕС‚Р° РєРЅРѕРїРєРё
      */
 	public Button(int x, int y, int width, int height) { 
 		
-		rectangleButton = new Rectangle(x, y, width, height); 		// оболочка кнопки
-		actionListeners = new ArrayList<ActionListener>(); 		    // хранение действий	
+		rectangleButton = new Rectangle(x, y, width, height); 		// РѕР±РѕР»РѕС‡РєР° РєРЅРѕРїРєРё
+		actionListeners = new ArrayList<ActionListener>(); 		    // С…СЂР°РЅРµРЅРёРµ РґРµР№СЃС‚РІРёР№	
 		
 		standart = new Color(191, 11, 11); 		
 		hover = new Color(220, 39, 39); 		
@@ -67,19 +67,19 @@ public class Button {
 	}
 	
 	/**
-     * Процедура рендер кнопки 
-     * @param graphics - создание фигуры кнопки для рендера
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ РєРЅРѕРїРєРё 
+     * @param graphics - СЃРѕР·РґР°РЅРёРµ С„РёРіСѓСЂС‹ РєРЅРѕРїРєРё РґР»СЏ СЂРµРЅРґРµСЂР°
      */
 	public void renderButton(Graphics2D graphics) { 
-		if(current == State.RELEASED) { 			// рендер при отпускании
+		if(current == State.RELEASED) { 			// СЂРµРЅРґРµСЂ РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё
 			graphics.setColor(standart);
 			graphics.fill(rectangleButton);
 		}
-		else if(current == State.PRESSED) {			// рендер при нажатии
+		else if(current == State.PRESSED) {			// СЂРµРЅРґРµСЂ РїСЂРё РЅР°Р¶Р°С‚РёРё
 			graphics.setColor(pressed);
 			graphics.fill(rectangleButton);
 		}
-		else { 										// рендер при наведении
+		else { 										// СЂРµРЅРґРµСЂ РїСЂРё РЅР°РІРµРґРµРЅРёРё
 			graphics.setColor(hover);
 			graphics.fill(rectangleButton);
 		}
@@ -89,21 +89,21 @@ public class Button {
 	}
 	
 	/**
-     * Процедура обновление кнопки 
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ РєРЅРѕРїРєРё 
      */
 	public void update() {}
 	
 	/**
-     * Процедура добавление действия с кнопкой
-     * @param listener - прием событий с кнопкой
+     * РџСЂРѕС†РµРґСѓСЂР° РґРѕР±Р°РІР»РµРЅРёРµ РґРµР№СЃС‚РІРёСЏ СЃ РєРЅРѕРїРєРѕР№
+     * @param listener - РїСЂРёРµРј СЃРѕР±С‹С‚РёР№ СЃ РєРЅРѕРїРєРѕР№
      */
 	public void addActionListener(ActionListener listener) { 
 		actionListeners.add(listener);
 	}
 	
 	/**
-     * Процедура состояние кнопки при нажатии мыши
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mousePressed(MouseEvent event) { 
 		if(rectangleButton.contains(event.getPoint())) {
@@ -112,8 +112,8 @@ public class Button {
 	}
 
 	/**
-     * Процедура состояние кнопки при отпускании мыши
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РјС‹С€Рё
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mouseReleased(MouseEvent event) {
 		if(rectangleButton.contains(event.getPoint())) {
@@ -126,8 +126,8 @@ public class Button {
 	}
 
 	/**
-     * Процедура состояние кнопки при захвате мышью
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё Р·Р°С…РІР°С‚Рµ РјС‹С€СЊСЋ
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mouseDragged(MouseEvent event) { 
 		if(rectangleButton.contains(event.getPoint())) {
@@ -139,8 +139,8 @@ public class Button {
 	}
 
 	/**
-     * Процедура состояние кнопки при движении/наведении мыши
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РґРІРёР¶РµРЅРёРё/РЅР°РІРµРґРµРЅРёРё РјС‹С€Рё
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mouseMoved(MouseEvent event) {  
 		if(rectangleButton.contains(event.getPoint())) {
@@ -152,38 +152,38 @@ public class Button {
 	}
 	
 	/**
-     * Перечесление состояний кнопки при действиях мыши
-     * состояния: наведено, отпущено, нажато
+     * РџРµСЂРµС‡РµСЃР»РµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёР№ РєРЅРѕРїРєРё РїСЂРё РґРµР№СЃС‚РІРёСЏС… РјС‹С€Рё
+     * СЃРѕСЃС‚РѕСЏРЅРёСЏ: РЅР°РІРµРґРµРЅРѕ, РѕС‚РїСѓС‰РµРЅРѕ, РЅР°Р¶Р°С‚Рѕ
      */
 	private enum State { HOVER, RELEASED, PRESSED }
 	
 	/**
-     * Функция получения значения поля {@link #rectangleButton.x}
-     * @return возвращает координату Х кнопки
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #rectangleButton.x}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ РҐ РєРЅРѕРїРєРё
      */
 	public int getX() { return rectangleButton.x; }
 	
 	/**
-     * Функция получения значения поля {@link #rectangleButton.y}
-     * @return возвращает координату Y кнопки
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #rectangleButton.y}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ Y РєРЅРѕРїРєРё
      */
 	public int getY() { return rectangleButton.y; }
 	
 	/**
-     * Функция получения значения поля {@link #rectangleButton.width}
-     * @return возвращает ширину кнопки
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #rectangleButton.width}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С€РёСЂРёРЅСѓ РєРЅРѕРїРєРё
      */
 	public int getWidth() { return rectangleButton.width; }
 	
 	/**
-     * Функция получения значения поля {@link #rectangleButton.height}
-     * @return возвращает высоту кнопки
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #rectangleButton.height}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РІС‹СЃРѕС‚Сѓ РєРЅРѕРїРєРё
      */
 	public int getHeight() { return rectangleButton.height; }
 	
 	/**
-     * Процедура установки текста на кнопке
-     * @param text - текст кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё С‚РµРєСЃС‚Р° РЅР° РєРЅРѕРїРєРµ
+     * @param text - С‚РµРєСЃС‚ РєРЅРѕРїРєРё
      */
 	public void setText(String text) { this.text = text; }
 }
