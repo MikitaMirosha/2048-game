@@ -37,4 +37,7 @@ screenshots: содержатся скриншоты окон игры
 7. https://www.geeksforgeeks.org/synchronized-in-java/
 8. https://vertex-academy.com/tutorials/ru/pattern-singleton-realizacii/
 9. http://proglang.su/java
+10. http://proglang.su/java/exceptions
+11. http://proglang.su/java/exceptions-built-in-exceptions
+12. https://habr.com/ru/post/337536/
 ***********************************************************************************************************************
