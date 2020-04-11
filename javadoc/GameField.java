@@ -9,76 +9,76 @@ import java.util.Random;
 import javax.sound.sampled.Clip;
 
 /**
- * Класс для работы с игровым полем
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РёРіСЂРѕРІС‹Рј РїРѕР»РµРј
  * @author Mirosha
  * @version 1.0
  */
 public class GameField { 
 
-	/** Поле строк*/
+	/** РџРѕР»Рµ СЃС‚СЂРѕРє*/
 	public static final int ROWS = 4; 
 	
-	/** Поле столбцов*/
+	/** РџРѕР»Рµ СЃС‚РѕР»Р±С†РѕРІ*/
 	public static final int COLS = 4;
 	
-	/** Поле расстояние между кубиками*/
+	/** РџРѕР»Рµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РєСѓР±РёРєР°РјРё*/
 	private static int DISTANCE = 10; 
 	
-	/** Поле ширина игрового поля*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ*/
 	public static int FIELDW = (COLS + 1) * DISTANCE + COLS * Cube.WIDTH;
 	
-	/** Поле высота игрового поля*/
+	/** РџРѕР»Рµ РІС‹СЃРѕС‚Р° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ*/
 	public static int FIELDH = (ROWS + 1) * DISTANCE + ROWS * Cube.HEIGHT;
 
-	/** Поле координата x*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° x*/
 	private int x; 
 	
-	/** Поле координата y*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° y*/
 	private int y;
 	
-	/** Поле флаг выигрыша*/
+	/** РџРѕР»Рµ С„Р»Р°Рі РІС‹РёРіСЂС‹С€Р°*/
 	private boolean won;
 	
-	/** Поле флаг проигрыша*/
+	/** РџРѕР»Рµ С„Р»Р°Рі РїСЂРѕРёРіСЂС‹С€Р°*/
 	private boolean dead;
 	
-	/** Поле массив для размещения кубов на поле*/
+	/** РџРѕР»Рµ РјР°СЃСЃРёРІ РґР»СЏ СЂР°Р·РјРµС‰РµРЅРёСЏ РєСѓР±РѕРІ РЅР° РїРѕР»Рµ*/
 	private Cube[][] field; 
 	
-	/** Поле для фона игрового поля*/
+	/** РџРѕР»Рµ РґР»СЏ С„РѕРЅР° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ*/
 	private BufferedImage gameField; 
 	
-	/** Поле количество начальных спаунов кубов*/
+	/** РџРѕР»Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅР°С‡Р°Р»СЊРЅС‹С… СЃРїР°СѓРЅРѕРІ РєСѓР±РѕРІ*/
 	private final int initialCubesSpawn = 2; 
 	
-	/** Поле ключ направления влево*/
+	/** РџРѕР»Рµ РєР»СЋС‡ РЅР°РїСЂР°РІР»РµРЅРёСЏ РІР»РµРІРѕ*/
 	public static final int LEFT = 0; 
 	
-	/** Поле ключ направления вправо*/
+	/** РџРѕР»Рµ РєР»СЋС‡ РЅР°РїСЂР°РІР»РµРЅРёСЏ РІРїСЂР°РІРѕ*/
 	public static final int RIGHT = 1;
 	
-	/** Поле ключ направления вверх*/
+	/** РџРѕР»Рµ РєР»СЋС‡ РЅР°РїСЂР°РІР»РµРЅРёСЏ РІРІРµСЂС…*/
 	public static final int UP = 2;
 	
-	/** Поле ключ направления вниз*/
+	/** РџРѕР»Рµ РєР»СЋС‡ РЅР°РїСЂР°РІР»РµРЅРёСЏ РІРЅРёР·*/
 	public static final int DOWN = 3;
 
-	/** Поле счет игры*/
+	/** РџРѕР»Рµ СЃС‡РµС‚ РёРіСЂС‹*/
 	private Scores scores;
 	
-	/** Поле лучшие результаты игры*/
+	/** РџРѕР»Рµ Р»СѓС‡С€РёРµ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РёРіСЂС‹*/
 	private Leaders leaders;
 	
-	/** Поле установки аудио в игре*/
+	/** РџРѕР»Рµ СѓСЃС‚Р°РЅРѕРІРєРё Р°СѓРґРёРѕ РІ РёРіСЂРµ*/
 	private SetAudio audio;
 	
-	/** Поле счетчик сохранения*/
+	/** РџРѕР»Рµ СЃС‡РµС‚С‡РёРє СЃРѕС…СЂР°РЅРµРЅРёСЏ*/
 	private int saveCount = 0;
 
 	/** 
-     * Конструктор - создание нового объекта игровое поле
-     * @param x - координата x
-     * @param y - координата y
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
+     * @param x - РєРѕРѕСЂРґРёРЅР°С‚Р° x
+     * @param y - РєРѕРѕСЂРґРёРЅР°С‚Р° y
      */
 	public GameField(int x, int y) { 
 		this.x = x;
@@ -87,14 +87,14 @@ public class GameField {
 		gameField = new BufferedImage(FIELDW, FIELDH, BufferedImage.TYPE_INT_RGB);
 		createFieldImage();
 
-		// установка аудио:
+		// СѓСЃС‚Р°РЅРѕРІРєР° Р°СѓРґРёРѕ:
 		audio = SetAudio.getInstance();
 		audio.loadAudio("move.wav", "move"); 
 		audio.loadAudio("main.mp3", "background"); 
 		audio.adjustVolume("background", -10); 
 		audio.playAudio("background", Clip.LOOP_CONTINUOUSLY); 
 
-		// установка списка лучших результатов игры:
+		// СѓСЃС‚Р°РЅРѕРІРєР° СЃРїРёСЃРєР° Р»СѓС‡С€РёС… СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёРіСЂС‹:
 		leaders = Leaders.getInstance();
 		leaders.loadScores();
 		scores = new Scores(this);
@@ -116,7 +116,7 @@ public class GameField {
 	}
 
 	/**
-     * Процедура сброс данных при новой игре
+     * РџСЂРѕС†РµРґСѓСЂР° СЃР±СЂРѕСЃ РґР°РЅРЅС‹С… РїСЂРё РЅРѕРІРѕР№ РёРіСЂРµ
      */
 	public void resetData() { 
 		field = new Cube[ROWS][COLS];
@@ -128,7 +128,7 @@ public class GameField {
 	}
 
 	/**
-     * Процедура спаун 2 рандомных куба в начале игры
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРїР°СѓРЅ 2 СЂР°РЅРґРѕРјРЅС‹С… РєСѓР±Р° РІ РЅР°С‡Р°Р»Рµ РёРіСЂС‹
      */
 	private void start() { 
 		for (int i = 0; i < initialCubesSpawn; i++) {
@@ -137,25 +137,25 @@ public class GameField {
 	}
 
 	/**
-     * Процедура спаун кубов в массиве
-     * @param row - строки
-     * @param col - столбцы
-     * @param value - взначение
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРїР°СѓРЅ РєСѓР±РѕРІ РІ РјР°СЃСЃРёРІРµ
+     * @param row - СЃС‚СЂРѕРєРё
+     * @param col - СЃС‚РѕР»Р±С†С‹
+     * @param value - РІР·РЅР°С‡РµРЅРёРµ
      */
 	private void spawn(int row, int col, int value) { 
 		field[row][col] = new Cube(value, getCubeX(col), getCubeY(row));
 	}
 
 	/**
-     * Процедура создание изображения на игровом поле
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕР·РґР°РЅРёРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РЅР° РёРіСЂРѕРІРѕРј РїРѕР»Рµ
      */
 	private void createFieldImage() { 
 		Graphics2D graphics = (Graphics2D) gameField.getGraphics();
-		graphics.setColor(Color.darkGray); // фон подложки поля под кубы
+		graphics.setColor(Color.darkGray); // С„РѕРЅ РїРѕРґР»РѕР¶РєРё РїРѕР»СЏ РїРѕРґ РєСѓР±С‹
 		graphics.fillRect(0, 0, FIELDW, FIELDH);
-		graphics.setColor(Color.lightGray); // фон подложки под пустые ячейки
+		graphics.setColor(Color.lightGray); // С„РѕРЅ РїРѕРґР»РѕР¶РєРё РїРѕРґ РїСѓСЃС‚С‹Рµ СЏС‡РµР№РєРё
 
-		// отрисовка кубов в массиве:
+		// РѕС‚СЂРёСЃРѕРІРєР° РєСѓР±РѕРІ РІ РјР°СЃСЃРёРІРµ:
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				int x = DISTANCE + DISTANCE * col + Cube.WIDTH * col; 
@@ -166,7 +166,7 @@ public class GameField {
 	}
 
 	/**
-     * Процедура обновление игрового поля
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ
      */
 	public void updateField() {
 		saveCount++;
@@ -195,13 +195,13 @@ public class GameField {
 	}
 
 	/**
-     * Процедура рендер конечного изображения на игровом поле
-     * @param graphics - графика изображения на игровом поле
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ РєРѕРЅРµС‡РЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РЅР° РёРіСЂРѕРІРѕРј РїРѕР»Рµ
+     * @param graphics - РіСЂР°С„РёРєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РЅР° РёРіСЂРѕРІРѕРј РїРѕР»Рµ
      */
 	public void renderFinal(Graphics2D graphics) { 
 		BufferedImage finalBoard = new BufferedImage(FIELDW, FIELDH, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graph = (Graphics2D) finalBoard.getGraphics();
-		graph.setColor(new Color(0, 0, 0, 0));	// прозрачный цвет
+		graph.setColor(new Color(0, 0, 0, 0));	// РїСЂРѕР·СЂР°С‡РЅС‹Р№ С†РІРµС‚
 		graph.fillRect(0, 0, FIELDW, FIELDH); 
 		graph.drawImage(gameField, 0, 0, null); 
 
@@ -213,27 +213,27 @@ public class GameField {
 			}
 		}
 
-		graphics.drawImage(finalBoard, x, y, null); // отрисовка конечного изображения
+		graphics.drawImage(finalBoard, x, y, null); // РѕС‚СЂРёСЃРѕРІРєР° РєРѕРЅРµС‡РЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 		graph.dispose(); 
 	}
 
 	/**
-     * Процедура сброс позиции
-     * @param cube - куб
-     * @param row - строка
-     * @param col - столбец
+     * РџСЂРѕС†РµРґСѓСЂР° СЃР±СЂРѕСЃ РїРѕР·РёС†РёРё
+     * @param cube - РєСѓР±
+     * @param row - СЃС‚СЂРѕРєР°
+     * @param col - СЃС‚РѕР»Р±РµС†
      */
 	private void resetPos(Cube cube, int row, int col) { 
-		if (cube == null) return; // запрещено движение
+		if (cube == null) return; // Р·Р°РїСЂРµС‰РµРЅРѕ РґРІРёР¶РµРЅРёРµ
 
 		int x = getCubeX(col);
 		int y = getCubeY(row);
 
-		// получение координат кубов при движении 
+		// РїРѕР»СѓС‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РєСѓР±РѕРІ РїСЂРё РґРІРёР¶РµРЅРёРё 
 		int distX = cube.getX() - x;
 		int distY = cube.getY() - y;
 
-		// Math.abs - получение модуля числа
+		// Math.abs - РїРѕР»СѓС‡РµРЅРёРµ РјРѕРґСѓР»СЏ С‡РёСЃР»Р°
 		if (Math.abs(distX) < Cube.SPEED) {
 			cube.setX(cube.getX() - distX);
 		}
@@ -257,11 +257,11 @@ public class GameField {
 	}
 
 	/**
-     * Функция проверка направления передвижения кубов
-     * @param dir - направление
-     * @param row - строка
-     * @param col - столбец
-     * @return возвращает флаг проверки направления
+     * Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєР° РЅР°РїСЂР°РІР»РµРЅРёСЏ РїРµСЂРµРґРІРёР¶РµРЅРёСЏ РєСѓР±РѕРІ
+     * @param dir - РЅР°РїСЂР°РІР»РµРЅРёРµ
+     * @param row - СЃС‚СЂРѕРєР°
+     * @param col - СЃС‚РѕР»Р±РµС†
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РїСЂРѕРІРµСЂРєРё РЅР°РїСЂР°РІР»РµРЅРёСЏ
      */
 	private boolean boundCheck(int dir, int row, int col) {
 		if (dir == LEFT) {
@@ -280,39 +280,39 @@ public class GameField {
 	}
 
 	/**
-     * Функция передвижение кубов 
-     * @param row - строка
-     * @param col - столбец
-     * @param horDir - горизонтальное направление
-     * @param verDir - вертикальное направление
-     * @param dir - направление 
-     * @return возвращает разрешение на передвижение
+     * Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРґРІРёР¶РµРЅРёРµ РєСѓР±РѕРІ 
+     * @param row - СЃС‚СЂРѕРєР°
+     * @param col - СЃС‚РѕР»Р±РµС†
+     * @param horDir - РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРµ РЅР°РїСЂР°РІР»РµРЅРёРµ
+     * @param verDir - РІРµСЂС‚РёРєР°Р»СЊРЅРѕРµ РЅР°РїСЂР°РІР»РµРЅРёРµ
+     * @param dir - РЅР°РїСЂР°РІР»РµРЅРёРµ 
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ СЂР°Р·СЂРµС€РµРЅРёРµ РЅР° РїРµСЂРµРґРІРёР¶РµРЅРёРµ
      */
 	private boolean moveCubes(int row, int col, int horDir, int verDir, int dir) {
-		boolean moveAbility = false; // нет возможности передвинуть на свободное место
-		Cube currentCube = field[row][col]; // установка текущего куба 
+		boolean moveAbility = false; // РЅРµС‚ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РїРµСЂРµРґРІРёРЅСѓС‚СЊ РЅР° СЃРІРѕР±РѕРґРЅРѕРµ РјРµСЃС‚Рѕ
+		Cube currentCube = field[row][col]; // СѓСЃС‚Р°РЅРѕРІРєР° С‚РµРєСѓС‰РµРіРѕ РєСѓР±Р° 
 		if (currentCube == null) return false;
-		boolean move = true; // флаг передвижения
+		boolean move = true; // С„Р»Р°Рі РїРµСЂРµРґРІРёР¶РµРЅРёСЏ
 		int newCol = col;
 		int newRow = row;
 		while (move) {
 			newCol += horDir;
 			newRow += verDir;
 			if (boundCheck(dir, newRow, newCol)) break;
-			if (field[newRow][newCol] == null) { // если куб передвигается на новое место без комбинирования с другим
-				field[newRow][newCol] = currentCube; // готовим установку текущего куба на новое место
-				moveAbility = true; // есть возможность передвинуть на свободное место
-				field[newRow - verDir][newCol - horDir] = null; // освобождаем место откуда сдвинули
-				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // передвигаем на новое место
-			} // если куб двигается на место другого куба с одинаковым значением, то надо их комбинировать
+			if (field[newRow][newCol] == null) { // РµСЃР»Рё РєСѓР± РїРµСЂРµРґРІРёРіР°РµС‚СЃСЏ РЅР° РЅРѕРІРѕРµ РјРµСЃС‚Рѕ Р±РµР· РєРѕРјР±РёРЅРёСЂРѕРІР°РЅРёСЏ СЃ РґСЂСѓРіРёРј
+				field[newRow][newCol] = currentCube; // РіРѕС‚РѕРІРёРј СѓСЃС‚Р°РЅРѕРІРєСѓ С‚РµРєСѓС‰РµРіРѕ РєСѓР±Р° РЅР° РЅРѕРІРѕРµ РјРµСЃС‚Рѕ
+				moveAbility = true; // РµСЃС‚СЊ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїРµСЂРµРґРІРёРЅСѓС‚СЊ РЅР° СЃРІРѕР±РѕРґРЅРѕРµ РјРµСЃС‚Рѕ
+				field[newRow - verDir][newCol - horDir] = null; // РѕСЃРІРѕР±РѕР¶РґР°РµРј РјРµСЃС‚Рѕ РѕС‚РєСѓРґР° СЃРґРІРёРЅСѓР»Рё
+				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // РїРµСЂРµРґРІРёРіР°РµРј РЅР° РЅРѕРІРѕРµ РјРµСЃС‚Рѕ
+			} // РµСЃР»Рё РєСѓР± РґРІРёРіР°РµС‚СЃСЏ РЅР° РјРµСЃС‚Рѕ РґСЂСѓРіРѕРіРѕ РєСѓР±Р° СЃ РѕРґРёРЅР°РєРѕРІС‹Рј Р·РЅР°С‡РµРЅРёРµРј, С‚Рѕ РЅР°РґРѕ РёС… РєРѕРјР±РёРЅРёСЂРѕРІР°С‚СЊ
 			else if (field[newRow][newCol].getValue() == currentCube.getValue() && field[newRow][newCol].uniteAbility()) {
-				field[newRow][newCol].setUniteAbility(false); // больше нельзя объединять
-				field[newRow][newCol].setValue(field[newRow][newCol].getValue() * 2); // увеличиваем результат в 2 раза
-				moveAbility = true; // есть возможность передвинуть на свободное место
-				field[newRow - verDir][newCol - horDir] = null; // освобождаем место откуда сдвинули
-				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // передвигаем на новое место
-				field[newRow][newCol].setUniteAnimation(true); // анимируем
-				scores.setCurrentScore(scores.getCurrentScore() + field[newRow][newCol].getValue()); // устанавливаем счет
+				field[newRow][newCol].setUniteAbility(false); // Р±РѕР»СЊС€Рµ РЅРµР»СЊР·СЏ РѕР±СЉРµРґРёРЅСЏС‚СЊ
+				field[newRow][newCol].setValue(field[newRow][newCol].getValue() * 2); // СѓРІРµР»РёС‡РёРІР°РµРј СЂРµР·СѓР»СЊС‚Р°С‚ РІ 2 СЂР°Р·Р°
+				moveAbility = true; // РµСЃС‚СЊ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїРµСЂРµРґРІРёРЅСѓС‚СЊ РЅР° СЃРІРѕР±РѕРґРЅРѕРµ РјРµСЃС‚Рѕ
+				field[newRow - verDir][newCol - horDir] = null; // РѕСЃРІРѕР±РѕР¶РґР°РµРј РјРµСЃС‚Рѕ РѕС‚РєСѓРґР° СЃРґРІРёРЅСѓР»Рё
+				field[newRow][newCol].setSlide(new Spot(newRow, newCol)); // РїРµСЂРµРґРІРёРіР°РµРј РЅР° РЅРѕРІРѕРµ РјРµСЃС‚Рѕ
+				field[newRow][newCol].setUniteAnimation(true); // Р°РЅРёРјРёСЂСѓРµРј
+				scores.setCurrentScore(scores.getCurrentScore() + field[newRow][newCol].getValue()); // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃС‡РµС‚
 			}
 			else {
 				move = false;
@@ -322,8 +322,8 @@ public class GameField {
 	}
 	
 	/**
-     * Процедура предугадывание движение/комбинация куба
-     * @param dir - направление куба
+     * РџСЂРѕС†РµРґСѓСЂР° РїСЂРµРґСѓРіР°РґС‹РІР°РЅРёРµ РґРІРёР¶РµРЅРёРµ/РєРѕРјР±РёРЅР°С†РёСЏ РєСѓР±Р°
+     * @param dir - РЅР°РїСЂР°РІР»РµРЅРёРµ РєСѓР±Р°
      */
 	public void moveCubeDir(int dir) {
 		boolean moveAbility = false;
@@ -375,20 +375,20 @@ public class GameField {
 			for (int col = 0; col < COLS; col++) {
 				Cube currentCube = field[row][col];
 				if (currentCube == null) continue;
-				currentCube.setUniteAbility(true); // объединение
+				currentCube.setUniteAbility(true); // РѕР±СЉРµРґРёРЅРµРЅРёРµ
 			}
 		}
 
-		if (moveAbility) { 				// если можно двигать, то
-			audio.playAudio("move", 0); // работает звук передвижения
-			spawnRandomCubes(); 		// спаун нового куба
-			setDead(checkDead()); 		// проверка на проигрыш
+		if (moveAbility) { 				// РµСЃР»Рё РјРѕР¶РЅРѕ РґРІРёРіР°С‚СЊ, С‚Рѕ
+			audio.playAudio("move", 0); // СЂР°Р±РѕС‚Р°РµС‚ Р·РІСѓРє РїРµСЂРµРґРІРёР¶РµРЅРёСЏ
+			spawnRandomCubes(); 		// СЃРїР°СѓРЅ РЅРѕРІРѕРіРѕ РєСѓР±Р°
+			setDead(checkDead()); 		// РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРѕРёРіСЂС‹С€
 		}
 	}
 	
 	/**
-     * Функция проверка на выигрыш (если набрали 2048)
-     * @return возвращает флаг выигрыша
+     * Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєР° РЅР° РІС‹РёРіСЂС‹С€ (РµСЃР»Рё РЅР°Р±СЂР°Р»Рё 2048)
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РІС‹РёРіСЂС‹С€Р°
      */
 	private boolean checkWon() {
 		for (int row = 0; row < ROWS; row++) {
@@ -401,8 +401,8 @@ public class GameField {
 	}
 
 	/**
-     * Функция проверка на проигрыш 
-     * @return возвращает флаг проигрыша
+     * Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРѕРёРіСЂС‹С€ 
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РїСЂРѕРёРіСЂС‹С€Р°
      */ 
 	private boolean checkDead() {
 		for (int row = 0; row < ROWS; row++) {
@@ -418,11 +418,11 @@ public class GameField {
 	}
 
 	/**
-     * Функция проверка ближайших кубов к текущему кубу
-     * @param row - строка
-     * @param col - столбец
-     * @param cube - куб
-     * @return возвращает флаг проверки
+     * Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєР° Р±Р»РёР¶Р°Р№С€РёС… РєСѓР±РѕРІ Рє С‚РµРєСѓС‰РµРјСѓ РєСѓР±Сѓ
+     * @param row - СЃС‚СЂРѕРєР°
+     * @param col - СЃС‚РѕР»Р±РµС†
+     * @param cube - РєСѓР±
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РїСЂРѕРІРµСЂРєРё
      */
 	private boolean checkNearCubes(int row, int col, Cube cube) {
 		if (row > 0) {
@@ -449,7 +449,7 @@ public class GameField {
 	}
 
 	/**
-     * Процедура спаун новых кубов
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРїР°СѓРЅ РЅРѕРІС‹С… РєСѓР±РѕРІ
      */
 	private void spawnRandomCubes() { 
 		Random randomCubes = new Random();
@@ -460,8 +460,8 @@ public class GameField {
 			int row = position / ROWS;
 			int col = position % COLS;
 			Cube currentCube = field[row][col];
-			if (currentCube == null) { // спаун
-				int value = randomCubes.nextInt(10) < 9 ? 2 : 4; // поиск рандомного числа от 0 до 9 (90% - спаун для 2, 10% - для 4)
+			if (currentCube == null) { // СЃРїР°СѓРЅ
+				int value = randomCubes.nextInt(10) < 9 ? 2 : 4; // РїРѕРёСЃРє СЂР°РЅРґРѕРјРЅРѕРіРѕ С‡РёСЃР»Р° РѕС‚ 0 РґРѕ 9 (90% - СЃРїР°СѓРЅ РґР»СЏ 2, 10% - РґР»СЏ 4)
 				Cube cube = new Cube(value, getCubeX(col), getCubeY(row));
 				field[row][col] = cube;
 				disabled = false;
@@ -470,7 +470,7 @@ public class GameField {
 	}
 
 	/**
-     * Процедура проверка ключей клавиатуры и установка направлений кубов
+     * РџСЂРѕС†РµРґСѓСЂР° РїСЂРѕРІРµСЂРєР° РєР»СЋС‡РµР№ РєР»Р°РІРёР°С‚СѓСЂС‹ Рё СѓСЃС‚Р°РЅРѕРІРєР° РЅР°РїСЂР°РІР»РµРЅРёР№ РєСѓР±РѕРІ
      */
 	private void checkKeyboard() { 
 		if (!Keyboard.pressedKey[KeyEvent.VK_LEFT] && Keyboard.previousKey[KeyEvent.VK_LEFT]) {
@@ -488,83 +488,83 @@ public class GameField {
 	}
 
 	/**
-     * Функция установка нового значения куба
-     * @return возвращает значение куба
+     * Р¤СѓРЅРєС†РёСЏ СѓСЃС‚Р°РЅРѕРІРєР° РЅРѕРІРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ РєСѓР±Р°
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РєСѓР±Р°
      */
 	public int getNewBiggestValue() { 
-		int cubeValue = 2; 				// минимальное начальное значение куба
+		int cubeValue = 2; 				// РјРёРЅРёРјР°Р»СЊРЅРѕРµ РЅР°С‡Р°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РєСѓР±Р°
 		for(int row = 0; row < ROWS; row++) {
 			for(int col = 0; col < COLS; col++) {
 				if(field[row][col] == null) continue;
 				if(field[row][col].getValue() > cubeValue) 
-					cubeValue = field[row][col].getValue(); // установка следующего значения
+					cubeValue = field[row][col].getValue(); // СѓСЃС‚Р°РЅРѕРІРєР° СЃР»РµРґСѓСЋС‰РµРіРѕ Р·РЅР°С‡РµРЅРёСЏ
 			}
 		}
 		return cubeValue;
 	}
 	
 	/**
-     * Функция получения значения поля {@link #x}
-     * @return возвращает координату x
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #x}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ x
      */
 	public int getX() { return x; }
 
 	/**
-     * Процедура установки координаты x
-     * @param x - координатa x
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё РєРѕРѕСЂРґРёРЅР°С‚С‹ x
+     * @param x - РєРѕРѕСЂРґРёРЅР°С‚a x
      */
 	public void setX(int x) { this.x = x; }
 
 	/**
-     * Функция получения значения поля {@link #y}
-     * @return возвращает координату y
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #y}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ y
      */
 	public int getY() { return y; }
 
 	/**
-     * Процедура установки координаты y
-     * @param y - координатa y
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё РєРѕРѕСЂРґРёРЅР°С‚С‹ y
+     * @param y - РєРѕРѕСЂРґРёРЅР°С‚a y
      */
 	public void setY(int y) { this.y = y; }
 	
 	/**
-     * Функция получения значения поля {@link #field}
-     * @return возвращает расположение куба на поле 
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #field}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµ РєСѓР±Р° РЅР° РїРѕР»Рµ 
      */
 	public Cube[][] getField() { return field; }
 	
 	/**
-     * Процедура установки расположения куба на поле
-     * @param field - координата куба на поле
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ РєСѓР±Р° РЅР° РїРѕР»Рµ
+     * @param field - РєРѕРѕСЂРґРёРЅР°С‚Р° РєСѓР±Р° РЅР° РїРѕР»Рµ
      */
 	public void setField(Cube[][] field) { this.field = field; }
 	
 	/**
-     * Функция получения значения поля {@link #won}
-     * @return возвращает флаг выигрыша (2048 и более)
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #won}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РІС‹РёРіСЂС‹С€Р° (2048 Рё Р±РѕР»РµРµ)
      */
 	public boolean getWon() { return won; } 
 
 	/**
-     * Процедура установки флага выигрыша
-     * @param won - флаг выигрыша
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё С„Р»Р°РіР° РІС‹РёРіСЂС‹С€Р°
+     * @param won - С„Р»Р°Рі РІС‹РёРіСЂС‹С€Р°
      */
 	public void setWon(boolean won) { 
 		if(!this.won && won && !dead){ 
-			leaders.saveScores(); // сохранение счета
+			leaders.saveScores(); // СЃРѕС…СЂР°РЅРµРЅРёРµ СЃС‡РµС‚Р°
 		}
 		this.won = won;
 	}
 	
 	/**
-     * Функция получения значения поля {@link #dead}
-     * @return возвращает флаг проигрыша
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #dead}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ С„Р»Р°Рі РїСЂРѕРёРіСЂС‹С€Р°
      */
 	public boolean getDead() { return dead; }
 
 	/**
-     * Процедура установки флага проигрыша
-     * @param dead - флаг проигрыша
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё С„Р»Р°РіР° РїСЂРѕРёРіСЂС‹С€Р°
+     * @param dead - С„Р»Р°Рі РїСЂРѕРёРіСЂС‹С€Р°
      */
 	public void setDead(boolean dead) { 
 		if(!this.dead && dead) { 
@@ -576,26 +576,26 @@ public class GameField {
 	}
 	
 	/**
-     * Функция получения значения поля {@link #col}
-     * @param col - столбец
-     * @return возвращает координату по столбцу
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #col}
+     * @param col - СЃС‚РѕР»Р±РµС†
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ РїРѕ СЃС‚РѕР»Р±С†Сѓ
      */
 	public int getCubeX(int col) {
 		return DISTANCE + col * Cube.WIDTH + col * DISTANCE;
 	}
 
 	/**
-     * Функция получения значения поля {@link #row}
-     * @param row - строка
-     * @return возвращает координату по строке
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #row}
+     * @param row - СЃС‚СЂРѕРєР°
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ РїРѕ СЃС‚СЂРѕРєРµ
      */
 	public int getCubeY(int row) {
 		return DISTANCE + row * Cube.HEIGHT + row * DISTANCE;
 	}
 	
 	/**
-     * Функция получения значения поля {@link #scores}
-     * @return возвращает счет игры
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #scores}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ СЃС‡РµС‚ РёРіСЂС‹
      */
 	public Scores getScores(){ return scores; }
 }
