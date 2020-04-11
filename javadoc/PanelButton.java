@@ -5,41 +5,41 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
- * Класс для работы с GUI кнопками
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ GUI РєРЅРѕРїРєР°РјРё
  * @author Mirosha
  * @version 1.0
  */
 public class PanelButton { 
 
-	/** Поле хранение кнопок из класса {@link #Button}*/
+	/** РџРѕР»Рµ С…СЂР°РЅРµРЅРёРµ РєРЅРѕРїРѕРє РёР· РєР»Р°СЃСЃР° {@link #Button}*/
 	private ArrayList<Button> buttons;
 	
 	/** 
-     * Конструктор - создание нового объекта кнопки
-     * и хранение в массиве для дальнейшего рендера
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РєРЅРѕРїРєРё
+     * Рё С…СЂР°РЅРµРЅРёРµ РІ РјР°СЃСЃРёРІРµ РґР»СЏ РґР°Р»СЊРЅРµР№С€РµРіРѕ СЂРµРЅРґРµСЂР°
      */
 	public PanelButton() {
 		buttons = new ArrayList<Button>();
 	}
 	
 	/**
-     * Процедура добавление кнопки 
-     * @param button - кнопка
+     * РџСЂРѕС†РµРґСѓСЂР° РґРѕР±Р°РІР»РµРЅРёРµ РєРЅРѕРїРєРё 
+     * @param button - РєРЅРѕРїРєР°
      */
 	public void addButton(Button button) {
 		buttons.add(button);
 	}
 	
 	/**
-     * Процедура удаление кнопки 
-     * @param button - кнопка
+     * РџСЂРѕС†РµРґСѓСЂР° СѓРґР°Р»РµРЅРёРµ РєРЅРѕРїРєРё 
+     * @param button - РєРЅРѕРїРєР°
      */
 	public void removeButton(Button button) { 
 		buttons.remove(button);
 	}
 	
 	/**
-     * Процедура обновление панели
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ РїР°РЅРµР»Рё
      */
 	public void updatePanel() { 
 		for(Button button : buttons) {
@@ -48,8 +48,8 @@ public class PanelButton {
 	}
 	
 	/**
-     * Процедура рендер панели
-     * @param graphics -  создание фигуры панели для рендера
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ РїР°РЅРµР»Рё
+     * @param graphics -  СЃРѕР·РґР°РЅРёРµ С„РёРіСѓСЂС‹ РїР°РЅРµР»Рё РґР»СЏ СЂРµРЅРґРµСЂР°
      */
 	public void renderPanel(Graphics2D graphics) { 
 		for(Button button : buttons) {
@@ -58,8 +58,8 @@ public class PanelButton {
 	}
 	
 	/**
-     * Процедура состояние кнопки при движении/наведении мыши
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РґРІРёР¶РµРЅРёРё/РЅР°РІРµРґРµРЅРёРё РјС‹С€Рё
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mouseMoved(MouseEvent event) { 
 		for(Button button : buttons) {
@@ -68,8 +68,8 @@ public class PanelButton {
 	}
 	
 	/**
-     * Процедура состояние кнопки при захвате мышью
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё Р·Р°С…РІР°С‚Рµ РјС‹С€СЊСЋ
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mouseDragged(MouseEvent event) { 
 		for(Button button : buttons) {
@@ -78,8 +78,8 @@ public class PanelButton {
 	}
 	
 	/**
-     * Процедура состояние кнопки при нажатии мыши
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mousePressed(MouseEvent event) { 
 		for(Button button : buttons) {
@@ -88,8 +88,8 @@ public class PanelButton {
 	}
 	
 	/**
-     * Процедура состояние кнопки при отпускании мыши
-     * @param event - состояние кнопки
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РјС‹С€Рё
+     * @param event - СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
      */
 	public void mouseReleased(MouseEvent event) { 
 		for(Button button : buttons) {
