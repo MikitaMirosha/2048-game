@@ -10,60 +10,60 @@ import mirosha.game.DisplayObject;
 import mirosha.game.Game;
 
 /**
- * Класс для работы с панелью главного меню
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РїР°РЅРµР»СЊСЋ РіР»Р°РІРЅРѕРіРѕ РјРµРЅСЋ
  * @author Mirosha
  * @version 1.0
  */
 public class PanelMenu extends PanelButton { 
 
-	/** Поле строка 2048*/
+	/** РџРѕР»Рµ СЃС‚СЂРѕРєР° 2048*/
 	private String header = "2048"; 
 	
-	/** Поле ширина кнопки*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РєРЅРѕРїРєРё*/
 	private int buttonW = 220;
 	
-	/** Поле размер шрифта строки 2048*/
+	/** РџРѕР»Рµ СЂР°Р·РјРµСЂ С€СЂРёС„С‚Р° СЃС‚СЂРѕРєРё 2048*/
 	private Font headerFont = Game.main.deriveFont(100f); 
 	
 	/** 
-     * Конструктор - создание нового объекта панель главного меню
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РїР°РЅРµР»СЊ РіР»Р°РІРЅРѕРіРѕ РјРµРЅСЋ
      */
 	public PanelMenu() { 
 		super(); 
-		Button play = new Button(Game.WIDTH / 2 - buttonW / 2, 220, buttonW, 60); 		// создание кнопки ИГРА
+		Button play = new Button(Game.WIDTH / 2 - buttonW / 2, 220, buttonW, 60); 		// СЃРѕР·РґР°РЅРёРµ РєРЅРѕРїРєРё РР“Р Рђ
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				Screen.getInstance().setPanel("Play");
 			}
 		});
-		play.setText("ИГРА"); 
+		play.setText("РР“Р Рђ"); 
 		addButton(play); 
 		
-		Button scores = new Button(Game.WIDTH / 2 - buttonW / 2, 310, buttonW, 60); 	// создание кнопки СЧЕТ
+		Button scores = new Button(Game.WIDTH / 2 - buttonW / 2, 310, buttonW, 60); 	// СЃРѕР·РґР°РЅРёРµ РєРЅРѕРїРєРё РЎР§Р•Рў
 		scores.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				Screen.getInstance().setPanel("Leaderboards");
 			}
 		});
-		scores.setText("СЧЕТ");
+		scores.setText("РЎР§Р•Рў");
 		addButton(scores);
 		
-		Button quitButton = new Button(Game.WIDTH / 2 - buttonW / 2, 400, buttonW, 60);  // создание кнопки ВЫХОД
+		Button quitButton = new Button(Game.WIDTH / 2 - buttonW / 2, 400, buttonW, 60);  // СЃРѕР·РґР°РЅРёРµ РєРЅРѕРїРєРё Р’Р«РҐРћР”
 		quitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				System.exit(0);
 			}
 		});
-		quitButton.setText("ВЫХОД");
+		quitButton.setText("Р’Р«РҐРћР”");
 		addButton(quitButton); 
 	}
 
 	/**
-     * Процедура рендер панели главного меню
-     * @param graphics - графика содержимого панели
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ РїР°РЅРµР»Рё РіР»Р°РІРЅРѕРіРѕ РјРµРЅСЋ
+     * @param graphics - РіСЂР°С„РёРєР° СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РїР°РЅРµР»Рё
      */
 	@Override
 	public void renderPanel(Graphics2D graphics) { 
