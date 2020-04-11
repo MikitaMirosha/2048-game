@@ -3,20 +3,20 @@ package mirosha.game;
 import java.awt.event.KeyEvent;
 
 /**
- * Класс для работы с клавиатурой
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РєР»Р°РІРёР°С‚СѓСЂРѕР№
  * @author Mirosha
  * @version 1.0
  */
 public class Keyboard { 
 
-	/** Поле нажатая клавиша*/
+	/** РџРѕР»Рµ РЅР°Р¶Р°С‚Р°СЏ РєР»Р°РІРёС€Р°*/
 	public static boolean[] pressedKey = new boolean[50];
 	
-	/** Поле предыдущая нажатая клавиша*/
+	/** РџРѕР»Рµ РїСЂРµРґС‹РґСѓС‰Р°СЏ РЅР°Р¶Р°С‚Р°СЏ РєР»Р°РІРёС€Р°*/
 	public static boolean[] previousKey = new boolean[50];
 	
 	/**
-     * Процедура обновление нажатия клавиш
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€
      */
 	public static void updateKeys() { 
 		for(int i = 0; i < 4; i++) {
@@ -28,14 +28,14 @@ public class Keyboard {
 	}
 	
 	/**
-     * Процедура установка флага при нажатии клавиши
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєР° С„Р»Р°РіР° РїСЂРё РЅР°Р¶Р°С‚РёРё РєР»Р°РІРёС€Рё
      */
 	public static void isPressed(KeyEvent key) { 
 		pressedKey[key.getKeyCode()] = true;
 	}
 	
 	/**
-     * Процедура установка флага при отпускании клавиши
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєР° С„Р»Р°РіР° РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РєР»Р°РІРёС€Рё
      */
 	public static void isReleased(KeyEvent e) {
 		pressedKey[e.getKeyCode()] = false;
