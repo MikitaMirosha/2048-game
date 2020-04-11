@@ -9,36 +9,36 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Класс для работы с лучшими результатами игры
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р»СѓС‡С€РёРјРё СЂРµР·СѓР»СЊС‚Р°С‚Р°РјРё РёРіСЂС‹
  * @author Mirosha
  * @version 1.0
  */
 public class Leaders { 
 
-	/** Поле лучшие результаты игры*/
+	/** РџРѕР»Рµ Р»СѓС‡С€РёРµ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РёРіСЂС‹*/
 	private static Leaders leads;
 	
-	/** Поле путь к файлу*/
+	/** РџРѕР»Рµ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ*/
 	private String path; 
 	
-	/** Поле максимальные очки*/
+	/** РџРѕР»Рµ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рµ РѕС‡РєРё*/
 	private String highScores;
 	
-	/** Поле хранение счета лучших очков*/
+	/** РџРѕР»Рµ С…СЂР°РЅРµРЅРёРµ СЃС‡РµС‚Р° Р»СѓС‡С€РёС… РѕС‡РєРѕРІ*/
 	private ArrayList<Integer> topScores;
 	
-	/** Поле хранение счета лучших кубов*/
+	/** РџРѕР»Рµ С…СЂР°РЅРµРЅРёРµ СЃС‡РµС‚Р° Р»СѓС‡С€РёС… РєСѓР±РѕРІ*/
 	private ArrayList<Integer> topCubes;
 	
 	/** 
-     * Конструктор - создание нового объекта лучшие результаты игры
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° Р»СѓС‡С€РёРµ СЂРµР·СѓР»СЊС‚Р°С‚С‹ РёРіСЂС‹
      */
 	private Leaders() {
 		try {
-			path = new File("").getAbsolutePath();	// абсолютный путь к файлу
+			path = new File("").getAbsolutePath();	// Р°Р±СЃРѕР»СЋС‚РЅС‹Р№ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ
 			System.out.println(path);
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		} 
 		highScores = "Scores";
@@ -46,7 +46,7 @@ public class Leaders {
 		topCubes = new ArrayList<Integer>();
 	}
 	
-	/** Метод добавление нового экземпляра (Singleton)*/
+	/** РњРµС‚РѕРґ РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ СЌРєР·РµРјРїР»СЏСЂР° (Singleton)*/
 	public static Leaders getInstance() { 
 		if(leads == null){
 			leads = new Leaders();
@@ -55,8 +55,8 @@ public class Leaders {
 	}
 	
 	/**
-     * Процедура добавление лучшего результата очков
-     * @param score - счет
+     * РџСЂРѕС†РµРґСѓСЂР° РґРѕР±Р°РІР»РµРЅРёРµ Р»СѓС‡С€РµРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р° РѕС‡РєРѕРІ
+     * @param score - СЃС‡РµС‚
      */
 	public void addScore(int score) { 
 		for(int i = 0; i < topScores.size(); i++) {
@@ -69,8 +69,8 @@ public class Leaders {
 	}
 
 	/**
-     * Процедура добавление лучшего результата кубов
-     * @param cubeValue - значение куба
+     * РџСЂРѕС†РµРґСѓСЂР° РґРѕР±Р°РІР»РµРЅРёРµ Р»СѓС‡С€РµРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р° РєСѓР±РѕРІ
+     * @param cubeValue - Р·РЅР°С‡РµРЅРёРµ РєСѓР±Р°
      */
 	public void addCube(int cubeValue) { 
 		for(int i = 0; i < topCubes.size(); i++) {
@@ -83,27 +83,27 @@ public class Leaders {
 	}
 	
 	/**
-     * Процедура формирование данных результата в файле
+     * РџСЂРѕС†РµРґСѓСЂР° С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ РґР°РЅРЅС‹С… СЂРµР·СѓР»СЊС‚Р°С‚Р° РІ С„Р°Р№Р»Рµ
      */
 	private void formSaveData() { 
 		try {
 			File file = new File(path, highScores);
 			FileWriter output = new FileWriter(file);
 			BufferedWriter writer = new BufferedWriter(output);
-			writer.write("0-0-0-0-0"); 		// заполнение нулями
+			writer.write("0-0-0-0-0"); 		// Р·Р°РїРѕР»РЅРµРЅРёРµ РЅСѓР»СЏРјРё
 			writer.newLine();
 			writer.write("0-0-0-0-0");
-			writer.newLine(); // установка максимального значения счета: 
+			writer.newLine(); // СѓСЃС‚Р°РЅРѕРІРєР° РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ СЃС‡РµС‚Р°: 
 			writer.write(Integer.MAX_VALUE + "-" + Integer.MAX_VALUE + "-" + Integer.MAX_VALUE + "-" + Integer.MAX_VALUE + "-" + Integer.MAX_VALUE);
 			writer.close();
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
 	}
 	
 	/**
-     * Процедура сохранение результатов игры в файл
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕС…СЂР°РЅРµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёРіСЂС‹ РІ С„Р°Р№Р»
      */
 	public void saveScores() { 
 		FileWriter output = null;
@@ -111,20 +111,20 @@ public class Leaders {
 			File file = new File(path, highScores);
 			output = new FileWriter(file);
 			BufferedWriter writer = new BufferedWriter(output);
-			// добавление нового результата между лучшим и худшим результатом, разделяя минусами:
+			// РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р° РјРµР¶РґСѓ Р»СѓС‡С€РёРј Рё С…СѓРґС€РёРј СЂРµР·СѓР»СЊС‚Р°С‚РѕРј, СЂР°Р·РґРµР»СЏСЏ РјРёРЅСѓСЃР°РјРё:
 			writer.write(topScores.get(0) + "-" + topScores.get(1) + "-" + topScores.get(2) + "-" + topScores.get(3) + "-" + topScores.get(4));
 			writer.newLine();
 			writer.write(topCubes.get(0) + "-" + topCubes.get(1) + "-" + topCubes.get(2) + "-" + topCubes.get(3) + "-" + topCubes.get(4));
 			writer.newLine();
 			writer.close();
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
 	}
 	
 	/**
-     * Процедура загрузка счета в таблицу
+     * РџСЂРѕС†РµРґСѓСЂР° Р·Р°РіСЂСѓР·РєР° СЃС‡РµС‚Р° РІ С‚Р°Р±Р»РёС†Сѓ
      */
 	public void loadScores() { 
 		try {
@@ -132,9 +132,9 @@ public class Leaders {
 			if (!file.isFile()) {
 				formSaveData();
 			}
-			// чтение текста из потока ввода символов
+			// С‡С‚РµРЅРёРµ С‚РµРєСЃС‚Р° РёР· РїРѕС‚РѕРєР° РІРІРѕРґР° СЃРёРјРІРѕР»РѕРІ
 			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			topScores.clear(); // очистка предыдущего счета
+			topScores.clear(); // РѕС‡РёСЃС‚РєР° РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃС‡РµС‚Р°
 			topCubes.clear();
 			
 			String[] scores = reader.readLine().split("-");
@@ -149,30 +149,30 @@ public class Leaders {
 	
 			reader.close();
 		} catch (Throwable ex) {
-			System.out.println("Произошла ошибка при работе с файлом");
+			System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё СЂР°Р±РѕС‚Рµ СЃ С„Р°Р№Р»РѕРј");
 			ex.getMessage();
 		}
 	}
 	
 	/**
-     * Функция получения значения поля {@link #topScores}
-     * @return возвращает лучший счет игры
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #topScores}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р»СѓС‡С€РёР№ СЃС‡РµС‚ РёРіСЂС‹
      */
 	public ArrayList<Integer> getTopScores() {
 		return topScores;
 	}
 
 	/**
-     * Функция получения значения поля {@link #topCubes}
-     * @return возвращает лучшее значение куба
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #topCubes}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р»СѓС‡С€РµРµ Р·РЅР°С‡РµРЅРёРµ РєСѓР±Р°
      */
 	public ArrayList<Integer> getTopCubes() {
 		return topCubes;
 	}
 
 	/**
-     * Функция получения значения поля {@link #highScores}
-     * @return возвращает максимальные очки игры
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #highScores}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рµ РѕС‡РєРё РёРіСЂС‹
      */
 	public int getHighScore() {
 		return topScores.get(0);
