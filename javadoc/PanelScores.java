@@ -22,7 +22,7 @@ public class PanelScores extends PanelButton {
 	private Leaders scores;
 	
 	/** Поле ширина кнопки*/
-	private int buttonW = 100;
+	private int buttonW = 150;
 	
 	/** Поле высота кнопки*/
 	private int buttonH = 50;
@@ -31,13 +31,10 @@ public class PanelScores extends PanelButton {
 	private int buttonY = 120;
 	
 	/** Поле координата X очков*/
-	private int scoresX = 130;
+	private int scoresX = 220;
 	
 	/** Поле координата Y очков*/
 	private int scoresY = buttonY + buttonH + 90;
-	
-	/** Поле расстояние между кнопками*/
-	private int buttonDistance = 20;
 	
 	/** Поле ширина кнопки возврата в меню*/
 	private int backButtonW = 220; 
@@ -66,7 +63,7 @@ public class PanelScores extends PanelButton {
 		scores.loadScores();
 
 		// создание и отрисовка кнопки КУБЫ
-		Button cube = new Button(Game.WIDTH / 2 - buttonW / 2, buttonY, buttonW, buttonH);
+		Button cube = new Button(325, buttonY, buttonW, buttonH);
 		cube.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -77,7 +74,7 @@ public class PanelScores extends PanelButton {
 		addButton(cube);
 		
 		// создание и отрисовка кнопки ОЧКИ
-		Button score = new Button(Game.WIDTH / 2 - buttonW / 2 - cube.getWidth() - buttonDistance, buttonY, buttonW, buttonH);
+		Button score = new Button(100, buttonY, buttonW, buttonH);
 		score.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -140,7 +137,7 @@ public class PanelScores extends PanelButton {
 	@Override
 	public void renderPanel(Graphics2D graphics) { 
 		super.renderPanel(graphics);
-		graphics.setColor(Color.black);
+		graphics.setColor(Color.white);
 		graphics.drawString(header, Game.WIDTH / 2 - DisplayObject.getObjectWidth(header, headerFont, graphics) / 2, DisplayObject.getObjectHeight(header, headerFont, graphics) + 40);
 		printScores(graphics);
 	}
