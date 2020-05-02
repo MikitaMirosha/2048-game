@@ -58,9 +58,9 @@ public class Button {
 		rectangleButton = new Rectangle(x, y, width, height); 		// оболочка кнопки
 		actionListeners = new ArrayList<ActionListener>(); 		    // хранение действий	
 		
-		standart = new Color(191, 11, 11); 		
-		hover = new Color(220, 39, 39); 		
-		pressed = new Color(229, 65, 65);
+		standart = new Color(240, 150, 15); 		
+		hover = new Color(255, 173, 51); 		
+		pressed = new Color(255, 194, 102);
 		
 		audio = SetAudio.getInstance();
 		audio.loadAudio("select.wav", "select");
@@ -71,19 +71,25 @@ public class Button {
      * @param graphics - создание фигуры кнопки для рендера
      */
 	public void renderButton(Graphics2D graphics) { 
-		if(current == State.RELEASED) { 			// рендер при отпускании
+		if(current == State.RELEASED) { 				// рендер при отпускании
+			graphics.setColor(new Color(0, 0, 0, 0)); 
+			graphics.fill(rectangleButton);
 			graphics.setColor(standart);
-			graphics.fill(rectangleButton);
+			graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 40, 40);
 		}
-		else if(current == State.PRESSED) {			// рендер при нажатии
+		else if(current == State.PRESSED) {				// рендер при нажатии
+			graphics.setColor(new Color(0, 0, 0, 0)); 
+			graphics.fill(rectangleButton);
 			graphics.setColor(pressed);
-			graphics.fill(rectangleButton);
+			graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 40, 40);
 		}
-		else { 										// рендер при наведении
+		else { 											// рендер при наведении
+			graphics.setColor(new Color(0, 0, 0, 0)); 
+			graphics.fill(rectangleButton);
 			graphics.setColor(hover);
-			graphics.fill(rectangleButton);
+			graphics.fillRoundRect(getX(), getY(), getWidth(), getHeight(), 40, 40);
 		}
-		graphics.setColor(Color.white);
+		graphics.setColor(new Color(0, 51, 102));
 		graphics.setFont(font); 
 		graphics.drawString(text, rectangleButton.x + rectangleButton.width / 2  - DisplayObject.getObjectWidth(text, font, graphics) / 2, rectangleButton.y + rectangleButton.height / 2  + DisplayObject.getObjectHeight(text, font, graphics) / 2);
 	}
