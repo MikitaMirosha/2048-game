@@ -128,7 +128,7 @@ public class PanelGame extends PanelButton {
      */
 	private void printScores(Graphics2D graphics) { 
 		Graphics2D graph = (Graphics2D) gameResults.getGraphics();
-		graph.setColor(Color.black); 												// цвет верхней панели
+		graph.setColor(new Color(0, 38, 77)); 										// цвет верхней панели
 		graph.fillRect(0, 0, gameResults.getWidth(), gameResults.getHeight());
 		graph.setColor(Color.white); 												// цвет текущего счета
 		graph.setFont(scoreFont);
@@ -150,12 +150,12 @@ public class PanelGame extends PanelButton {
 		if (screenshot) { 
 			BufferedImage buffImage = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_RGB);
 			Graphics2D graph = (Graphics2D) buffImage.getGraphics();
-			graph.setColor(Color.white);
+			graph.setColor(new Color(0, 38, 77));
 			graph.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 			printScores(graph);
 			field.renderFinal(graph);
 			try { 							// сохранение на рабочий стол png-изображения скриншота
-				ImageIO.write(buffImage, "png", new File(System.getProperty("user.home") + "\\Desktop", "screenshot" + System.nanoTime() + ".png"));
+				ImageIO.write(buffImage, "png", new File(System.getProperty("user.home") + "//Desktop", "screenshot" + System.nanoTime() + ".png"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
