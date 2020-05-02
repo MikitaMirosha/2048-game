@@ -19,65 +19,65 @@ import mirosha.gui.PanelGame;
 import mirosha.gui.Screen;
 
 /**
- * Класс для создания игры
+ * РљР»Р°СЃСЃ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РёРіСЂС‹
  * @author Mirosha
  * @version 1.0
  */
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 	
-	/* Runnable - для потока
-	 * KeyListener - обработка событий клавиатуры
-	 * MouseListener - обработка событий мыши
-	 * MouseMotionListener - обработка событий движения мыши */
+	/* Runnable - РґР»СЏ РїРѕС‚РѕРєР°
+	 * KeyListener - РѕР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёР№ РєР»Р°РІРёР°С‚СѓСЂС‹
+	 * MouseListener - РѕР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёР№ РјС‹С€Рё
+	 * MouseMotionListener - РѕР±СЂР°Р±РѕС‚РєР° СЃРѕР±С‹С‚РёР№ РґРІРёР¶РµРЅРёСЏ РјС‹С€Рё */
 	
-	/** Поле поток игры*/
+	/** РџРѕР»Рµ РїРѕС‚РѕРє РёРіСЂС‹*/
 	private Thread gameThread; 
 	
-	/** Поле для отслеживания состояния потока (run/stop)*/
+	/** РџРѕР»Рµ РґР»СЏ РѕС‚СЃР»РµР¶РёРІР°РЅРёСЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїРѕС‚РѕРєР° (run/stop)*/
 	private boolean trackRunningThread; 
 	
-	/** Поле для создания изображения*/
+	/** РџРѕР»Рµ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ*/
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
-	/** Поле для того, чтобы сериализовать класс Game*/
+	/** РџРѕР»Рµ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ СЃРµСЂРёР°Р»РёР·РѕРІР°С‚СЊ РєР»Р°СЃСЃ Game*/
 	private static final long serialVersionUID = 1L;  
 	
-	/** Поле ширина главного окна*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°*/
 	public static final int WIDTH = GameField.FIELDW + 40; 
 	
-	/** Поле высота главного окна*/
+	/** РџРѕР»Рµ РІС‹СЃРѕС‚Р° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°*/
 	public static final int HEIGHT = 610;
 	
-	/** Поле основной стиль шрифта*/
-	public static final Font main = new Font("Arial", Font.PLAIN, 30); 
+	/** РџРѕР»Рµ РѕСЃРЅРѕРІРЅРѕР№ СЃС‚РёР»СЊ С€СЂРёС„С‚Р°*/
+	public static final Font main = new Font("Century Gothic", Font.PLAIN, 30); 
 	
-	/** Поле экран*/
+	/** РџРѕР»Рµ СЌРєСЂР°РЅ*/
 	private Screen screen;
 	
 	/** 
-     * Конструктор - создание нового объекта игры
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РёРіСЂС‹
      */
 	public Game() { 
 		
-		setFocusable(true); // для ввода с клавиатуры
-		setPreferredSize(new Dimension(WIDTH, HEIGHT)); // установка фрейма по нужному размеру
-		addKeyListener(this); // для уведомления при изменении состояния ключа для клавиатуры и мыши
+		setFocusable(true); // РґР»СЏ РІРІРѕРґР° СЃ РєР»Р°РІРёР°С‚СѓСЂС‹
+		setPreferredSize(new Dimension(WIDTH, HEIGHT)); // СѓСЃС‚Р°РЅРѕРІРєР° С„СЂРµР№РјР° РїРѕ РЅСѓР¶РЅРѕРјСѓ СЂР°Р·РјРµСЂСѓ
+		addKeyListener(this); // РґР»СЏ СѓРІРµРґРѕРјР»РµРЅРёСЏ РїСЂРё РёР·РјРµРЅРµРЅРёРё СЃРѕСЃС‚РѕСЏРЅРёСЏ РєР»СЋС‡Р° РґР»СЏ РєР»Р°РІРёР°С‚СѓСЂС‹ Рё РјС‹С€Рё
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		
-		screen = Screen.getInstance(); // задание параметров каждой панели для отрисовки графики
+		screen = Screen.getInstance(); // Р·Р°РґР°РЅРёРµ РїР°СЂР°РјРµС‚СЂРѕРІ РєР°Р¶РґРѕР№ РїР°РЅРµР»Рё РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РіСЂР°С„РёРєРё
 		screen.addPanel("Menu", new PanelMenu());
 		screen.addPanel("Play", new PanelGame());
 		screen.addPanel("Leaderboards", new PanelScores());
-		screen.setPanel("Menu"); // установка главного окна в начальное состояние меню 
+		screen.setPanel("Menu"); // СѓСЃС‚Р°РЅРѕРІРєР° РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР° РІ РЅР°С‡Р°Р»СЊРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РјРµРЅСЋ 
 	}
 	
 	/**
-     * Процедура рендер фона окон
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ С„РѕРЅР° РѕРєРѕРЅ
      */
 	private void mainRender() { 
 		Graphics2D graphics = (Graphics2D) image.getGraphics();
-		graphics.setColor(Color.black);	// цвет главного фона
+		graphics.setColor(new Color(0, 38, 77));	// С†РІРµС‚ РіР»Р°РІРЅРѕРіРѕ С„РѕРЅР°
 		graphics.fillRect(0, 0, WIDTH, HEIGHT); 
 		screen.render(graphics); 
 		graphics.dispose(); 
@@ -88,7 +88,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	}
 
 	/**
-     * Процедура обновление событий клавиатуры
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ СЃРѕР±С‹С‚РёР№ РєР»Р°РІРёР°С‚СѓСЂС‹
      */
 	private void updateKeyboard() { 
 		screen.updateScreen();
@@ -96,15 +96,15 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	}
 
 	/**
-     * Процедура вызов работы потока
+     * РџСЂРѕС†РµРґСѓСЂР° РІС‹Р·РѕРІ СЂР°Р±РѕС‚С‹ РїРѕС‚РѕРєР°
      */
 	@Override
 	public void run() { 
 		int FPS = 0, updates = 0;
 		long timerFPS = System.currentTimeMillis();
-		double nanoSecPerUpdate = 1000000000.0 / 60; // подсчет наносекунд в промежутках между обновлениями
+		double nanoSecPerUpdate = 1000000000.0 / 60; // РїРѕРґСЃС‡РµС‚ РЅР°РЅРѕСЃРµРєСѓРЅРґ РІ РїСЂРѕРјРµР¶СѓС‚РєР°С… РјРµР¶РґСѓ РѕР±РЅРѕРІР»РµРЅРёСЏРјРё
 
-		// последнее обновление времени в наносекундах
+		// РїРѕСЃР»РµРґРЅРµРµ РѕР±РЅРѕРІР»РµРЅРёРµ РІСЂРµРјРµРЅРё РІ РЅР°РЅРѕСЃРµРєСѓРЅРґР°С…
 		double lastTime = System.nanoTime();
 		double unprocessed = 0;
 
@@ -112,37 +112,37 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 			boolean mustRender = false;
 			double newTime = System.nanoTime();
-			unprocessed += (newTime - lastTime) / nanoSecPerUpdate;  // подсчет сколько нужно сделать обновлений
+			unprocessed += (newTime - lastTime) / nanoSecPerUpdate;  // РїРѕРґСЃС‡РµС‚ СЃРєРѕР»СЊРєРѕ РЅСѓР¶РЅРѕ СЃРґРµР»Р°С‚СЊ РѕР±РЅРѕРІР»РµРЅРёР№
 			lastTime = newTime;
 
-			while (unprocessed >= 1) { // очередь обновления
+			while (unprocessed >= 1) { // РѕС‡РµСЂРµРґСЊ РѕР±РЅРѕРІР»РµРЅРёСЏ
 
-				// обновление
+				// РѕР±РЅРѕРІР»РµРЅРёРµ
 				updates++;
 				updateKeyboard();
 				unprocessed--;
 				mustRender = true;
 			}
 
-			if (mustRender) { // рендер
+			if (mustRender) { // СЂРµРЅРґРµСЂ
 				FPS++;
 				mainRender();
 				mustRender = false;
 			}
 			else {
 				try {
-					Thread.sleep(1); // усыпление потока, если не рендерим
+					Thread.sleep(1); // СѓСЃС‹РїР»РµРЅРёРµ РїРѕС‚РѕРєР°, РµСЃР»Рё РЅРµ СЂРµРЅРґРµСЂРёРј
 				} catch (Throwable ex) {
-					 System.out.println("Произошла ошибка: " + ex.getMessage()); 
+					 System.out.println("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°: " + ex.getMessage()); 
 				}
 			}
 
-			// таймер FPS
+			// С‚Р°Р№РјРµСЂ FPS
 			if (System.currentTimeMillis() - timerFPS > 1000) {
-				// вывод FPS за обновление
-				System.out.printf("%d FPS %d обновления", FPS, updates);
+				// РІС‹РІРѕРґ FPS Р·Р° РѕР±РЅРѕРІР»РµРЅРёРµ
+				System.out.printf("%d FPS %d РѕР±РЅРѕРІР»РµРЅРёСЏ", FPS, updates);
 				System.out.println("");
-				FPS = 0; // обнуление 
+				FPS = 0; // РѕР±РЅСѓР»РµРЅРёРµ 
 				updates = 0;
 				timerFPS += 1000;
 			}
@@ -150,7 +150,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	}
 
 	/**
-     * Процедура синхронизация начала потока
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ РЅР°С‡Р°Р»Р° РїРѕС‚РѕРєР°
      */
 	public synchronized void start() {
 		if (trackRunningThread) return;
@@ -160,80 +160,80 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	}
 
 	/**
-     * Процедура синхронизация завершения потока
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ Р·Р°РІРµСЂС€РµРЅРёСЏ РїРѕС‚РѕРєР°
      */
 	public synchronized void stop() {
 		if (!trackRunningThread) return;
 		trackRunningThread = false;
-		System.exit(0); // выход из программмы, если поток остановлен
+		System.exit(0); // РІС‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјРјС‹, РµСЃР»Рё РїРѕС‚РѕРє РѕСЃС‚Р°РЅРѕРІР»РµРЅ
 	}
 
 	/**
-     * Процедура состояние при нажатии клавиши
-     * @param event - событие клавиатуры
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РєР»Р°РІРёС€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РєР»Р°РІРёР°С‚СѓСЂС‹
      */ 
 	@Override
 	public void keyTyped(KeyEvent event) {}
 
 	/**
-     * Процедура состояние при нажатии клавиши
-     * @param event - событие клавиатуры
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РєР»Р°РІРёС€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РєР»Р°РІРёР°С‚СѓСЂС‹
      */ 
 	@Override
 	public void keyPressed(KeyEvent event) { Keyboard.isPressed(event); }
 
 	/**
-     * Процедура состояние при отпускании клавиши
-     * @param event - событие клавиатуры
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РєР»Р°РІРёС€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РєР»Р°РІРёР°С‚СѓСЂС‹
      */ 
 	@Override
 	public void keyReleased(KeyEvent event) { Keyboard.isReleased(event); }
 
 	/**
-     * Процедура состояние при нажатии мыши
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mouseClicked(MouseEvent event) {}
 
 	/**
-     * Процедура состояние при нажатии мыши
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mousePressed(MouseEvent event) { screen.mousePressed(event); }
 
 	/**
-     * Процедура состояние при отпускании мыши
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РѕС‚РїСѓСЃРєР°РЅРёРё РјС‹С€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mouseReleased(MouseEvent event) { screen.mouseReleased(event); }
 
 	/**
-     * Процедура состояние при нажатии мыши на входе
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё РЅР° РІС…РѕРґРµ
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mouseEntered(MouseEvent event) {}
 
 	/**
-     * Процедура состояние при нажатии мыши на выходе
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РЅР°Р¶Р°С‚РёРё РјС‹С€Рё РЅР° РІС‹С…РѕРґРµ
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mouseExited(MouseEvent event) {}
 
 	/**
-     * Процедура состояние при захвате мышью 
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё Р·Р°С…РІР°С‚Рµ РјС‹С€СЊСЋ 
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mouseDragged(MouseEvent event) { screen.mouseDragged(event); }
 
 	/**
-     * Процедура состояние при движении мыши
-     * @param event - событие мыши
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРё РґРІРёР¶РµРЅРёРё РјС‹С€Рё
+     * @param event - СЃРѕР±С‹С‚РёРµ РјС‹С€Рё
      */ 
 	@Override
 	public void mouseMoved(MouseEvent event) { screen.mouseMoved(event); }
