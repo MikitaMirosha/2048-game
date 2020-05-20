@@ -1,5 +1,5 @@
 package mirosha.game;
-
+  
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -169,12 +169,12 @@ public class Leaders {
 	public ArrayList<Integer> getTopCubes() {
 		return topCubes;
 	}
-
+  
 	/**
      * Функция получения значения поля {@link #highScores}
      * @return возвращает максимальные очки игры
      */
 	public int getHighScore() {
 		return topScores.get(0);
-	}
+	}  
 }
