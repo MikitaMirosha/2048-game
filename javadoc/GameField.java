@@ -14,7 +14,7 @@ import javax.sound.sampled.Clip;
  * @version 1.0
  */
 public class GameField { 
-
+  
 	/** Поле строк*/
 	public static final int ROWS = 4; 
 	
@@ -193,7 +193,7 @@ public class GameField {
 			}
 		}
 	}
-
+  
 	/**
      * Процедура рендер конечного изображения на игровом поле
      * @param graphics - графика изображения на игровом поле
@@ -253,7 +253,7 @@ public class GameField {
 		}
 		if (distY > 0) {
 			cube.setY(cube.getY() - Cube.SPEED);
-		}
+		}  
 	}
 
 	/**
