@@ -20,7 +20,7 @@ public class PanelScores extends PanelButton {
 	
 	/** Поле очки*/
 	private Leaders scores;
-	
+	 
 	/** Поле ширина кнопки*/
 	private int buttonW = 150;
 	
@@ -141,7 +141,7 @@ public class PanelScores extends PanelButton {
 		graphics.drawString(header, Game.WIDTH / 2 - DisplayObject.getObjectWidth(header, headerFont, graphics) / 2, DisplayObject.getObjectHeight(header, headerFont, graphics) + 40);
 		printScores(graphics);
 	}
-	
+	 
 	@Override
 	public void updatePanel() {}
 }
