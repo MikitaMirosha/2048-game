@@ -6,93 +6,93 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
+  
 /**
- * Класс для работы с кубами 
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РєСѓР±Р°РјРё 
  * @author Mirosha
  * @version 1.0
  */
 public class Cube { 
 
-	/** Поле координата x*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° x*/
 	private int x;
 	
-	/** Поле координата y*/
+	/** РџРѕР»Рµ РєРѕРѕСЂРґРёРЅР°С‚Р° y*/
 	private int y;
 	
-	/** Поле значение на кубе*/
+	/** РџРѕР»Рµ Р·РЅР°С‡РµРЅРёРµ РЅР° РєСѓР±Рµ*/
 	private int value;
 	
-	/** Поле шрифт на кубе*/
+	/** РџРѕР»Рµ С€СЂРёС„С‚ РЅР° РєСѓР±Рµ*/
 	private Font font; 
 	
-	/** Поле цвет фона*/
+	/** РџРѕР»Рµ С†РІРµС‚ С„РѕРЅР°*/
 	private Color bg; 
 	
-	/** Поле цвет текста*/
+	/** РџРѕР»Рµ С†РІРµС‚ С‚РµРєСЃС‚Р°*/
 	private Color text; 
 	
-	/** Поле направление движения (row/col)*/
+	/** РџРѕР»Рµ РЅР°РїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёСЏ (row/col)*/
 	private Spot slide;
 	
-	/** Поле отрисовка куба*/
+	/** РџРѕР»Рµ РѕС‚СЂРёСЃРѕРІРєР° РєСѓР±Р°*/
 	private BufferedImage cubeImage; 
 	
-	/** Поле закругление углов куба по ширине*/
+	/** РџРѕР»Рµ Р·Р°РєСЂСѓРіР»РµРЅРёРµ СѓРіР»РѕРІ РєСѓР±Р° РїРѕ С€РёСЂРёРЅРµ*/
 	public static final int ARCW = 15; 
 	
-	/** Поле закругление углов куба по высоте*/
+	/** РџРѕР»Рµ Р·Р°РєСЂСѓРіР»РµРЅРёРµ СѓРіР»РѕРІ РєСѓР±Р° РїРѕ РІС‹СЃРѕС‚Рµ*/
 	public static final int ARCH = 15; 
 	
-	/** Поле скорость передвижения кубов*/
+	/** РџРѕР»Рµ СЃРєРѕСЂРѕСЃС‚СЊ РїРµСЂРµРґРІРёР¶РµРЅРёСЏ РєСѓР±РѕРІ*/
 	public static final int SPEED = 35; 
 	
-	/** Поле ширина игрового поля*/
+	/** РџРѕР»Рµ С€РёСЂРёРЅР° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ*/
 	public static final int WIDTH = 120; 
 	
-	/** Поле высота игрового поля*/
+	/** РџРѕР»Рµ РІС‹СЃРѕС‚Р° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ*/
 	public static final int HEIGHT = 120; 
 
-	/** Поле анимация нового спауна*/
+	/** РџРѕР»Рµ Р°РЅРёРјР°С†РёСЏ РЅРѕРІРѕРіРѕ СЃРїР°СѓРЅР°*/
 	private boolean newSpawnAnimation = true; 
 	
-	/** Поле масштаб анимации нового спауна (10%)*/
+	/** РџРѕР»Рµ РјР°СЃС€С‚Р°Р± Р°РЅРёРјР°С†РёРё РЅРѕРІРѕРіРѕ СЃРїР°СѓРЅР° (10%)*/
 	private double scaleNewSpawn = 0.1; 
 	
-	/** Поле отрисовка начального изображения*/
+	/** РџРѕР»Рµ РѕС‚СЂРёСЃРѕРІРєР° РЅР°С‡Р°Р»СЊРЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ*/
 	private BufferedImage startImage; 
 	
-	/** Поле анимация объединения кубов*/
+	/** РџРѕР»Рµ Р°РЅРёРјР°С†РёСЏ РѕР±СЉРµРґРёРЅРµРЅРёСЏ РєСѓР±РѕРІ*/
 	private boolean uniteAnimation = false; 
 	
-	/** Поле увеличение масштаба на 120% при объединении кубов */
+	/** РџРѕР»Рµ СѓРІРµР»РёС‡РµРЅРёРµ РјР°СЃС€С‚Р°Р±Р° РЅР° 120% РїСЂРё РѕР±СЉРµРґРёРЅРµРЅРёРё РєСѓР±РѕРІ */
 	private double scaleUnited = 1.2; 
 	
-	/** Поле отрисовка объединения кубов */
+	/** РџРѕР»Рµ РѕС‚СЂРёСЃРѕРІРєР° РѕР±СЉРµРґРёРЅРµРЅРёСЏ РєСѓР±РѕРІ */
 	private BufferedImage unitedImage; 
 	
-	/** Поле флаг возможности объединения кубов */
+	/** РџРѕР»Рµ С„Р»Р°Рі РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РѕР±СЉРµРґРёРЅРµРЅРёСЏ РєСѓР±РѕРІ */
 	private boolean uniteAbility = true; 
 
 	/** 
-     * Конструктор - создание нового объекта куба
-     * @param value - значение на кубе
-     * @param x - координата x
-     * @param y - координата y
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ - СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р° РєСѓР±Р°
+     * @param value - Р·РЅР°С‡РµРЅРёРµ РЅР° РєСѓР±Рµ
+     * @param x - РєРѕРѕСЂРґРёРЅР°С‚Р° x
+     * @param y - РєРѕРѕСЂРґРёРЅР°С‚Р° y
      */
 	public Cube(int value, int x, int y) { 
 		this.x = x;
 		this.y = y;
 		this.value = value;
-		slide = new Spot(x, y); // активация координат перемещения по rows/cols
+		slide = new Spot(x, y); // Р°РєС‚РёРІР°С†РёСЏ РєРѕРѕСЂРґРёРЅР°С‚ РїРµСЂРµРјРµС‰РµРЅРёСЏ РїРѕ rows/cols
 		cubeImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		startImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		unitedImage = new BufferedImage(WIDTH * 2, HEIGHT * 2, BufferedImage.TYPE_INT_ARGB);
-		drawCubes(); // отрисовка финальных кубов
+		drawCubes(); // РѕС‚СЂРёСЃРѕРІРєР° С„РёРЅР°Р»СЊРЅС‹С… РєСѓР±РѕРІ
 	}
 	
 	/**
-     * Процедура задание цвета фона и текста для куба по значению
+     * РџСЂРѕС†РµРґСѓСЂР° Р·Р°РґР°РЅРёРµ С†РІРµС‚Р° С„РѕРЅР° Рё С‚РµРєСЃС‚Р° РґР»СЏ РєСѓР±Р° РїРѕ Р·РЅР°С‡РµРЅРёСЋ
      */
 	private void drawCubes() { 
 		Graphics2D graphics = (Graphics2D) cubeImage.getGraphics(); 
@@ -156,7 +156,7 @@ public class Cube {
 		else if (value == 32768) {
 			bg = new Color(0xff3f70); 
 			text = new Color(0xffffff);
-		}
+		}  
 		else if (value == 65536) {
 			bg = new Color(0x009d7e); 
 			text = new Color(0xffffff);
@@ -165,10 +165,10 @@ public class Cube {
 			bg = Color.black;
 			text = Color.white;
 		}
-		graphics.setColor(new Color(0, 0, 0, 0)); // прозрачный цвет (для закруглений углов)
+		graphics.setColor(new Color(0, 0, 0, 0)); // РїСЂРѕР·СЂР°С‡РЅС‹Р№ С†РІРµС‚ (РґР»СЏ Р·Р°РєСЂСѓРіР»РµРЅРёР№ СѓРіР»РѕРІ)
 		graphics.fillRect(0, 0, WIDTH, HEIGHT); 
 		graphics.setColor(bg); 
-		graphics.fillRoundRect(0, 0, WIDTH, HEIGHT, ARCW, ARCH); // учитываем закругленные углы
+		graphics.fillRoundRect(0, 0, WIDTH, HEIGHT, ARCW, ARCH); // СѓС‡РёС‚С‹РІР°РµРј Р·Р°РєСЂСѓРіР»РµРЅРЅС‹Рµ СѓРіР»С‹
 		graphics.setColor(text);
 
 		if (value <= 64) { 
@@ -180,95 +180,95 @@ public class Cube {
 			graphics.setFont(font);
 		}
 
-		// установка координат по центру для отрисовки значения на кубе:
+		// СѓСЃС‚Р°РЅРѕРІРєР° РєРѕРѕСЂРґРёРЅР°С‚ РїРѕ С†РµРЅС‚СЂСѓ РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ РЅР° РєСѓР±Рµ:
 		int drawX = WIDTH / 2 - DisplayObject.getObjectWidth("" + value, font, graphics) / 2;
 		int drawY = HEIGHT / 2 + DisplayObject.getObjectHeight("" + value, font, graphics) / 2;
-		graphics.drawString("" + value, drawX, drawY); // запись значения в строку на кубе
+		graphics.drawString("" + value, drawX, drawY); // Р·Р°РїРёСЃСЊ Р·РЅР°С‡РµРЅРёСЏ РІ СЃС‚СЂРѕРєСѓ РЅР° РєСѓР±Рµ
 		graphics.dispose(); 
 	}
-
+   
 	/**
-     * Процедура обновление анимации куба
+     * РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»РµРЅРёРµ Р°РЅРёРјР°С†РёРё РєСѓР±Р°
      */
 	public void updateCubeAnimation() {
-		if (newSpawnAnimation) { // если новый спаун
-			AffineTransform affineTransform = new AffineTransform(); // аффинная трансформация для анимации масштаба
+		if (newSpawnAnimation) { // РµСЃР»Рё РЅРѕРІС‹Р№ СЃРїР°СѓРЅ
+			AffineTransform affineTransform = new AffineTransform(); // Р°С„С„РёРЅРЅР°СЏ С‚СЂР°РЅСЃС„РѕСЂРјР°С†РёСЏ РґР»СЏ Р°РЅРёРјР°С†РёРё РјР°СЃС€С‚Р°Р±Р°
 			affineTransform.translate(WIDTH / 2 - scaleNewSpawn * WIDTH / 2, HEIGHT / 2 - scaleNewSpawn * HEIGHT / 2);
-			affineTransform.scale(scaleNewSpawn, scaleNewSpawn); // масштабирование
-			Graphics2D graphics = (Graphics2D) startImage.getGraphics(); // Graphics2D для начального изображения
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // сглаживание
-			graphics.setColor(new Color(0, 0, 0, 0)); // очистка поля
-			graphics.fillRect(0, 0, WIDTH, HEIGHT); // создание поля куба для отрисовки
-			graphics.drawImage(cubeImage, affineTransform, null); // отрисовка изображения куба
-			scaleNewSpawn += 0.1; // становится больше на 10%
-			graphics.dispose(); // освобождение ресурсов
-			if(scaleNewSpawn >= 1) newSpawnAnimation = false;  // запрет анимации спаунов, если уже есть >= спауна
+			affineTransform.scale(scaleNewSpawn, scaleNewSpawn); // РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµ
+			Graphics2D graphics = (Graphics2D) startImage.getGraphics(); // Graphics2D РґР»СЏ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // СЃРіР»Р°Р¶РёРІР°РЅРёРµ
+			graphics.setColor(new Color(0, 0, 0, 0)); // РѕС‡РёСЃС‚РєР° РїРѕР»СЏ
+			graphics.fillRect(0, 0, WIDTH, HEIGHT); // СЃРѕР·РґР°РЅРёРµ РїРѕР»СЏ РєСѓР±Р° РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё
+			graphics.drawImage(cubeImage, affineTransform, null); // РѕС‚СЂРёСЃРѕРІРєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РєСѓР±Р°
+			scaleNewSpawn += 0.1; // СЃС‚Р°РЅРѕРІРёС‚СЃСЏ Р±РѕР»СЊС€Рµ РЅР° 10%
+			graphics.dispose(); // РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ
+			if(scaleNewSpawn >= 1) newSpawnAnimation = false;  // Р·Р°РїСЂРµС‚ Р°РЅРёРјР°С†РёРё СЃРїР°СѓРЅРѕРІ, РµСЃР»Рё СѓР¶Рµ РµСЃС‚СЊ >= СЃРїР°СѓРЅР°
 		}
-		else if(uniteAnimation) { // если надо объединить кубы
-			AffineTransform affineTransform = new AffineTransform(); // аффинная трансформация для анимации масштаба
+		else if(uniteAnimation) { // РµСЃР»Рё РЅР°РґРѕ РѕР±СЉРµРґРёРЅРёС‚СЊ РєСѓР±С‹
+			AffineTransform affineTransform = new AffineTransform(); // Р°С„С„РёРЅРЅР°СЏ С‚СЂР°РЅСЃС„РѕСЂРјР°С†РёСЏ РґР»СЏ Р°РЅРёРјР°С†РёРё РјР°СЃС€С‚Р°Р±Р°
 			affineTransform.translate(WIDTH / 2 - scaleUnited * WIDTH / 2, HEIGHT / 2 - scaleUnited * HEIGHT / 2);
-			affineTransform.scale(scaleUnited, scaleUnited); // масштабирование
-			Graphics2D graphics = (Graphics2D) unitedImage.getGraphics(); // Graphics2D для объединения кубов
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // сглаживание
-			graphics.setColor(new Color(0, 0, 0, 0)); // очистка поля
-			graphics.fillRect(0, 0, WIDTH, HEIGHT); // создание поля куба для отрисовки
-			graphics.drawImage(cubeImage, affineTransform, null); // отрисовка изображения куба
-			scaleUnited -= 0.08; // уменьшение масштаба куба при объединении
-			graphics.dispose(); // освобождение ресурсов
-			if(scaleUnited <= 1) uniteAnimation = false; // запрет анимации объединения, если уже объединились
+			affineTransform.scale(scaleUnited, scaleUnited); // РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµ
+			Graphics2D graphics = (Graphics2D) unitedImage.getGraphics(); // Graphics2D РґР»СЏ РѕР±СЉРµРґРёРЅРµРЅРёСЏ РєСѓР±РѕРІ
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC); // СЃРіР»Р°Р¶РёРІР°РЅРёРµ
+			graphics.setColor(new Color(0, 0, 0, 0)); // РѕС‡РёСЃС‚РєР° РїРѕР»СЏ
+			graphics.fillRect(0, 0, WIDTH, HEIGHT); // СЃРѕР·РґР°РЅРёРµ РїРѕР»СЏ РєСѓР±Р° РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё
+			graphics.drawImage(cubeImage, affineTransform, null); // РѕС‚СЂРёСЃРѕРІРєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РєСѓР±Р°
+			scaleUnited -= 0.08; // СѓРјРµРЅСЊС€РµРЅРёРµ РјР°СЃС€С‚Р°Р±Р° РєСѓР±Р° РїСЂРё РѕР±СЉРµРґРёРЅРµРЅРёРё
+			graphics.dispose(); // РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ
+			if(scaleUnited <= 1) uniteAnimation = false; // Р·Р°РїСЂРµС‚ Р°РЅРёРјР°С†РёРё РѕР±СЉРµРґРёРЅРµРЅРёСЏ, РµСЃР»Рё СѓР¶Рµ РѕР±СЉРµРґРёРЅРёР»РёСЃСЊ
 		}
 	}
 	
 	/**
-     * Процедура рендер кубов
-     * @param graphics - графика для отрисовки куба
+     * РџСЂРѕС†РµРґСѓСЂР° СЂРµРЅРґРµСЂ РєСѓР±РѕРІ
+     * @param graphics - РіСЂР°С„РёРєР° РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РєСѓР±Р°
      */
 	public void renderCubes(Graphics2D graphics) { 
-		if(newSpawnAnimation) { // для начального изображения куба
+		if(newSpawnAnimation) { // РґР»СЏ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РєСѓР±Р°
 			graphics.drawImage(startImage, x, y, null);
 		}
-		else if(uniteAnimation) { // для анимации объединения кубов
+		else if(uniteAnimation) { // РґР»СЏ Р°РЅРёРјР°С†РёРё РѕР±СЉРµРґРёРЅРµРЅРёСЏ РєСѓР±РѕРІ
 			graphics.drawImage(unitedImage, (int)(x + WIDTH / 2 - scaleUnited * WIDTH / 2), 
 								   (int)(y + HEIGHT / 2 - scaleUnited * HEIGHT / 2), null);
 		}
-		else { // для изображения кубов по дефолту
+		else { // РґР»СЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РєСѓР±РѕРІ РїРѕ РґРµС„РѕР»С‚Сѓ
 			graphics.drawImage(cubeImage, x, y, null);
 		}
 	}
 	
 	/**
-     * Функция получения значения поля {@link #x}
-     * @return возвращает координату x
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #x}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ x
      */
 	public int getX() { return x;}
 
 	/**
-     * Процедура установки координаты x
-     * @param x - координатa x
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё РєРѕРѕСЂРґРёРЅР°С‚С‹ x
+     * @param x - РєРѕРѕСЂРґРёРЅР°С‚a x
      */
 	public void setX(int x) { this.x = x; }
 
 	/**
-     * Функция получения значения поля {@link #y}
-     * @return возвращает координату y
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #y}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ y
      */
 	public int getY() { return y; }
-
+ 
 	/**
-     * Процедура установки координаты y
-     * @param y - координатa y
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё РєРѕРѕСЂРґРёРЅР°С‚С‹ y
+     * @param y - РєРѕРѕСЂРґРёРЅР°С‚a y
      */
 	public void setY(int y) { this.y = y; }
 
 	/**
-     * Функция получения значения поля {@link #value}
-     * @return возвращает значение на кубе
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #value}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РЅР° РєСѓР±Рµ
      */
 	public int getValue() { return value; }
 
 	/**
-     * Процедура установки значения на кубе
-     * @param value - значение на кубе
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ РЅР° РєСѓР±Рµ
+     * @param value - Р·РЅР°С‡РµРЅРёРµ РЅР° РєСѓР±Рµ
      */
 	public void setValue(int value) {
 		this.value = value;
@@ -276,40 +276,40 @@ public class Cube {
 	}
 
 	/**
-     * Функция получения значения поля {@link #slide}
-     * @return возвращает значение направления движения
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #slide}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РЅР°РїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёСЏ
      */
 	public Spot getSlide() { return slide; }
 
 	/**
-     * Процедура установки значения направления движения
-     * @param slide - значение направления движения
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ РЅР°РїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёСЏ
+     * @param slide - Р·РЅР°С‡РµРЅРёРµ РЅР°РїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёСЏ
      */
 	public void setSlide(Spot slide) { this.slide = slide; }
 	
 	/**
-     * Функция получения значения поля {@link #uniteAbility}
-     * @return возвращает значение флага возможности объединения
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #uniteAbility}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ С„Р»Р°РіР° РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РѕР±СЉРµРґРёРЅРµРЅРёСЏ
      */
 	public boolean uniteAbility() { return uniteAbility; }
 
 	/**
-     * Процедура установки значения флага возможности объединения
-     * @param uniteAbility - значение флага возможности объединения
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ С„Р»Р°РіР° РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РѕР±СЉРµРґРёРЅРµРЅРёСЏ
+     * @param uniteAbility - Р·РЅР°С‡РµРЅРёРµ С„Р»Р°РіР° РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РѕР±СЉРµРґРёРЅРµРЅРёСЏ
      */
 	public void setUniteAbility(boolean uniteAbility) {
 		this.uniteAbility = uniteAbility;
 	}
 	
 	/**
-     * Функция получения значения поля {@link #uniteAnimation}
-     * @return возвращает значение флага для анимации объединения
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ {@link #uniteAnimation}
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ С„Р»Р°РіР° РґР»СЏ Р°РЅРёРјР°С†РёРё РѕР±СЉРµРґРёРЅРµРЅРёСЏ
      */
 	public boolean uniteAnimation() { return uniteAnimation; }
 	
 	/**
-     * Процедура установки значения флага для анимации объединения
-     * @param uniteAnimation - значение флага для анимации объединения
+     * РџСЂРѕС†РµРґСѓСЂР° СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ С„Р»Р°РіР° РґР»СЏ Р°РЅРёРјР°С†РёРё РѕР±СЉРµРґРёРЅРµРЅРёСЏ
+     * @param uniteAnimation - Р·РЅР°С‡РµРЅРёРµ С„Р»Р°РіР° РґР»СЏ Р°РЅРёРјР°С†РёРё РѕР±СЉРµРґРёРЅРµРЅРёСЏ
      */
 	public void setUniteAnimation(boolean uniteAnimation) {
 		this.uniteAnimation = uniteAnimation;
