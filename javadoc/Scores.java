@@ -69,7 +69,7 @@ public class Scores {
 	private void createFile() { 
 		FileWriter output = null;
 		newGame = true;
-		try {
+		try {  
 			File file = new File(path, temp);
 			output = new FileWriter(file);
 			BufferedWriter writer = new BufferedWriter(output);
@@ -97,7 +97,7 @@ public class Scores {
 			ex.getMessage();
 		}
 	}
-
+   
 	/**
      * Процедура загрузка счета игры
      */
@@ -159,7 +159,7 @@ public class Scores {
      */
 	public int getCurrentTopScore() {
 		return currentTopScore;
-	}
+	}  
 
 	/**
      * Процедура установки лучшего текущего счета
@@ -192,7 +192,7 @@ public class Scores {
 	public boolean newGame() {
 		return newGame;
 	}
-
+  
 	/**
      * Функция получение значения поля {@link #field}
      * @return возвращает значение field
