@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import mirosha.game.SetAudio;
 import mirosha.game.DisplayObject;
 import mirosha.game.Game;
-
+   
 /**
  * Класс для создания GUI кнопок 
  * @author Mirosha
@@ -93,7 +93,7 @@ public class Button {
 		graphics.setFont(font); 
 		graphics.drawString(text, rectangleButton.x + rectangleButton.width / 2  - DisplayObject.getObjectWidth(text, font, graphics) / 2, rectangleButton.y + rectangleButton.height / 2  + DisplayObject.getObjectHeight(text, font, graphics) / 2);
 	}
-	
+	  
 	/**
      * Процедура обновление кнопки 
      */
@@ -174,7 +174,7 @@ public class Button {
      * @return возвращает координату Y кнопки
      */
 	public int getY() { return rectangleButton.y; }
-	
+	  
 	/**
      * Функция получения значения поля {@link #rectangleButton.width}
      * @return возвращает ширину кнопки
